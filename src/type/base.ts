@@ -16,6 +16,11 @@ export interface AppAttributes {
   platform: string;
 }
 
+export interface BrightSignConfig {
+  brightSignAttributes: BrightSignAttributes;
+  brightWallConfiguration: BrightWallConfiguration;
+}
+
 export interface BrightSignAttributes {
   isBrightWall: boolean;
   serialNumber: string;
@@ -25,6 +30,6 @@ export interface BrightWallConfiguration {
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
-  numColumns: number;
   numRows: number;
+  numColumns: number;
 }
