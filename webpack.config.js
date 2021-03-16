@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 var webpack = require('webpack');
-const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -37,5 +38,10 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'build/bundle.js', to: '../../../BrightAuthor/baconPresentations/brightWalls/brightWallConfigurator/deviceWebPageArtifacts/build' },
+      ]
+    })
   ]
 };
