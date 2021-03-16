@@ -117,13 +117,13 @@ Sub GetIsBrightWallSyncMaster(userData as object, e as object)
 end sub
 
 
-Sub GetBrightWallSlaves(userData as object, e as object)
+Sub GetBrightWallDevices(userData as object, e as object)
   
   mVar = userData.mVar
 
   ' broadcast UDP message to local devices
   mVar.CreateUDPSender(mVar)
-  mVar.udpSender.Send("isBrightWallSlave")
+  mVar.udpSender.Send("isBrightWallDevice")
 
   resp = {}
   resp.AddReplace("success", true)
@@ -232,8 +232,8 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         getBrightWallConfigurationAA = { HandleEvent: GetBrightWallConfiguration, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallConfiguration", user_data: getBrightWallConfigurationAA })
 
-        getBrightWallSlavesAA = { HandleEvent: GetBrightWallSlaves, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallSlaves", user_data: getBrightWallSlavesAA })
+        getBrightWallDevicesAA = { HandleEvent: GetBrightWallDevices, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDevices", user_data: getBrightWallDevicesAA })
 
         m.handlersAdded = true
 
@@ -259,6 +259,17 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         return false
       endif
 
+    endif
+
+  else if type(event) = "roAssociativeArray" then
+
+    if event["EventType"] = "SEND_PLUGIN_MESSAGE" then
+    
+      pluginName$ = event["PluginName"]
+      pluginMessage$ = event["PluginMessage"]
+
+      m.o.diagnostics.PrintDebug("PluginMessageEvent " + pluginName$ + " " + pluginMessage$)
+      
     endif
 
   else if type(event) = "roDatagramEvent" then

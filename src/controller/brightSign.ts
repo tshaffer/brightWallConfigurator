@@ -10,7 +10,7 @@ export const getBrightSignConfig = () => {
         console.log(brightSignConfig);
 
         if (brightSignConfig.brightSignAttributes.isBrightWall) {
-          return fetch('/GetBrightWallSlaves')
+          return fetch('/GetBrightWallDevices')
             .then(response => response.json())
             .then((status: any) => {
               console.log(status);
