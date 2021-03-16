@@ -10,8 +10,15 @@ export const getBrightSignConfig = () => {
         console.log(brightSignConfig);
 
         if (brightSignConfig.brightSignAttributes.isBrightWall) {
-          
+          return fetch('/GetBrightWallSlaves')
+            .then(response => response.json())
+            .then((status: any) => {
+              console.log(status);
+            });
+        } else {
+          return Promise.resolve();
         }
       });
   });
 };
+

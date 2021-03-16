@@ -35,33 +35,33 @@ Sub GetBrightWallConfiguration(userData as object, e as object)
 
   config = {}
 
-  config.brightSignAttributes = {}
+  config.AddReplace("brightSignAttributes", {})
   config.brightSignAttributes.AddReplace("serialNumber", mVar.sysInfo.deviceUniqueID$)
-  config.brightSignAttributes.isBrightWall = true
+  config.brightSignAttributes.AddReplace("isBrightWall", true)
   
-  config.brightWallConfiguration = {}
+  config.AddReplace("brightWallConfiguration", {})
 
   if (config.brightSignAttributes.isBrightWall) then
     if IsBoolean(globalAA.registrySettings.sync_master) and IsTruthy(globalAA.registrySection.Read("sync_master")) then
-      config.brightWallConfiguration.isMaster = true
+      config.brightWallConfiguration.AddReplace("isMaster", true)
     else
-      config.brightWallConfiguration.isMaster = false
+      config.brightWallConfiguration.AddReplace("isMaster", false)
     endif
 
     if len(globalAA.registrySection.Read("videoWallRowIndex")) > 0 then
-      config.brightWallConfiguration.rowIndex = int(val(globalAA.registrySection.Read("videoWallRowIndex")))
+      config.brightWallConfiguration.AddReplace("rowIndex", int(val(globalAA.registrySection.Read("videoWallRowIndex"))))
     else
-      config.brightWallConfiguration.rowIndex = -1
+      config.brightWallConfiguration.AddReplace("rowIndex", -1)
     endif
 
     if len(globalAA.registrySection.Read("videoWallColumnIndex")) > 0 then
-      config.brightWallConfiguration.columnIndex = int(val(globalAA.registrySection.Read("videoWallColumnIndex")))
+      config.brightWallConfiguration.AddReplace("columnIndex", int(val(globalAA.registrySection.Read("videoWallColumnIndex"))))
     else
-      config.brightWallConfiguration.columnIndex = -1
+      config.brightWallConfiguration.AddReplace("columnIndex", -1)
     endif
 
-    config.brightWallConfiguration.numRows = 0
-    config.brightWallConfiguration.numColumns = 0
+    config.brightWallConfiguration.AddReplace("numRows", 0)
+    config.brightWallConfiguration.AddReplace("numColumns", 0)
 
   endif
 
@@ -112,6 +112,24 @@ Sub GetIsBrightWallSyncMaster(userData as object, e as object)
   
   e.AddResponseHeader("Content-type", "text/xml; charset=utf-8")
   e.SetResponseBodyString(xml)
+  e.SendResponse(200)
+
+end sub
+
+
+Sub GetBrightWallSlaves(userData as object, e as object)
+  
+  mVar = userData.mVar
+
+  ' broadcast UDP message to local devices
+  mVar.CreateUDPSender(mVar)
+  mVar.udpSender.Send("isBrightWallSlave")
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
   e.SendResponse(200)
 
 end sub
@@ -207,11 +225,15 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
       if type(m.o.sign) = "roAssociativeArray" and type(m.o.sign.localServer) = "roHttpServer" then
 
         print "add handlers"
+
         getIsBrightWallAA = { HandleEvent: GetIsBrightWall, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetIsBrightWall", user_data: getIsBrightWallAA })
 
         getBrightWallConfigurationAA = { HandleEvent: GetBrightWallConfiguration, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallConfiguration", user_data: getBrightWallConfigurationAA })
+
+        getBrightWallSlavesAA = { HandleEvent: GetBrightWallSlaves, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallSlaves", user_data: getBrightWallSlavesAA })
 
         m.handlersAdded = true
 
@@ -229,26 +251,20 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
       
       if eventData.reason = "load-finished" then
         print "load-finished event received in plugin"
-        ' m.htmlWidget = m.o.sign.zonesHSM[0].loadingHtmlWidget
       endif
       
       if eventData.reason = "message" then
         print "message received in plugin"
         print eventData.message
-'        pluginMessageCmd = {}
-'        pluginMessageCmd["EventType"] = "EVENT_PLUGIN_MESSAGE"
-'        pluginMessageCmd["PluginName"] = "brightWallSetup"
-'        pluginMessageCmd["PluginMessage"] = eventData.message.pluginMessage
-'        m.msgPort.PostMessage(pluginMessageCmd)
         return false
       endif
 
     endif
 
-'  else if type(event) = "roTimerEvent" then
-'    print "****** roTimerEvent - post message to js"
-'    m.htmlWidget.PostJSMessage({ Param1: "Data1", Param2: "Data2", Param3: "Data3" })
- 
+  else if type(event) = "roDatagramEvent" then
+    
+    m.o.diagnostics.PrintDebug("Plugin processing UDP Event " + event.GetString())
+
   endif
 
   return false
