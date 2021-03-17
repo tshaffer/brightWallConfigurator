@@ -122,8 +122,7 @@ Sub GetBrightWallDevices(userData as object, e as object)
   mVar = userData.mVar
 
   ' broadcast UDP message to local devices
-  mVar.CreateUDPSender(mVar)
-  mVar.udpSender.Send("getIsBrightWallDevice")
+  mVar.bwUdpSender.Send("getIsBrightWallDevice")
 
   resp = {}
   resp.AddReplace("success", true)
@@ -227,8 +226,12 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         print "add handlers"
 
-        m.udpBroadcaster = CreateObject("roDatagramSender")
-        m.udpBroadcaster.SetDestination("BCAST-LOCAL-SUBNETS", 5000)
+        m.o.bwUdpSender = CreateObject("roDatagramSender")
+        m.o.bwUdpSender.SetDestination("BCAST-LOCAL-SUBNETS", 5111)
+
+        m.o.bwUdpReceiver = CreateObject("roDatagramReceiver", 5111)
+        m.o.bwUdpReceiver.SetUserData("brightWall")
+        m.o.bwUdpReceiver.SetPort(m.o.msgPort)
 
         getIsBrightWallAA = { HandleEvent: GetIsBrightWall, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetIsBrightWall", user_data: getIsBrightWallAA })
@@ -282,15 +285,12 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
     m.o.diagnostics.PrintDebug("Plugin processing UDP Event " + udpEvent$)
 
-'    userData = event.GetUserData()
-'    if userData <> invalid then
-'      m.o.diagnostics.PrintDebug("Userdata:")
-'      m.o.diagnostics.PrintDebug(userData)
-'    endif
-
-    if udpEvent$ = "getIsBrightWallDevice" then
-      serialNumber$ = m.o.sysInfo.deviceUniqueid$
-      m.udpBroadcaster.Send("deviceIsInBrightWall::" + serialNumber$)
+    userData = event.GetUserData()
+    if IsString(userData) and userData = "brightWall" then
+      if udpEvent$ = "getIsBrightWallDevice" then
+        serialNumber$ = m.o.sysInfo.deviceUniqueid$
+        m.o.bwUdpSender.Send("deviceIsInBrightWall::" + serialNumber$)
+      endif
     endif
 
   endif
