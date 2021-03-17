@@ -20,6 +20,7 @@ Function newBrightWallSetup(msgPort As Object, userVariables As Object, o As Obj
   brightWallSetup.htmlWidget = invalid
 
   brightWallSetup.handlersAdded = false
+  brightWallSetup.o.brightSignsInWall = {}
 
   brightWallSetup.ProcessEvent = brightWallSetup_ProcessEvent
 
@@ -134,6 +135,25 @@ Sub GetBrightWallDevices(userData as object, e as object)
 end sub
 
 
+Sub GetBrightWallDeviceList(userData as object, e as object)
+  
+  mVar = userData.mVar
+stop
+  brightSignDevicesInWall = []
+  for each serialNumber in mVar.brightSignsInWall
+    brightSignDevicesInWall.push(serialNumber)
+  next
+
+  brightSignDevicesInWallList = {}
+  brightSignDevicesInWallList.AddReplace("brightSignDevicesInWallList", brightSignDevicesInWall)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(brightSignDevicesInWallList))
+  e.SendResponse(200)
+
+end sub
+
+
 Sub SetBrightWallIsSyncMaster(userData as object, e as object)
 
   mVar = userData.mVar
@@ -242,6 +262,9 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         getBrightWallDevicesAA = { HandleEvent: GetBrightWallDevices, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDevices", user_data: getBrightWallDevicesAA })
 
+        getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
+
         m.handlersAdded = true
 
       endif
@@ -290,9 +313,19 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
       if udpEvent$ = "getIsBrightWallDevice" then
         serialNumber$ = m.o.sysInfo.deviceUniqueid$
         m.o.bwUdpSender.Send("deviceIsInBrightWall::" + serialNumber$)
+      else
+        regex = CreateObject("roRegEx", "::", "i")
+        subStrings = regex.split(udpevent$)
+        if subStrings.count() = 2 then
+          if subStrings[0] = "deviceIsInBrightWall" then
+            deviceInBrightWallId = subStrings[1]
+            print "Found device:"
+            print deviceInBrightWallId
+            m.o.brightSignsInWall.AddReplace(deviceInBrightWallId, true)
+          endif
+        endif
       endif
     endif
-
   endif
 
   return false
