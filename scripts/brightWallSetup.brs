@@ -118,7 +118,7 @@ Sub GetIsBrightWallSyncMaster(userData as object, e as object)
 end sub
 
 
-Sub GetBrightWallDevices(userData as object, e as object)
+Sub BrightWallDeviceCheckin(userData as object, e as object)
   
   mVar = userData.mVar
 
@@ -138,7 +138,7 @@ end sub
 Sub GetBrightWallDeviceList(userData as object, e as object)
   
   mVar = userData.mVar
-stop
+
   brightSignDevicesInWall = []
   for each serialNumber in mVar.brightSignsInWall
     brightSignDevicesInWall.push(serialNumber)
@@ -259,8 +259,8 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         getBrightWallConfigurationAA = { HandleEvent: GetBrightWallConfiguration, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallConfiguration", user_data: getBrightWallConfigurationAA })
 
-        getBrightWallDevicesAA = { HandleEvent: GetBrightWallDevices, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDevices", user_data: getBrightWallDevicesAA })
+        brightWallDeviceCheckinAA = { HandleEvent: BrightWallDeviceCheckin, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/BrightWallDeviceCheckin", user_data: brightWallDeviceCheckinAA })
 
         getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })

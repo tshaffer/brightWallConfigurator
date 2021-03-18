@@ -5,12 +5,12 @@ import {
 } from 'redux';
 import { BrightSignState } from '../type';
 import { appAttributesReducer } from './appAttributes';
-import { 
-  brightSignAttributesReducer, 
- } from './brightSignAttributes';
- import { 
+import {
+  brightSignAttributesReducer,
+} from './brightSignAttributes';
+import {
   brightWallConfigurationReducer
- } from './brightWallConfiguration';
+} from './brightWallConfiguration';
 // -----------------------------------------------------------------------
 // Defaults
 // -----------------------------------------------------------------------
@@ -22,8 +22,9 @@ import {
 // -----------------------------------------------------------------------
 export const brightWallModelReducer = combineReducers<BrightSignState>({
   appAttributes: appAttributesReducer,
-  brightSignAttributes: brightSignAttributesReducer,
-  brightWallConfiguration: brightWallConfigurationReducer,
+  brightSignMap: brightSignAttributesReducer,
+  // brightSignAttributes: brightSignAttributesReducer,
+  // brightWallConfiguration: brightWallConfigurationReducer,
 });
 
 // -----------------------------------------------------------------------

@@ -8,14 +8,14 @@ import { makeStyles } from '@material-ui/core/styles';
 //   videoWallRowIndex,
 //   videoWallColumnIndex,
 // } from '../config/config';
-import { getBrightSignConfig } from '../controller';
-import {
-  getIsBrightWall,
-  getSerialNumber,
-  getIsMaster,
-  getRowIndex,
-  getColumnIndex,
-} from '../selector';
+import { launchApp } from '../controller';
+// import {
+//   getIsBrightWall,
+//   getSerialNumber,
+//   getIsMaster,
+//   getRowIndex,
+//   getColumnIndex,
+// } from '../selector';
 
 /** @internal */
 /** @private */
@@ -25,7 +25,7 @@ export interface AppProps {
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
-  onGetBrightSignConfig: () => any;
+  onLaunchApp: () => any;
 }
 
 // -----------------------------------------------------------------------
@@ -86,7 +86,7 @@ const App = (props: AppProps) => {
   const classes = useStyles();
 
   // Equivalent to old componentDidMount
-  React.useEffect(props.onGetBrightSignConfig, []);
+  React.useEffect(props.onLaunchApp, []);
 
   console.log('render app');
 
@@ -107,17 +107,17 @@ const App = (props: AppProps) => {
 
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
   return {
-    isBrightWall: getIsBrightWall(state),
-    serialNumber: getSerialNumber(state),
-    isMaster: getIsMaster(state),
-    rowIndex: getRowIndex(state),
-    columnIndex: getColumnIndex(state),
+    // isBrightWall: getIsBrightWall(state),
+    // serialNumber: getSerialNumber(state),
+    // isMaster: getIsMaster(state),
+    // rowIndex: getRowIndex(state),
+    // columnIndex: getColumnIndex(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onGetBrightSignConfig: getBrightSignConfig,
+    onLaunchApp: launchApp,
   }, dispatch);
 };
 

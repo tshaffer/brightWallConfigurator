@@ -1,10 +1,10 @@
-import { BrightSignState } from "../type";
+import { BrightSignState } from '../type';
 
-export const getIsBrightWall = (state: BrightSignState): boolean => {
-  return state.brightSignAttributes.isBrightWall;
-};
+// export const getIsBrightWall = (state: BrightSignState): boolean => {
+//   return state.brightSignAttributes.isBrightWall;
+// };
 
-export const getSerialNumber = (state: BrightSignState): string => {
-  return state.brightSignAttributes.serialNumber;
-};
+// export const getSerialNumber = (state: BrightSignState): string => {
+//   return state.brightSignAttributes.serialNumber;
+// };
 

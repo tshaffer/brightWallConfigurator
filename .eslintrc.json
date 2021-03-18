@@ -41,6 +41,7 @@
       "warn",
       "always"
     ],
+    "no-case-declarations": "off",
     "no-console": "off",
     "no-debugger": 0,
     "@typescript-eslint/ban-types": 1,

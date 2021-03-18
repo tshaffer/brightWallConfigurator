@@ -8,8 +8,9 @@ export type DeepPartial<T> = {
 
 export interface BrightSignState {
   appAttributes: AppAttributes;
-  brightSignAttributes: BrightSignAttributes;
-  brightWallConfiguration: BrightWallConfiguration;
+  brightSignMap: BrightSignMap;
+  // brightSignAttributes: BrightSignAttributes;
+  // brightWallConfiguration: BrightWallConfiguration;
 }
 
 export interface AppAttributes {
@@ -18,7 +19,7 @@ export interface AppAttributes {
 
 export interface BrightSignConfig {
   brightSignAttributes: BrightSignAttributes;
-  brightWallConfiguration: BrightWallConfiguration;
+  brightWallConfiguration?: BrightWallConfiguration;
 }
 
 export interface BrightSignAttributes {
@@ -33,3 +34,8 @@ export interface BrightWallConfiguration {
   numRows: number;
   numColumns: number;
 }
+
+export interface BrightSignMap {
+  [key: string]: BrightSignConfig;
+}
+

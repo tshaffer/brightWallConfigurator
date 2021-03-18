@@ -1,24 +1,36 @@
+import { isNil } from 'lodash';
+import { addBrightSign } from '../model';
 import { BrightSignConfig } from '../type';
 
-export const getBrightSignConfig = () => {
+export const launchApp = () => {
   return ((dispatch: any): any => {
-
-    return fetch('/GetBrightWallConfiguration')
-      .then(response => response.json())
+    getBrightSignConfig()
       .then((brightSignConfig: BrightSignConfig) => {
-        console.log('response to GetBrightWallConfiguration');
-        console.log(brightSignConfig);
-
-        if (brightSignConfig.brightSignAttributes.isBrightWall) {
-          return fetch('/GetBrightWallDevices')
-            .then(response => response.json())
-            .then((status: any) => {
-              console.log(status);
-            });
-        } else {
-          return Promise.resolve();
-        }
+        dispatch(addBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig.brightSignAttributes.isBrightWall));
       });
   });
+};
+
+export const getBrightSignConfig = (): Promise<BrightSignConfig> => {
+  return fetch('/GetBrightWallConfiguration')
+    .then(response => response.json())
+    .then((brightSignConfig: BrightSignConfig) => {
+      console.log('response to GetBrightWallConfiguration');
+      console.log(brightSignConfig);
+
+      if (brightSignConfig.brightSignAttributes.isBrightWall) {
+        return fetch('/BrightWallDeviceCheckin')
+          .then(response => response.json())
+          .then((status: any) => {
+            if (!isNil(status) && status.success) {
+              return Promise.resolve(brightSignConfig);
+            } else {
+              return Promise.reject();
+            }
+          });
+      } else {
+        return Promise.reject();
+      }
+    });
 };
 
