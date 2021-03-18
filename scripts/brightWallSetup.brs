@@ -107,10 +107,11 @@ Sub GetBrightWallDeviceList(userData as object, e as object)
       print str$
     else
       print "host - don't fetch config"
+      config = GetConfig(mVar)
     endif
 
     brightSignDevicesInWall.push(config)
-    
+
   next
 
   brightSignDevicesInWallList = {}

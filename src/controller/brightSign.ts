@@ -13,7 +13,8 @@ export const launchApp = () => {
         dispatch(addBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig.brightSignAttributes.isBrightWall));
 
         // start timer to get list of BrightSigns in the wall
-        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 1000, dispatch);
+        // pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 1000, dispatch);
+        setTimeout(getBrightWallDeviceList, 1000, dispatch);
       });
   });
 };
