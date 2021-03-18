@@ -1,8 +1,12 @@
 import { isNil } from 'lodash';
-import { addBrightSign } from '../model';
+import { addBrightSign, addBrightSignWithConfig } from '../model';
 import { BrightSignConfig } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
+
+interface BrightSignDeviceList {
+  brightSignDevicesInWallList: BrightSignConfig[];
+}
 
 export const launchApp = () => {
   return ((dispatch: any): any => {
@@ -23,9 +27,13 @@ const getBrightWallDeviceList = (dispatch: any) => {
   console.log('getBrightWallDeviceList invoked');
   fetch('/GetBrightWallDeviceList')
     .then(response => response.json())
-    .then((brightSignDeviceList: any) => {
+    .then((brightSignDeviceList: BrightSignDeviceList) => {
       console.log('response from GetBrightWallDeviceList');
       console.log(brightSignDeviceList);
+      for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
+        console.log(brightSignConfig.brightSignAttributes.serialNumber);
+        dispatch(addBrightSignWithConfig(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+      }
     });
 };
 

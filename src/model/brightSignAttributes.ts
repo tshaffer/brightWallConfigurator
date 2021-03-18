@@ -9,6 +9,7 @@ import { BrightSignAttributes, BrightSignConfig, BrightSignMap } from '../type';
 // Constants
 // ------------------------------------
 export const ADD_BRIGHTSIGN = 'ADD_BRIGHTSIGN';
+export const ADD_BRIGHTSIGN_WITH_CONFIG = 'ADD_BRIGHTSIGN_WITH_CONFIG';
 // export const SET_IS_BRIGHTWALL = 'SET_IS_BRIGHTWALL';
 // export const SET_SERIAL_NUMBER = 'SET_SERIAL_NUMBER';
 
@@ -33,6 +34,26 @@ export const addBrightSign = (
     },
   };
 };
+
+export interface AddBrightSignWithConfigPayload {
+  serialNumber: string;
+  brightSignConfig: BrightSignConfig;
+}
+type AddBrightSignWithConfigAction = BrightWallModelAction<AddBrightSignWithConfigPayload>;
+
+export const addBrightSignWithConfig = (
+  serialNumber: string,
+  brightSignConfig: BrightSignConfig,
+): AddBrightSignWithConfigAction => {
+  return {
+    type: ADD_BRIGHTSIGN_WITH_CONFIG,
+    payload: {
+      serialNumber,
+      brightSignConfig,
+    },
+  };
+};
+
 
 // export interface SetIsBrightWallPayload {
 //   isBrightWall: boolean;
@@ -78,8 +99,9 @@ const initialState: BrightSignMap = {
 
 export const brightSignAttributesReducer = (
   state: BrightSignMap = initialState,
-  action: AddBrightSignAction
+  action: AddBrightSignAction & AddBrightSignWithConfigAction
 ): BrightSignMap => {
+  let newState;
   switch (action.type) {
     // case SET_IS_BRIGHTWALL:
     //   return {
@@ -98,8 +120,12 @@ export const brightSignAttributesReducer = (
           serialNumber: action.payload.serialNumber,
         },
       };
-      const newState: BrightSignMap = cloneDeep(state);
+      newState = cloneDeep(state);
       newState[action.payload.serialNumber] = brightSignConfig;
+      return newState;
+    case ADD_BRIGHTSIGN_WITH_CONFIG:
+      newState = cloneDeep(state);
+      newState[action.payload.serialNumber] = action.payload.brightSignConfig;
       return newState;
     default:
       return state;
