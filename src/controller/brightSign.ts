@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { addBrightSign, addBrightSignWithConfig } from '../model';
+import { addBrightSignWithConfig, addHostBrightSign } from '../model';
 import { BrightSignConfig } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
@@ -13,8 +13,8 @@ export const launchApp = () => {
     getBrightSignConfig()
       .then((brightSignConfig: BrightSignConfig) => {
 
-        // add the BrightSign that the custom device web page is running on - is this correct? appropriate? ok?
-        dispatch(addBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig.brightSignAttributes.isBrightWall));
+        // add the BrightSign that the custom device web page is running on
+        dispatch(addHostBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
 
         // start timer to get list of BrightSigns in the wall
         // pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 1000, dispatch);

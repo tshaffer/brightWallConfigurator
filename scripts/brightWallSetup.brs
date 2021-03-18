@@ -37,8 +37,27 @@ Function GetConfig(bsp) as object
 
   config.AddReplace("brightSignAttributes", {})
   config.brightSignAttributes.AddReplace("serialNumber", bsp.sysInfo.deviceUniqueID$)
+  
+  for each networkInterfaceAA in globalAA.settings.network.interfaces
+
+    networkInterfaceId = networkInterfaceAA.networkInterface
+
+    nc = CreateObject("roNetworkConfiguration", networkInterfaceId)
+    currentConfig = nc.GetCurrentConfig()
+    hostName = nc.GetHostName()
+
+    networkInterface = {}
+    networkInterface.AddReplace("id", networkInterfaceId)
+    networkInterface.AddReplace("currentConfig", currentConfig)
+    networkInterface.AddReplace("hostName", hostName)
   ' brightsign-<serial>.local
-  config.brightSignAttributes.AddReplace("ipAddress", bsp.sysInfo.ipAddressWired$)
+  
+    networkInterfaces = {}
+    networkInterfaces.AddReplace(networkInterfaceId, networkInterface)
+
+  next
+
+  config.brightSignAttributes.AddReplace("networkInterfaces", networkInterfaces)
   config.brightSignAttributes.AddReplace("isBrightWall", true)
   
   config.AddReplace("brightWallConfiguration", {})

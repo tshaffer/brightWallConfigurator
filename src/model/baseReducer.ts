@@ -22,7 +22,7 @@ import {
 // -----------------------------------------------------------------------
 export const brightWallModelReducer = combineReducers<BrightSignState>({
   appAttributes: appAttributesReducer,
-  brightSignMap: brightSignAttributesReducer,
+  brightWall: brightSignAttributesReducer,
   // brightSignAttributes: brightSignAttributesReducer,
   // brightWallConfiguration: brightWallConfigurationReducer,
 });
