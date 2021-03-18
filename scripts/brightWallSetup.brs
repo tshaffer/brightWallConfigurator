@@ -62,8 +62,17 @@ Function GetConfig(bsp) as object
       config.brightWallConfiguration.AddReplace("columnIndex", -1)
     endif
 
-    config.brightWallConfiguration.AddReplace("numRows", 0)
-    config.brightWallConfiguration.AddReplace("numColumns", 0)
+    if len(globalAA.registrySection.Read("videoWallNumRows")) > 0 then
+      config.brightWallConfiguration.AddReplace("numRows", int(val(globalAA.registrySection.Read("videoWallNumRows"))))
+    else
+      config.brightWallConfiguration.AddReplace("numRows", -1)
+    endif
+
+    if len(globalAA.registrySection.Read("videoWallNumColumns")) > 0 then
+      config.brightWallConfiguration.AddReplace("numColumns", int(val(globalAA.registrySection.Read("videoWallNumColumns"))))
+    else
+      config.brightWallConfiguration.AddReplace("numColumns", -1)
+    endif
 
   endif
 
