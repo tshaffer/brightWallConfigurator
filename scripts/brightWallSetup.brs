@@ -29,15 +29,16 @@ Function newBrightWallSetup(msgPort As Object, userVariables As Object, o As Obj
 End Function
 
 
-Sub GetBrightWallConfiguration(userData as object, e as object)
+Function GetConfig(bsp) as object
 
-  mVar = userData.mVar
   globalAA = GetGlobalAA()
 
   config = {}
 
   config.AddReplace("brightSignAttributes", {})
-  config.brightSignAttributes.AddReplace("serialNumber", mVar.sysInfo.deviceUniqueID$)
+  config.brightSignAttributes.AddReplace("serialNumber", bsp.sysInfo.deviceUniqueID$)
+  ' brightsign-<serial>.local
+  config.brightSignAttributes.AddReplace("ipAddress", bsp.sysInfo.ipAddressWired$)
   config.brightSignAttributes.AddReplace("isBrightWall", true)
   
   config.AddReplace("brightWallConfiguration", {})
@@ -66,11 +67,61 @@ Sub GetBrightWallConfiguration(userData as object, e as object)
 
   endif
 
+  return config
+
+end Function
+
+
+Sub GetBrightWallConfiguration(userData as object, e as object)
+
+  mVar = userData.mVar
+
+  config = GetConfig(mVar)
+
   e.AddResponseHeader("Content-type", "application/json")
   e.SetResponseBodyString(FormatJson(config))
   e.SendResponse(200)
 
 end sub
+
+
+Sub GetBrightWallDeviceList(userData as object, e as object)
+
+  mVar = userData.mVar
+
+  hostSerialNumber = mVar.sysInfo.deviceUniqueId$
+
+  xfer = CreateObject("roUrlTransfer")
+  xfer.SetPort(mVar.msgPort)
+  xfer.SetTimeout(5000)
+
+  brightSignDevicesInWall = []
+  for each serialNumber in mVar.brightSignsInWall
+    if hostSerialNumber <> serialNumber then
+      print "fetch config from non host"
+      url = "http://brightsign-" + serialNumber + ".local:8008/GetBrightWallConfiguration"
+      xfer.SetUrl(url)
+      str$ = xfer.GetToString()
+      config = ParseJSON(str$)
+      print "response to GetBrightWallConfiguration from ";serialNumber
+      print str$
+    else
+      print "host - don't fetch config"
+    endif
+
+    brightSignDevicesInWall.push(config)
+    
+  next
+
+  brightSignDevicesInWallList = {}
+  brightSignDevicesInWallList.AddReplace("brightSignDevicesInWallList", brightSignDevicesInWall)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(brightSignDevicesInWallList))
+  e.SendResponse(200)
+
+end sub
+
 
 
 Sub GetIsBrightWall(userData as object, e as object)
@@ -130,25 +181,6 @@ Sub BrightWallDeviceCheckin(userData as object, e as object)
 
   e.AddResponseHeader("Content-type", "application/json")
   e.SetResponseBodyString(FormatJson(resp))
-  e.SendResponse(200)
-
-end sub
-
-
-Sub GetBrightWallDeviceList(userData as object, e as object)
-  
-  mVar = userData.mVar
-
-  brightSignDevicesInWall = []
-  for each serialNumber in mVar.brightSignsInWall
-    brightSignDevicesInWall.push(serialNumber)
-  next
-
-  brightSignDevicesInWallList = {}
-  brightSignDevicesInWallList.AddReplace("brightSignDevicesInWallList", brightSignDevicesInWall)
-
-  e.AddResponseHeader("Content-type", "application/json")
-  e.SetResponseBodyString(FormatJson(brightSignDevicesInWallList))
   e.SendResponse(200)
 
 end sub
