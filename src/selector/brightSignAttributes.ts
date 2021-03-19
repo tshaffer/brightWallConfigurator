@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BrightSignState } from '../type';
+import { BrightSignMap, BrightSignState } from '../type';
 
 export const getIsBrightWall = (state: BrightSignState): boolean => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
@@ -20,6 +20,10 @@ export const getNumColumns = (state: BrightSignState): number => {
     return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.numColumns;
   }
   return -1;
+};
+
+export const getBrightSignsInWall = (state: BrightSignState): BrightSignMap => {
+  return state.brightWall.brightSignMap;
 };
 
 // export const getSerialNumber = (state: BrightSignState): string => {

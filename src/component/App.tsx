@@ -13,20 +13,23 @@ import {
   getIsBrightWall,
   getNumRows,
   getNumColumns,
+  getBrightSignsInWall,
   // getSerialNumber,
   // getIsMaster,
   // getRowIndex,
   // getColumnIndex,
 } from '../selector';
+import { BrightSignConfig, BrightSignMap } from '../type';
 
 /** @internal */
 /** @private */
 export interface AppProps {
   isBrightWall: boolean;
-  serialNumber: string;
-  isMaster: boolean;
   numRows: number;
   numColumns: number;
+  brightSignsInWall: BrightSignMap;
+  serialNumber: string;
+  isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
@@ -92,13 +95,45 @@ const App = (props: AppProps) => {
   // Equivalent to old componentDidMount
   React.useEffect(props.onLaunchApp, []);
 
+  const renderBrightSignInWall = (brightSignConfig: BrightSignConfig) => {
+
+    const serialNumberLbl = 'Serial Number: ';
+    const msdSeparator = '    ';
+    const rowIndexLbl = '    Row    ';
+    const colIndexLbl = '    Column    ';
+
+    const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
+    return (
+      <div key={brightSignConfig.brightSignAttributes.serialNumber}>
+        <span>{serialNumberLbl}</span>
+        <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
+        <span>{msdSeparator}</span>
+        <span>{masterSlaveDesignator}</span>
+        <span>{rowIndexLbl}</span>
+        <span>{brightSignConfig.brightWallConfiguration.rowIndex}</span>
+        <span>{colIndexLbl}</span>
+        <span>{brightSignConfig.brightWallConfiguration.columnIndex}</span>
+      </div>
+    );
+  };
+
+  const renderBrightSignsInWall = () => {
+
+    const brightSignsInWall: any[] = [];
+
+    for (const key in props.brightSignsInWall) {
+      if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+        brightSignsInWall.push(renderBrightSignInWall(brightSignInWall));
+      }
+    }
+
+    return brightSignsInWall;
+  };
+
   console.log('render app');
 
-  /*
-        <p className={classes.MsgStyle}>Serial Number:&nbsp;&nbsp;{props.serialNumber}</p>
-        <p className={classes.MsgStyle}>Row Index:&nbsp;&nbsp;{props.rowIndex}</p>
-        <p className={classes.MsgStyle}>Column Index:&nbsp;&nbsp;{props.columnIndex}</p>
-  */
+  const brightSignsInWall = renderBrightSignsInWall();
 
   return (
     <div className={classes.AppStyle}>
@@ -109,6 +144,7 @@ const App = (props: AppProps) => {
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
+        {brightSignsInWall}
       </div>
     </div>
   );
@@ -119,6 +155,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
     isBrightWall: getIsBrightWall(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
+    brightSignsInWall: getBrightSignsInWall(state),
     // serialNumber: getSerialNumber(state),
     // isMaster: getIsMaster(state),
     // rowIndex: getRowIndex(state),

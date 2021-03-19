@@ -73,8 +73,8 @@ export const brightSignAttributesReducer = (
       newState.hostBrightWallConfiguration = cloneDeep(action.payload.brightSignConfig);
       return newState;
     case ADD_BRIGHTSIGN_WITH_CONFIG:
-      newState = cloneDeep(state);
-      newState[action.payload.serialNumber] = action.payload.brightSignConfig;
+      newState = cloneDeep(state) as BrightWall;
+      newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
       return newState;
     default:
       return state;
