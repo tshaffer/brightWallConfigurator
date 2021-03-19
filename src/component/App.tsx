@@ -95,6 +95,42 @@ const App = (props: AppProps) => {
   // Equivalent to old componentDidMount
   React.useEffect(props.onLaunchApp, []);
 
+  const renderDeviceInColumn = (rowIndex: number, columnIndex: number) => {
+    return (
+      <select>
+        <option value="grapefruit">Grapefruit</option>
+        <option value="lime">Lime</option>
+        <option value="coconut">Coconut</option>
+        <option value="mango">Mango</option>
+      </select>
+    );
+  };
+
+  const renderRowInWall = (rowIndex: number) => {
+    const columnsInRow: any[] = [];
+    for (let columnIndex: number = 0; columnIndex < props.numColumns; columnIndex++) {
+      columnsInRow.push(renderDeviceInColumn(rowIndex, columnIndex));
+    }
+    return columnsInRow;
+  };
+
+  const renderWall = () => {
+
+    console.log('renderWall - numRows: ', props.numRows);
+    console.log('renderWall - numColumns: ', props.numColumns);
+  
+    const rowsInWall: any[] = [];
+    for (let rowIndex: number = 0; rowIndex < props.numRows; rowIndex++ ) {
+      rowsInWall.push(renderRowInWall(rowIndex));
+    }
+    // return rowsInWall;
+    return (
+      <table>
+        <tbody>{rowsInWall}</tbody>
+      </table>
+    );
+  };
+
   const renderBrightSignInWall = (brightSignConfig: BrightSignConfig) => {
 
     const serialNumberLbl = 'Serial Number: ';
@@ -133,6 +169,10 @@ const App = (props: AppProps) => {
 
   console.log('render app');
 
+  console.log('main render - numRows: ', props.numRows);
+  console.log('main render - numColumns: ', props.numColumns);
+
+  const wall = renderWall();
   const brightSignsInWall = renderBrightSignsInWall();
 
   return (
@@ -144,6 +184,7 @@ const App = (props: AppProps) => {
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
+        {wall}
         {brightSignsInWall}
       </div>
     </div>
