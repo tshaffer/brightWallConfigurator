@@ -9,13 +9,15 @@ import { makeStyles } from '@material-ui/core/styles';
 //   videoWallColumnIndex,
 // } from '../config/config';
 import { launchApp } from '../controller';
-// import {
-//   getIsBrightWall,
-//   getSerialNumber,
-//   getIsMaster,
-//   getRowIndex,
-//   getColumnIndex,
-// } from '../selector';
+import {
+  getIsBrightWall,
+  getNumRows,
+  getNumColumns,
+  // getSerialNumber,
+  // getIsMaster,
+  // getRowIndex,
+  // getColumnIndex,
+} from '../selector';
 
 /** @internal */
 /** @private */
@@ -23,6 +25,8 @@ export interface AppProps {
   isBrightWall: boolean;
   serialNumber: string;
   isMaster: boolean;
+  numRows: number;
+  numColumns: number;
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
@@ -54,7 +58,7 @@ const useStyles = makeStyles({
     backgroundSize: '400px',
   },
   bodyDiv: {
-    marginTop: '22%'
+    marginTop: '10%'
   },
   AppStyle: {
     background: 'linear-gradient(90deg, #753CD9, #290D5B)',
@@ -90,6 +94,12 @@ const App = (props: AppProps) => {
 
   console.log('render app');
 
+  /*
+        <p className={classes.MsgStyle}>Serial Number:&nbsp;&nbsp;{props.serialNumber}</p>
+        <p className={classes.MsgStyle}>Row Index:&nbsp;&nbsp;{props.rowIndex}</p>
+        <p className={classes.MsgStyle}>Column Index:&nbsp;&nbsp;{props.columnIndex}</p>
+  */
+
   return (
     <div className={classes.AppStyle}>
       <header className={classes.AppHeader}>
@@ -97,9 +107,8 @@ const App = (props: AppProps) => {
       </header>
       <div className={classes.bodyDiv}>
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
-        <p className={classes.MsgStyle}>Serial Number:&nbsp;&nbsp;{props.serialNumber}</p>
-        <p className={classes.MsgStyle}>Row Index:&nbsp;&nbsp;{props.rowIndex}</p>
-        <p className={classes.MsgStyle}>Column Index:&nbsp;&nbsp;{props.columnIndex}</p>
+        <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
+        <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
       </div>
     </div>
   );
@@ -107,7 +116,9 @@ const App = (props: AppProps) => {
 
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
   return {
-    // isBrightWall: getIsBrightWall(state),
+    isBrightWall: getIsBrightWall(state),
+    numRows: getNumRows(state),
+    numColumns: getNumColumns(state),
     // serialNumber: getSerialNumber(state),
     // isMaster: getIsMaster(state),
     // rowIndex: getRowIndex(state),
