@@ -90,6 +90,8 @@ const useStyles = makeStyles({
 
 let prevNumRows = 0;
 let prevNumColumns = 0;
+
+// this should probably (or perhaps must) go into redux
 let wallOfUnits: any;
 
 const App = (props: AppProps) => {
@@ -98,6 +100,29 @@ const App = (props: AppProps) => {
 
   // Equivalent to old componentDidMount
   React.useEffect(props.onLaunchApp, []);
+
+  const handleAssignDeviceToWall = (event: any) => {
+    console.log('handleAssignDeviceToWall');
+    console.log(event);
+
+    const selectedSerial: string = event.target.value;
+
+    console.log('selectedSerialNumber: ', selectedSerial);
+
+    // hack due to my lack of recollection on how to do this
+    // get the id of the option whose Value === selectedSerial
+    for (const targetOption of event.target.options) {
+      console.log('Id: ', targetOption.id, ' Value: ', targetOption.value, ' Text: ', targetOption.text);
+      if (targetOption.value === selectedSerial) {
+        const selectedRowColumn = targetOption.id;
+        const coordinates = selectedRowColumn.split('--');
+        const selectedRow = parseInt(coordinates[0], 10);
+        const selectedColumn = parseInt(coordinates[1], 10);
+        console.log('selectedRow: ', selectedRow, ' selectedColumn: ', selectedColumn);
+        break;
+      }
+    }
+  };
 
   const renderDeviceInColumn = (rowIndex: number, columnIndex: number) => {
 
@@ -109,15 +134,19 @@ const App = (props: AppProps) => {
       }
     }
 
-    const options = serialNumbers.map( (serialNumber) => {
+    const id = rowIndex.toString() + '--' + columnIndex.toString();
+
+    const options = serialNumbers.map((serialNumber) => {
       return (
-        <option value={serialNumber} key={serialNumber}>{serialNumber}</option>
+        <option id={id} value={serialNumber} key={serialNumber}>{serialNumber}</option>
       );
     });
-    options.unshift(<option value='noneAssigned'>None assigned</option>);
-    
+    options.unshift(<option id={id} value='noneAssigned'>None assigned</option>);
+
+    const selectedDevice = wallOfUnits[rowIndex][columnIndex];
+
     return (
-      <select key={rowIndex.toString + '--' + columnIndex.toString()}>
+      <select id={id} key={id} value={selectedDevice} onChange={handleAssignDeviceToWall}>
         {options}
       </select>
     );
@@ -135,9 +164,9 @@ const App = (props: AppProps) => {
 
     console.log('renderWall - numRows: ', props.numRows);
     console.log('renderWall - numColumns: ', props.numColumns);
-  
+
     const rowsInWall: any[] = [];
-    for (let rowIndex: number = 0; rowIndex < props.numRows; rowIndex++ ) {
+    for (let rowIndex: number = 0; rowIndex < props.numRows; rowIndex++) {
       rowsInWall.push(renderRowInWall(rowIndex));
     }
     // return rowsInWall;
@@ -198,7 +227,7 @@ const App = (props: AppProps) => {
     for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
       const unitsInRow: any[] = [];
       for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
-        unitsInRow.push(-1);
+        unitsInRow.push('noneAssigned');
       }
       wallOfUnits.push(unitsInRow);
     }
