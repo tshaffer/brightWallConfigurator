@@ -88,6 +88,10 @@ const useStyles = makeStyles({
   }
 });
 
+let prevNumRows = 0;
+let prevNumColumns = 0;
+let wallOfUnits: any;
+
 const App = (props: AppProps) => {
 
   const classes = useStyles();
@@ -96,12 +100,25 @@ const App = (props: AppProps) => {
   React.useEffect(props.onLaunchApp, []);
 
   const renderDeviceInColumn = (rowIndex: number, columnIndex: number) => {
+
+    const serialNumbers: string[] = [];
+    for (const key in props.brightSignsInWall) {
+      if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+        serialNumbers.push(brightSignInWall.brightSignAttributes.serialNumber);
+      }
+    }
+
+    const options = serialNumbers.map( (serialNumber) => {
+      return (
+        <option value={serialNumber} key={serialNumber}>{serialNumber}</option>
+      );
+    });
+    options.unshift(<option value='noneAssigned'>None assigned</option>);
+    
     return (
-      <select>
-        <option value="grapefruit">Grapefruit</option>
-        <option value="lime">Lime</option>
-        <option value="coconut">Coconut</option>
-        <option value="mango">Mango</option>
+      <select key={rowIndex.toString + '--' + columnIndex.toString()}>
+        {options}
       </select>
     );
   };
@@ -171,6 +188,27 @@ const App = (props: AppProps) => {
 
   console.log('main render - numRows: ', props.numRows);
   console.log('main render - numColumns: ', props.numColumns);
+
+
+  if ((props.numRows !== prevNumRows) || (props.numColumns !== prevNumColumns)) {
+
+    // reinitializing is probably not good enough 
+    wallOfUnits = [];
+
+    for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
+      const unitsInRow: any[] = [];
+      for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
+        unitsInRow.push(-1);
+      }
+      wallOfUnits.push(unitsInRow);
+    }
+
+    console.log('wallOfUnits');
+    console.log(wallOfUnits);
+
+    prevNumRows = props.numRows;
+    prevNumColumns = props.numColumns;
+  }
 
   const wall = renderWall();
   const brightSignsInWall = renderBrightSignsInWall();
