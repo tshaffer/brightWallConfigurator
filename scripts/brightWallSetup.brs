@@ -254,39 +254,28 @@ end sub
 
 Sub SetBrightWallPosition(userData as object, e as object)
 
-  mVar = userData.mVar
-  
-  args = e.GetFormData()
 
-  if not mVar.sign.isVideoWall then
-    ' return error
-    stop
-  endif
+  ipAddress = e.GetRequestParam("ipAddress")
+  rowIndex = e.GetRequestParam("rowIndex")
+  columnIndex = e.GetRequestParam("columnIndex")
 
-  if not IsString(args["row"]) then
-    ' return error
-    stop
-  endif
+'  rowIndex% = int(val(rowIndex))
+'  columnIndex% = int(val(columnIndex))
 
-  if not IsString(args["column"]) then
-    ' return error
-    stop
-  endif
+'  globalAA = GetGlobalAA()
+'  globalAA.registrySettings.videoWallRowIndex% = rowIndex%
+'  globalAA.registrySettings.videoWallColumnIndex% = columnIndex%
 
-  row% = int(val(args["row"]))
-  column% = int(val(args["column"]))
+'  globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
+'  globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
+'  globalAA.registrySection.Flush()
 
-  globalAA = GetGlobalAA()
-  globalAA.registrySettings.videoWallRowIndex% = row%
-  globalAA.registrySettings.videoWallColumnIndex% = column%
+  resp = {}
+  resp.AddReplace("success", true)
 
-  globalAA.registrySection.Write("videoWallRowIndex", args["row"])
-  globalAA.registrySection.Write("videoWallColumnIndex", args["column"])
-  globalAA.registrySection.Flush()
-
-  if not e.SendResponse(200) then
-    stop
-  end if
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
 
 end sub
 
@@ -325,6 +314,12 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
+
+        getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
+
+        setBrightWallPositionAA = { HandleEvent: SetBrightWallPosition, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBrightWallPosition", user_data: setBrightWallPositionAA })
 
         m.handlersAdded = true
 

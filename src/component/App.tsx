@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // } from '../config/config';
 import {
   launchApp,
+  setBrightSignWallPosition,
 } from '../controller';
 import {
   getIsBrightWall,
@@ -42,6 +43,7 @@ export interface AppProps {
   columnIndex: number;
   onLaunchApp: () => any;
   onSetBrightWallUnitAssignments: (brightWallUnitAssignments: string[][]) => any;
+  onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -126,6 +128,7 @@ const App = (props: AppProps) => {
       const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
       brightWallUnitAssignments[row][column] = serialNumber;
       props.onSetBrightWallUnitAssignments(brightWallUnitAssignments);
+      props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
   };
 
@@ -288,6 +291,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
     onSetBrightWallUnitAssignments: setBrightWallUnitAssignments,
+    onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 

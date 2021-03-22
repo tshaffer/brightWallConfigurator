@@ -1,6 +1,7 @@
 import { isNil } from 'lodash';
 import { addBrightSignWithConfig, addHostBrightSign } from '../model';
-import { BrightSignConfig } from '../type';
+import { getBrightSignInWall } from '../selector';
+import { BrightSignAttributes, BrightSignConfig, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
@@ -60,3 +61,29 @@ export const getBrightSignConfig = (): Promise<BrightSignConfig> => {
     });
 };
 
+export const setBrightSignWallPosition = (
+  serialNumber: string,
+  rowIndex: number,
+  columnIndex: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    // convert serial number to ip address
+    const state = getState();
+    const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+
+    if (!isNil(brightSignConfig)) {
+      const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+      const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
+      // eslint-disable-next-line no-prototype-builtins
+      if (networkInterfaces.hasOwnProperty('eth0')) {
+        const networkInterface: NetworkInterface = networkInterfaces['eth0'];
+        const ipAddress = networkInterface.currentConfig.ip4_address;
+        fetch('/SetBrightWallPosition?ipAddress=' + ipAddress + '&rowIndex=' + rowIndex.toString() + '&columnIndex=' + columnIndex.toString())
+          .then(response => response.json())
+          .then((status: any) => {
+            console.log(status);
+          });
+      }
+    }
+  });
+};
