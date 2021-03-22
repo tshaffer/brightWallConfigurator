@@ -152,7 +152,6 @@ Sub GetBrightWallDeviceList(userData as object, e as object)
 end sub
 
 
-
 Sub GetIsBrightWall(userData as object, e as object)
 
   mVar = userData.mVar
@@ -252,23 +251,51 @@ Sub SetBrightWallIsSyncMaster(userData as object, e as object)
 end sub
 
 
+Sub SetDeviceBrightWallPositionHandler(userData as object, e as object)
+
+  print "SetDeviceBrightWallPositionHandler"
+
+  rowIndex = e.GetRequestParam("rowIndex")
+  print "rowIndex: " + rowIndex
+  columnIndex = e.GetRequestParam("columnIndex")
+  print "columnIndex: " + columnIndex
+  SetDeviceBrightWallPosition(rowIndex, columnIndex)
+
+end sub
+
+
 Sub SetBrightWallPosition(userData as object, e as object)
 
+  print "SetBrightWallPosition"
 
+  mVar = userData.mVar
+
+  nc = CreateObject("roNetworkConfiguration", 0)
+  currentConfig = nc.GetCurrentConfig()
+  hostIpAddress = currentConfig.ip4_address
+  
   ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
   rowIndex = e.GetRequestParam("rowIndex")
+  print "rowIndex: " + rowIndex
   columnIndex = e.GetRequestParam("columnIndex")
+  print "columnIndex: " + columnIndex
 
-'  rowIndex% = int(val(rowIndex))
-'  columnIndex% = int(val(columnIndex))
-
-'  globalAA = GetGlobalAA()
-'  globalAA.registrySettings.videoWallRowIndex% = rowIndex%
-'  globalAA.registrySettings.videoWallColumnIndex% = columnIndex%
-
-'  globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
-'  globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
-'  globalAA.registrySection.Flush()
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBrightWallPosition"
+    SetDeviceBrightWallPosition(rowIndex, columnIndex)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBrightWallPosition?rowIndex=" + rowIndex + "&columnIndex=" + columnIndex
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBrightWallPosition from ";serialNumber
+    print str$
+  endif
 
   resp = {}
   resp.AddReplace("success", true)
@@ -276,6 +303,25 @@ Sub SetBrightWallPosition(userData as object, e as object)
   e.AddResponseHeader("Content-type", "application/json")
   e.SetResponseBodyString(FormatJson(resp))
   e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
+
+  print "SetDeviceBrightWallPosition"
+ rowIndex% = int(val(rowIndex))
+ print "rowIndex%: " + stri(rowIndex%)
+ columnIndex% = int(val(columnIndex))
+  print "columnIndex%: " + stri(columnIndex%)
+
+ globalAA = GetGlobalAA()
+ globalAA.registrySettings.videoWallRowIndex% = rowIndex%
+ globalAA.registrySettings.videoWallColumnIndex% = columnIndex%
+
+ globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
+ globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
+ globalAA.registrySection.Flush()
 
 end sub
 
@@ -320,6 +366,9 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         setBrightWallPositionAA = { HandleEvent: SetBrightWallPosition, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBrightWallPosition", user_data: setBrightWallPositionAA })
+
+        setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
 
         m.handlersAdded = true
 
