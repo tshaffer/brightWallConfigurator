@@ -26,6 +26,7 @@ import { BrightSignConfig, BrightSignMap } from '../type';
 import {
   setBrightWallUnitAssignments
 } from '../model';
+import { cloneDeep } from 'lodash';
 
 /** @internal */
 /** @private */
@@ -100,7 +101,7 @@ let prevNumRows = 0;
 let prevNumColumns = 0;
 
 // this should probably (or perhaps must) go into redux
-let wallOfUnits: any;
+// let wallOfUnits: any;
 
 const App = (props: AppProps) => {
 
@@ -113,22 +114,18 @@ const App = (props: AppProps) => {
     console.log('handleAssignDeviceToWall');
     console.log(event);
 
-    const selectedSerial: string = event.target.value;
+    const valueOfSelectedEntry: string = event.target.value;
 
-    console.log('selectedSerialNumber: ', selectedSerial);
+    console.log('value of selected item: ', valueOfSelectedEntry);
 
-    // hack due to my lack of recollection on how to do this
-    // get the id of the option whose Value === selectedSerial
-    for (const targetOption of event.target.options) {
-      console.log('Id: ', targetOption.id, ' Value: ', targetOption.value, ' Text: ', targetOption.text);
-      if (targetOption.value === selectedSerial) {
-        const selectedRowColumn = targetOption.id;
-        const coordinates = selectedRowColumn.split('--');
-        const selectedRow = parseInt(coordinates[0], 10);
-        const selectedColumn = parseInt(coordinates[1], 10);
-        console.log('selectedRow: ', selectedRow, ' selectedColumn: ', selectedColumn);
-        break;
-      }
+    const valueParts = valueOfSelectedEntry.split('||');
+    if (valueParts.length === 3) {
+      const serialNumber = valueParts[0];
+      const row: number = parseInt(valueParts[1], 10);
+      const column: number = parseInt(valueParts[2], 10);
+      const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
+      brightWallUnitAssignments[row][column] = serialNumber;
+      props.onSetBrightWallUnitAssignments(brightWallUnitAssignments);
     }
   };
 
@@ -142,19 +139,25 @@ const App = (props: AppProps) => {
       }
     }
 
-    const id = rowIndex.toString() + '--' + columnIndex.toString();
-
     const options = serialNumbers.map((serialNumber) => {
+      const value = serialNumber + '||' + rowIndex.toString() + '||' + columnIndex.toString();
       return (
-        <option id={id} value={serialNumber} key={serialNumber}>{serialNumber}</option>
+        <option value={value} key={serialNumber}>{serialNumber}</option>
       );
     });
-    options.unshift(<option id={id} value='noneAssigned'>None assigned</option>);
+    options.unshift(<option value='noneAssigned'>None assigned</option>);
 
-    const selectedDevice = wallOfUnits[rowIndex][columnIndex];
+    let optionValue;
+    if (props.brightWallUnitAssignments.length === 0) {
+      optionValue = 'noneAssigned';
+    } else {
+      optionValue = props.brightWallUnitAssignments[rowIndex][columnIndex] + '||' + rowIndex.toString() + '||' + columnIndex.toString();
+    }
+    console.log('selected device: ', optionValue);
 
+    const uniqueId = rowIndex.toString() + '||' + columnIndex.toString();
     return (
-      <select id={id} key={id} value={selectedDevice} onChange={handleAssignDeviceToWall}>
+      <select key={uniqueId} value={optionValue} onChange={handleAssignDeviceToWall}>
         {options}
       </select>
     );
@@ -177,7 +180,6 @@ const App = (props: AppProps) => {
     for (let rowIndex: number = 0; rowIndex < props.numRows; rowIndex++) {
       rowsInWall.push(renderRowInWall(rowIndex));
     }
-    // return rowsInWall;
     return (
       <table>
         <tbody>{rowsInWall}</tbody>
@@ -230,7 +232,7 @@ const App = (props: AppProps) => {
   if ((props.numRows !== prevNumRows) || (props.numColumns !== prevNumColumns)) {
 
     // reinitializing is probably not good enough 
-    wallOfUnits = [];
+    const wallOfUnits: string[][] = [];
 
     for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
       const unitsInRow: any[] = [];
