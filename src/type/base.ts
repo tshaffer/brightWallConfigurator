@@ -72,6 +72,7 @@ export interface BrightWallConfiguration {
 export interface BrightWall {
   hostBrightWallConfiguration: BrightSignConfig | null;
   brightSignMap: BrightSignMap;
+  brightWallUnitAssignments: string[][];
 }
 
 export interface BrightSignMap {

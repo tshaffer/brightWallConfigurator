@@ -8,18 +8,24 @@ import { makeStyles } from '@material-ui/core/styles';
 //   videoWallRowIndex,
 //   videoWallColumnIndex,
 // } from '../config/config';
-import { launchApp } from '../controller';
+import {
+  launchApp,
+} from '../controller';
 import {
   getIsBrightWall,
   getNumRows,
   getNumColumns,
   getBrightSignsInWall,
+  getBrightWallUnitAssignments,
   // getSerialNumber,
   // getIsMaster,
   // getRowIndex,
   // getColumnIndex,
 } from '../selector';
 import { BrightSignConfig, BrightSignMap } from '../type';
+import {
+  setBrightWallUnitAssignments
+} from '../model';
 
 /** @internal */
 /** @private */
@@ -28,11 +34,13 @@ export interface AppProps {
   numRows: number;
   numColumns: number;
   brightSignsInWall: BrightSignMap;
+  brightWallUnitAssignments: string[][];
   serialNumber: string;
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
+  onSetBrightWallUnitAssignments: (brightWallUnitAssignments: string[][]) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -232,6 +240,8 @@ const App = (props: AppProps) => {
       wallOfUnits.push(unitsInRow);
     }
 
+    props.onSetBrightWallUnitAssignments(wallOfUnits);
+
     console.log('wallOfUnits');
     console.log(wallOfUnits);
 
@@ -264,6 +274,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
     brightSignsInWall: getBrightSignsInWall(state),
+    brightWallUnitAssignments: getBrightWallUnitAssignments(state),
     // serialNumber: getSerialNumber(state),
     // isMaster: getIsMaster(state),
     // rowIndex: getRowIndex(state),
@@ -274,6 +285,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
+    onSetBrightWallUnitAssignments: setBrightWallUnitAssignments,
   }, dispatch);
 };
 

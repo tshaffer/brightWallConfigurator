@@ -10,6 +10,7 @@ import { BrightSignConfig, BrightWall } from '../type';
 // ------------------------------------
 export const ADD_HOST_BRIGHTSIGN = 'ADD_HOST_BRIGHTSIGN';
 export const ADD_BRIGHTSIGN_WITH_CONFIG = 'ADD_BRIGHTSIGN_WITH_CONFIG';
+export const SET_BRIGHTWALL_UNIT_ASSIGNMENTS = 'SET_BRIGHTWALL_UNIT_ASSIGNMENTS';
 
 // ------------------------------------
 // Actions
@@ -29,6 +30,22 @@ export const addHostBrightSign = (
     payload: {
       serialNumber,
       brightSignConfig,
+    },
+  };
+};
+
+export interface SetBrightWallUnitAssignmentsPayload {
+  brightWallUnitAssignments: string[][];
+}
+type SetBrightWallUnitAssignmentsAction = BrightWallModelAction<SetBrightWallUnitAssignmentsPayload>;
+
+export const setBrightWallUnitAssignments = (
+  brightWallUnitAssignments: string[][],
+): SetBrightWallUnitAssignmentsAction => {
+  return {
+    type: SET_BRIGHTWALL_UNIT_ASSIGNMENTS,
+    payload: {
+      brightWallUnitAssignments,
     },
   };
 };
@@ -59,12 +76,13 @@ export const addBrightSignWithConfig = (
 const initialState: BrightWall = {
   hostBrightWallConfiguration: null,
   brightSignMap: {},
+  brightWallUnitAssignments: [],
 };
 
 
 export const brightSignAttributesReducer = (
   state: BrightWall = initialState,
-  action: AddHostBrightSignAction & AddBrightSignWithConfigAction
+  action: AddHostBrightSignAction & AddBrightSignWithConfigAction & SetBrightWallUnitAssignmentsAction
 ): BrightWall => {
   let newState;
   switch (action.type) {
@@ -75,6 +93,10 @@ export const brightSignAttributesReducer = (
     case ADD_BRIGHTSIGN_WITH_CONFIG:
       newState = cloneDeep(state) as BrightWall;
       newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
+      return newState;
+    case SET_BRIGHTWALL_UNIT_ASSIGNMENTS:
+      newState = cloneDeep(state) as BrightWall;
+      newState.brightWallUnitAssignments = action.payload.brightWallUnitAssignments;
       return newState;
     default:
       return state;

@@ -26,6 +26,9 @@ export const getBrightSignsInWall = (state: BrightSignState): BrightSignMap => {
   return state.brightWall.brightSignMap;
 };
 
+export const getBrightWallUnitAssignments = (state: BrightSignState): string[][] => {
+  return state.brightWall.brightWallUnitAssignments;
+};
 // export const getSerialNumber = (state: BrightSignState): string => {
 //   return state.brightSignAttributes.serialNumber;
 // };
