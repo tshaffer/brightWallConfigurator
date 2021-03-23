@@ -126,6 +126,21 @@ const App = (props: AppProps) => {
       const row: number = parseInt(valueParts[1], 10);
       const column: number = parseInt(valueParts[2], 10);
       const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
+
+      // TEDWAKEUP - any special handling when serialNumber === noneAssigned?
+      
+      // set position of prior selected device to unassigned
+      for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
+        for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
+          const valueAtPosition: string = brightWallUnitAssignments[rowIndex][columnIndex];
+          if (valueAtPosition === serialNumber) {
+            brightWallUnitAssignments[rowIndex][columnIndex] = 'noneAssigned';
+            props.onSetBrightSignWallPosition(serialNumber, -1, -1);
+            break;
+          }
+        }
+      }
+
       brightWallUnitAssignments[row][column] = serialNumber;
       props.onSetBrightWallUnitAssignments(brightWallUnitAssignments);
       props.onSetBrightSignWallPosition(serialNumber, row, column);
@@ -148,7 +163,8 @@ const App = (props: AppProps) => {
         <option value={value} key={serialNumber}>{serialNumber}</option>
       );
     });
-    options.unshift(<option value='noneAssigned'>None assigned</option>);
+    const noneAssignedValue = 'noneAssigned||' + rowIndex.toString() + '||' + columnIndex.toString();
+    options.unshift(<option value={noneAssignedValue}>None assigned</option>);
 
     let optionValue;
     if (props.brightWallUnitAssignments.length === 0) {
@@ -231,10 +247,9 @@ const App = (props: AppProps) => {
   console.log('main render - numRows: ', props.numRows);
   console.log('main render - numColumns: ', props.numColumns);
 
-
   if ((props.numRows !== prevNumRows) || (props.numColumns !== prevNumColumns)) {
 
-    // reinitializing is probably not good enough 
+    // under what circumstances does this occur, and is it reasonable to reinitialize everything in these circumstances?
     const wallOfUnits: string[][] = [];
 
     for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
@@ -246,9 +261,6 @@ const App = (props: AppProps) => {
     }
 
     props.onSetBrightWallUnitAssignments(wallOfUnits);
-
-    console.log('wallOfUnits');
-    console.log(wallOfUnits);
 
     prevNumRows = props.numRows;
     prevNumColumns = props.numColumns;

@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { addBrightSignWithConfig, addHostBrightSign } from '../model';
+import { addBrightSignWithConfig, addHostBrightSign, setBrightWallUnitAssignment } from '../model';
 import { getBrightSignInWall } from '../selector';
 import { BrightSignAttributes, BrightSignConfig, NetworkInterface, NetworkInterfaceMap } from '../type';
 
@@ -17,9 +17,13 @@ export const launchApp = () => {
         // add the BrightSign that the custom device web page is running on
         dispatch(addHostBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
 
+        console.log('launchApp, start timer');
+
+        // get list of BrightSigns in the wall after short timeout
+        setTimeout(getBrightWallDeviceList, 1000, dispatch);
+        
         // start timer to get list of BrightSigns in the wall
-        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 5000, dispatch);
-        // setTimeout(getBrightWallDeviceList, 1000, dispatch);
+        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 15000, dispatch);
       });
   });
 };
@@ -32,8 +36,17 @@ const getBrightWallDeviceList = (dispatch: any) => {
       console.log('response from GetBrightWallDeviceList');
       console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
+
         console.log(brightSignConfig.brightSignAttributes.serialNumber);
         dispatch(addBrightSignWithConfig(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+
+        const rowIndex = brightSignConfig.brightWallConfiguration.rowIndex;
+        const columnIndex = brightSignConfig.brightWallConfiguration.columnIndex;
+        dispatch(setBrightWallUnitAssignment(
+          brightSignConfig.brightSignAttributes.serialNumber,
+          rowIndex, 
+          columnIndex
+        ));
       }
     });
 };
