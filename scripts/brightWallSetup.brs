@@ -31,6 +31,8 @@ End Function
 
 Function GetConfig(bsp) as object
 
+  print "GetConfig invoked"
+  
   globalAA = GetGlobalAA()
 
   config = {}
@@ -102,6 +104,8 @@ end Function
 
 Sub GetBrightWallConfiguration(userData as object, e as object)
 
+  print "GetBrightWallConfiguration handler invoked"
+
   mVar = userData.mVar
 
   config = GetConfig(mVar)
@@ -115,32 +119,37 @@ end sub
 
 Sub GetBrightWallDeviceList(userData as object, e as object)
 
+  print "GetBrightWallDeviceList handler invoked"
+
   mVar = userData.mVar
 
   hostSerialNumber = mVar.sysInfo.deviceUniqueId$
 
-  xfer = CreateObject("roUrlTransfer")
-  xfer.SetPort(mVar.msgPort)
-  xfer.SetTimeout(5000)
-
   brightSignDevicesInWall = []
-  for each serialNumber in mVar.brightSignsInWall
-    if hostSerialNumber <> serialNumber then
-      print "fetch config from non host"
-      url = "http://brightsign-" + serialNumber + ".local:8008/GetBrightWallConfiguration"
-      xfer.SetUrl(url)
-      str$ = xfer.GetToString()
-      config = ParseJSON(str$)
-      print "response to GetBrightWallConfiguration from ";serialNumber
-      print str$
-    else
-      print "host - don't fetch config"
-      config = GetConfig(mVar)
-    endif
+  
+  if not mVar.brightSignsInWall.isEmpty() then
 
-    brightSignDevicesInWall.push(config)
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
 
-  next
+    for each serialNumber in mVar.brightSignsInWall
+      if hostSerialNumber <> serialNumber then
+        print "fetch config from non host"
+        url = "http://brightsign-" + serialNumber + ".local:8008/GetBrightWallConfiguration"
+        xfer.SetUrl(url)
+        str$ = xfer.GetToString()
+        config = ParseJSON(str$)
+        print "response to GetBrightWallConfiguration from ";serialNumber
+        print str$
+        brightSignDevicesInWall.push(config)
+      endif
+    next
+
+  endif
+
+  config = GetConfig(mVar)
+  brightSignDevicesInWall.push(config)
 
   brightSignDevicesInWallList = {}
   brightSignDevicesInWallList.AddReplace("brightSignDevicesInWallList", brightSignDevicesInWall)
@@ -152,7 +161,9 @@ Sub GetBrightWallDeviceList(userData as object, e as object)
 end sub
 
 
-Sub GetIsBrightWall(userData as object, e as object)
+Sub GetIsBrightWallHandler(userData as object, e as object)
+
+  print "GetIsBrightWallHandler handler invoked"
 
   mVar = userData.mVar
 
@@ -166,39 +177,41 @@ Sub GetIsBrightWall(userData as object, e as object)
 end sub
 
 
-Sub GetIsBrightWallSyncMaster(userData as object, e as object)
+'Sub GetIsBrightWallSyncMaster(userData as object, e as object)
   
-  mVar = userData.mVar
+'  mVar = userData.mVar
 
-  if not mVar.sign.isVideoWall then
+'  if not mVar.sign.isVideoWall then
     ' return error
-    stop
-  endif
+'    stop
+'  endif
 
   
-  root = CreateObject("roXMLElement")
-  root.SetName("BrightSignIsBrightWallSyncMaster")
+'  root = CreateObject("roXMLElement")
+'  root.SetName("BrightSignIsBrightWallSyncMaster")
 
-  elem = root.AddElement("IsBrightWallSyncMaster")
+'  elem = root.AddElement("IsBrightWallSyncMaster")
 
-  globalAA = GetGlobalAA()
-  if IsBoolean(globalAA.registrySettings.sync_master) then
-    elem.SetBody("true")
-  else
-    elem.SetBody("false")
-  endif
+'  globalAA = GetGlobalAA()
+'  if IsBoolean(globalAA.registrySettings.sync_master) then
+'    elem.SetBody("true")
+'  else
+'    elem.SetBody("false")
+'  endif
   
-  xml = root.GenXML({ indent: " ", newline: chr(10), header: true })
+'  xml = root.GenXML({ indent: " ", newline: chr(10), header: true })
   
-  e.AddResponseHeader("Content-type", "text/xml; charset=utf-8")
-  e.SetResponseBodyString(xml)
-  e.SendResponse(200)
+'  e.AddResponseHeader("Content-type", "text/xml; charset=utf-8")
+'  e.SetResponseBodyString(xml)
+'  e.SendResponse(200)
 
-end sub
+'end sub
 
 
 Sub BrightWallDeviceCheckin(userData as object, e as object)
   
+  print "BrightWallDeviceCheckin handler invoked"
+
   mVar = userData.mVar
 
   ' broadcast UDP message to local devices
@@ -215,6 +228,8 @@ end sub
 
 
 Sub SetBrightWallIsSyncMaster(userData as object, e as object)
+
+  print "SetBrightWallIsSyncMaster handler invoked"
 
   mVar = userData.mVar
   
@@ -253,7 +268,7 @@ end sub
 
 Sub SetDeviceBrightWallPositionHandler(userData as object, e as object)
 
-  print "SetDeviceBrightWallPositionHandler"
+  print "SetDeviceBrightWallPositionHandler handler invoked"
 
   rowIndex = e.GetRequestParam("rowIndex")
   print "rowIndex: " + rowIndex
@@ -266,7 +281,7 @@ end sub
 
 Sub SetBrightWallPosition(userData as object, e as object)
 
-  print "SetBrightWallPosition"
+  print "SetBrightWallPosition handler invoked"
 
   mVar = userData.mVar
 
@@ -309,19 +324,20 @@ end sub
 
 Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
 
-  print "SetDeviceBrightWallPosition"
- rowIndex% = int(val(rowIndex))
- print "rowIndex%: " + stri(rowIndex%)
- columnIndex% = int(val(columnIndex))
+  print "SetDeviceBrightWallPosition invoked"
+
+  rowIndex% = int(val(rowIndex))
+  print "rowIndex%: " + stri(rowIndex%)
+  columnIndex% = int(val(columnIndex))
   print "columnIndex%: " + stri(columnIndex%)
 
- globalAA = GetGlobalAA()
- globalAA.registrySettings.videoWallRowIndex% = rowIndex%
- globalAA.registrySettings.videoWallColumnIndex% = columnIndex%
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.videoWallRowIndex% = rowIndex%
+  globalAA.registrySettings.videoWallColumnIndex% = columnIndex%
 
- globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
- globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
- globalAA.registrySection.Flush()
+  globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
+  globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
+  globalAA.registrySection.Flush()
 
 end sub
 
@@ -349,7 +365,7 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         m.o.bwUdpReceiver.SetUserData("brightWall")
         m.o.bwUdpReceiver.SetPort(m.o.msgPort)
 
-        getIsBrightWallAA = { HandleEvent: GetIsBrightWall, mVar: m.o }
+        getIsBrightWallAA = { HandleEvent: GetIsBrightWallHandler, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetIsBrightWall", user_data: getIsBrightWallAA })
 
         getBrightWallConfigurationAA = { HandleEvent: GetBrightWallConfiguration, mVar: m.o }
@@ -357,9 +373,6 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         brightWallDeviceCheckinAA = { HandleEvent: BrightWallDeviceCheckin, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/BrightWallDeviceCheckin", user_data: brightWallDeviceCheckinAA })
-
-        getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
 
         getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
