@@ -9,9 +9,7 @@ import { BrightSignConfig, BrightWall } from '../type';
 // Constants
 // ------------------------------------
 export const ADD_HOST_BRIGHTSIGN = 'ADD_HOST_BRIGHTSIGN';
-export const ADD_BRIGHTSIGN_WITH_CONFIG = 'ADD_BRIGHTSIGN_WITH_CONFIG';
-export const SET_BRIGHTWALL_UNIT_ASSIGNMENTS = 'SET_BRIGHTWALL_UNIT_ASSIGNMENTS';
-export const SET_BRIGHTWALL_UNIT_ASSIGNMENT = 'SET_BRIGHTWALL_UNIT_ASSIGNMENT';
+export const SET_BRIGHTSIGN = 'SET_BRIGHTSIGN';
 
 // ------------------------------------
 // Actions
@@ -35,56 +33,18 @@ export const addHostBrightSign = (
   };
 };
 
-export interface SetBrightWallUnitAssignmentsPayload {
-  brightWallUnitAssignments: string[][];
-}
-type SetBrightWallUnitAssignmentsAction = BrightWallModelAction<SetBrightWallUnitAssignmentsPayload>;
-
-export const setBrightWallUnitAssignments = (
-  brightWallUnitAssignments: string[][],
-): SetBrightWallUnitAssignmentsAction => {
-  return {
-    type: SET_BRIGHTWALL_UNIT_ASSIGNMENTS,
-    payload: {
-      brightWallUnitAssignments,
-    },
-  };
-};
-
-export interface SetBrightWallUnitAssignmentPayload {
-  value: string,
-  rowIndex: number,
-  columnIndex: number,
-}
-type SetBrightWallUnitAssignmentAction = BrightWallModelAction<SetBrightWallUnitAssignmentPayload>;
-
-export const setBrightWallUnitAssignment = (
-  value: string,
-  rowIndex: number,
-  columnIndex: number,
-): SetBrightWallUnitAssignmentAction => {
-  return {
-    type: SET_BRIGHTWALL_UNIT_ASSIGNMENT,
-    payload: {
-      value,
-      rowIndex,
-      columnIndex,
-    },
-  };
-};
-
-export interface AddBrightSignWithConfigPayload {
+export interface SetBrightSignPayload {
   serialNumber: string;
   brightSignConfig: BrightSignConfig;
 }
-type AddBrightSignWithConfigAction = BrightWallModelAction<AddBrightSignWithConfigPayload>;
+type SetBrightSignAction = BrightWallModelAction<SetBrightSignPayload>;
 
-export const addBrightSignWithConfig = (
+export const setBrightSign = (
   serialNumber: string,
   brightSignConfig: BrightSignConfig,
-): AddBrightSignWithConfigAction => {
+): SetBrightSignAction => {
   return {
-    type: ADD_BRIGHTSIGN_WITH_CONFIG,
+    type: SET_BRIGHTSIGN,
     payload: {
       serialNumber,
       brightSignConfig,
@@ -99,13 +59,12 @@ export const addBrightSignWithConfig = (
 const initialState: BrightWall = {
   hostBrightWallConfiguration: null,
   brightSignMap: {},
-  brightWallUnitAssignments: [],
 };
 
 
 export const brightSignAttributesReducer = (
   state: BrightWall = initialState,
-  action: AddHostBrightSignAction & AddBrightSignWithConfigAction & SetBrightWallUnitAssignmentsAction & SetBrightWallUnitAssignmentAction
+  action: AddHostBrightSignAction & SetBrightSignAction
 ): BrightWall => {
   let newState;
   switch (action.type) {
@@ -113,21 +72,9 @@ export const brightSignAttributesReducer = (
       newState = cloneDeep(state) as BrightWall;
       newState.hostBrightWallConfiguration = cloneDeep(action.payload.brightSignConfig);
       return newState;
-    case ADD_BRIGHTSIGN_WITH_CONFIG:
+    case SET_BRIGHTSIGN:
       newState = cloneDeep(state) as BrightWall;
       newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
-      return newState;
-    case SET_BRIGHTWALL_UNIT_ASSIGNMENT:
-      newState = cloneDeep(state) as BrightWall;
-      if (isNil(newState.brightWallUnitAssignments[action.payload.rowIndex])
-        || isNil(newState.brightWallUnitAssignments[action.payload.rowIndex][action.payload.columnIndex])) {
-        debugger;
-      }
-      newState.brightWallUnitAssignments[action.payload.rowIndex][action.payload.columnIndex] = action.payload.value;
-      return newState;
-    case SET_BRIGHTWALL_UNIT_ASSIGNMENTS:
-      newState = cloneDeep(state) as BrightWall;
-      newState.brightWallUnitAssignments = action.payload.brightWallUnitAssignments;
       return newState;
     default:
       return state;

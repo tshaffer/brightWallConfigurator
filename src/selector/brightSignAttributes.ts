@@ -41,9 +41,33 @@ export const getBrightSignInWall = (state: BrightSignState, serialNumber: string
 };
 
 export const getBrightWallUnitAssignments = (state: BrightSignState): string[][] => {
-  return state.brightWall.brightWallUnitAssignments;
+
+  const brightWallGrid: string[][] = [];
+
+  const numRows = getNumRows(state);
+  const numColumns = getNumColumns(state);
+
+  if (numRows > 0 && numColumns > 0) {
+
+    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+      brightWallGrid.push([]);
+      for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+        brightWallGrid[rowIndex].push('noneAssigned');
+      }
+    }
+
+    const brightSignMap: BrightSignMap = getBrightSignsInWall(state);
+    for (const key in brightSignMap) {
+      if (Object.prototype.hasOwnProperty.call(brightSignMap, key)) {
+        const brightSignConfig: BrightSignConfig = brightSignMap[key];
+        if (brightSignConfig.brightWallConfiguration.rowIndex >= 0 && brightSignConfig.brightWallConfiguration.columnIndex >= 0) {
+          brightWallGrid[brightSignConfig.brightWallConfiguration.rowIndex][brightSignConfig.brightWallConfiguration.columnIndex] =
+            brightSignConfig.brightSignAttributes.serialNumber;
+        }
+      }
+    }
+  }
+
+  return brightWallGrid;
 };
-// export const getSerialNumber = (state: BrightSignState): string => {
-//   return state.brightSignAttributes.serialNumber;
-// };
 

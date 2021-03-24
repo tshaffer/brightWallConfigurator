@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { addBrightSignWithConfig, addHostBrightSign, setBrightWallUnitAssignment } from '../model';
+import { setBrightSign, addHostBrightSign } from '../model';
 import { getBrightSignInWall } from '../selector';
 import { BrightSignAttributes, BrightSignConfig, NetworkInterface, NetworkInterfaceMap } from '../type';
 
@@ -36,17 +36,7 @@ const getBrightWallDeviceList = (dispatch: any) => {
       console.log('response from GetBrightWallDeviceList');
       console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
-
-        console.log(brightSignConfig.brightSignAttributes.serialNumber);
-        dispatch(addBrightSignWithConfig(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
-
-        const rowIndex = brightSignConfig.brightWallConfiguration.rowIndex;
-        const columnIndex = brightSignConfig.brightWallConfiguration.columnIndex;
-        dispatch(setBrightWallUnitAssignment(
-          brightSignConfig.brightSignAttributes.serialNumber,
-          rowIndex, 
-          columnIndex
-        ));
+        dispatch(setBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
       }
     });
 };

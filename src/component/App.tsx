@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import {
-//   serialNumber,
-//   videoWallRowIndex,
-//   videoWallColumnIndex,
-// } from '../config/config';
 import {
   launchApp,
   setBrightSignWallPosition,
@@ -18,15 +13,8 @@ import {
   getNumColumns,
   getBrightSignsInWall,
   getBrightWallUnitAssignments,
-  // getSerialNumber,
-  // getIsMaster,
-  // getRowIndex,
-  // getColumnIndex,
 } from '../selector';
 import { BrightSignConfig, BrightSignMap } from '../type';
-import {
-  setBrightWallUnitAssignments
-} from '../model';
 import { cloneDeep } from 'lodash';
 
 /** @internal */
@@ -42,7 +30,6 @@ export interface AppProps {
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
-  onSetBrightWallUnitAssignments: (brightWallUnitAssignments: string[][]) => any;
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
 }
 
@@ -99,12 +86,6 @@ const useStyles = makeStyles({
   }
 });
 
-let prevNumRows = 0;
-let prevNumColumns = 0;
-
-// this should probably (or perhaps must) go into redux
-// let wallOfUnits: any;
-
 const App = (props: AppProps) => {
 
   const classes = useStyles();
@@ -127,22 +108,10 @@ const App = (props: AppProps) => {
       const column: number = parseInt(valueParts[2], 10);
       const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
 
-      // TEDWAKEUP - any special handling when serialNumber === noneAssigned?
-      
-      // set position of prior selected device to unassigned
-      for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
-        for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
-          const valueAtPosition: string = brightWallUnitAssignments[rowIndex][columnIndex];
-          if (valueAtPosition === serialNumber) {
-            brightWallUnitAssignments[rowIndex][columnIndex] = 'noneAssigned';
-            props.onSetBrightSignWallPosition(serialNumber, -1, -1);
-            break;
-          }
-        }
+      const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
+      if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
+        props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
       }
-
-      brightWallUnitAssignments[row][column] = serialNumber;
-      props.onSetBrightWallUnitAssignments(brightWallUnitAssignments);
       props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
   };
@@ -213,6 +182,11 @@ const App = (props: AppProps) => {
     const rowIndexLbl = '    Row    ';
     const colIndexLbl = '    Column    ';
 
+    const positionLabel = brightSignConfig.brightWallConfiguration.rowIndex >= 0 ?
+      rowIndexLbl + brightSignConfig.brightWallConfiguration.rowIndex.toString() +
+      colIndexLbl + brightSignConfig.brightWallConfiguration.columnIndex.toString()
+      : 'Unassigned';
+
     const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
     return (
       <div key={brightSignConfig.brightSignAttributes.serialNumber}>
@@ -220,10 +194,7 @@ const App = (props: AppProps) => {
         <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
         <span>{msdSeparator}</span>
         <span>{masterSlaveDesignator}</span>
-        <span>{rowIndexLbl}</span>
-        <span>{brightSignConfig.brightWallConfiguration.rowIndex}</span>
-        <span>{colIndexLbl}</span>
-        <span>{brightSignConfig.brightWallConfiguration.columnIndex}</span>
+        <span>{positionLabel}</span>
       </div>
     );
   };
@@ -246,25 +217,6 @@ const App = (props: AppProps) => {
 
   console.log('main render - numRows: ', props.numRows);
   console.log('main render - numColumns: ', props.numColumns);
-
-  if ((props.numRows !== prevNumRows) || (props.numColumns !== prevNumColumns)) {
-
-    // under what circumstances does this occur, and is it reasonable to reinitialize everything in these circumstances?
-    const wallOfUnits: string[][] = [];
-
-    for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
-      const unitsInRow: any[] = [];
-      for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
-        unitsInRow.push('noneAssigned');
-      }
-      wallOfUnits.push(unitsInRow);
-    }
-
-    props.onSetBrightWallUnitAssignments(wallOfUnits);
-
-    prevNumRows = props.numRows;
-    prevNumColumns = props.numColumns;
-  }
 
   const wall = renderWall();
   const brightSignsInWall = renderBrightSignsInWall();
@@ -292,17 +244,12 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
     numColumns: getNumColumns(state),
     brightSignsInWall: getBrightSignsInWall(state),
     brightWallUnitAssignments: getBrightWallUnitAssignments(state),
-    // serialNumber: getSerialNumber(state),
-    // isMaster: getIsMaster(state),
-    // rowIndex: getRowIndex(state),
-    // columnIndex: getColumnIndex(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
-    onSetBrightWallUnitAssignments: setBrightWallUnitAssignments,
     onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
