@@ -2,11 +2,21 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import TextField from '@material-ui/core/TextField';
+
+const useStyles = makeStyles({
+  textField: {
+    marginLeft: '10px',
+    marginRight: '10px',
+    width: 200,
+  },
+});
 
 // -----------------------------------------------------------------------
 // Types
@@ -20,8 +30,11 @@ export interface BezelFormProps {
 
 const BezelForm = (props: BezelFormProps) => {
 
+  const classes = useStyles();
+
   const [value, setValue] = React.useState('byMeasurement');
   const [foodValue, setFoodValue] = React.useState('pizza');
+  const [bezelWidthMeasurementValue, setBezelWidthMeasurementValue] = React.useState('0');
 
   const handleChange = (event: any) => {
     setValue(event.target.value);
@@ -30,10 +43,40 @@ const BezelForm = (props: BezelFormProps) => {
     setFoodValue(event.target.value);
   };
 
+  const handleSetBezelWidthMeasurementValue = (event: any) => {
+    setBezelWidthMeasurementValue(event.target.value);
+  };
+  /*
+            <TextField
+              id="standard-number"
+              label="Number"
+              value={this.state.age}
+              onChange={this.handleChange('age')}
+              type="number"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              margin="normal"
+            />
+  */
+
   return (
     <div>
       <FormControl component="fieldset">
         <FormLabel component="legend">Bezel Width and Height</FormLabel>
+        <TextField
+          id="standard-number"
+          label="Number"
+          value={bezelWidthMeasurementValue}
+          onChange={handleSetBezelWidthMeasurementValue}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
         <RadioGroup value={value} onChange={handleChange}>
           <FormControlLabel value="byPercentage" control={<Radio />} label="By percentage" />
           <FormControlLabel value="byMeasurement" control={<Radio />} label="By measurement" />
