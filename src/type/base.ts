@@ -69,13 +69,13 @@ export interface BrightWallConfiguration {
   columnIndex: number;
   numRows: number;
   numColumns: number;
-  bezelMeasureByType: BezelMeasureByType | null;
-  bezelWidthPercentage: number | null;
-  bezelHeightPercentage: number | null;
-  bezelWidth: number | null;
-  bezelHeight: number | null;
-  bezelScreenWidth: number | null;
-  bezelScreenHeight: number | null;
+  bezelMeasureByType: BezelMeasureByType;
+  bezelWidthPercentage: number;
+  bezelHeightPercentage: number;
+  bezelWidth: number;
+  bezelHeight: number;
+  bezelScreenWidth: number;
+  bezelScreenHeight: number;
 }
 
 export interface BrightWall {

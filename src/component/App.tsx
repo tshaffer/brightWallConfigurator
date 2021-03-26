@@ -199,7 +199,9 @@ const App = (props: AppProps) => {
           <span>{masterSlaveDesignator}</span>
           <span>{positionLabel}</span>
         </div>
-        <BezelForm/>
+        <BezelForm
+          serialNumber={brightSignConfig.brightSignAttributes.serialNumber}
+        />
       </div>
     );
   };

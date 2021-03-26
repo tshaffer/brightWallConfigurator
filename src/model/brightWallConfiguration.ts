@@ -126,7 +126,7 @@ export const setBezelWidthPercentage = (
   bezelWidthPercentage: number,
 ): SetBezelWidthPercentageAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_WIDTH_PERCENTAGE,
     payload: {
       bezelWidthPercentage,
     },
@@ -142,7 +142,7 @@ export const setBezelHeightPercentage = (
   bezelHeightPercentage: number,
 ): SetBezelHeightPercentageAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_HEIGHT_PERCENTAGE,
     payload: {
       bezelHeightPercentage,
     },
@@ -158,7 +158,7 @@ export const setBezelWidth = (
   bezelWidth: number,
 ): SetBezelWidthAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_WIDTH,
     payload: {
       bezelWidth,
     },
@@ -174,7 +174,7 @@ export const setBezelHeight = (
   bezelHeight: number,
 ): SetBezelHeightAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_HEIGHT,
     payload: {
       bezelHeight,
     },
@@ -190,7 +190,7 @@ export const setBezelScreenWidth = (
   bezelScreenWidth: number,
 ): SetBezelScreenWidthAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_SCREEN_WIDTH,
     payload: {
       bezelScreenWidth,
     },
@@ -206,7 +206,7 @@ export const setBezelScreenHeight = (
   bezelScreenHeight: number,
 ): SetBezelScreenHeightAction => {
   return {
-    type: SET_BEZEL_MEASURE_BY_TYPE,
+    type: SET_BEZEL_SCREEN_HEIGHT,
     payload: {
       bezelScreenHeight,
     },
@@ -273,32 +273,32 @@ export const brightWallConfigurationReducer = (
     case SET_BEZEL_WIDTH_PERCENTAGE:
       return {
         ...state,
-        bezelWidthPercentage: action.payload.bezelMeasureByType,
+        bezelWidthPercentage: action.payload.bezelWidthPercentage,
       };
     case SET_BEZEL_HEIGHT_PERCENTAGE:
       return {
         ...state,
-        bezelHeightPercentage: action.payload.bezelMeasureByType,
+        bezelHeightPercentage: action.payload.bezelHeightPercentage,
       };
     case SET_BEZEL_WIDTH:
       return {
         ...state,
-        bezelWidth: action.payload.bezelMeasureByType,
+        bezelWidth: action.payload.bezelWidth,
       };
     case SET_BEZEL_HEIGHT:
       return {
         ...state,
-        bezelHeight: action.payload.bezelMeasureByType,
+        bezelHeight: action.payload.bezelHeight,
       };
     case SET_BEZEL_SCREEN_WIDTH:
       return {
         ...state,
-        bezelScreenWidth: action.payload.bezelMeasureByType,
+        bezelScreenWidth: action.payload.bezelScreenWidth,
       };
     case SET_BEZEL_SCREEN_HEIGHT:
       return {
         ...state,
-        bezelScreenHeight: action.payload.bezelMeasureByType,
+        bezelScreenHeight: action.payload.bezelScreenHeight,
       };
     default:
       return state;

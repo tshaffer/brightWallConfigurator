@@ -42,7 +42,12 @@ const useStyles = makeStyles({
 // -----------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------
-export interface BezelFormProps {
+
+export interface BezelFormPropsFromParent {
+  serialNumber: string;
+}
+
+export interface BezelFormProps extends BezelFormPropsFromParent {
   bezelMeasureByType: BezelMeasureByType;
   bezelWidthPercentage: number;
   bezelHeightPercentage: number;
@@ -50,7 +55,7 @@ export interface BezelFormProps {
   bezelHeight: number;
   bezelScreenWidth: number;
   bezelScreenHeight: number;
-  onSetBezelMeasureByType: () => any;
+  onSetBezelMeasureByType: (bezelMeasureByType: BezelMeasureByType) => any;
   onSetBezelWidthPercentage: (value: number) => any;
   onSetBezelHeightPercentage: (value: number) => any;
   onSetBezelWidth: (value: number) => any;
@@ -67,42 +72,35 @@ const BezelForm = (props: BezelFormProps) => {
 
   const classes = useStyles();
 
-  const [bezelMeasureByType, setBezelMeasureByType] = React.useState('byMeasurement');
-
-  const [bezelWidthPercentageMeasurementValue, setBezelWidthPercentageMeasurementValue] = React.useState('0');
-  const [bezelHeightPercentageMeasurementValue, setBezelHeightPercentageMeasurementValue] = React.useState('0');
-  const [bezelWidthMeasurementValue, setBezelWidthMeasurementValue] = React.useState('0');
-  const [bezelHeightMeasurementValue, setBezelHeightMeasurementValue] = React.useState('0');
-
   const handleSetBezelMeasureByType = (event: any) => {
-    setBezelMeasureByType(event.target.value);
+    props.onSetBezelMeasureByType(event.target.value);
   };
 
-  const handleSetBezelWidthPercentageMeasurementValue = (event: any) => {
-    setBezelWidthPercentageMeasurementValue(event.target.value);
+  const handleSetBezelWidthPercentage = (event: any) => {
+    props.onSetBezelWidthPercentage(event.target.value);
   };
-  const handleSetBezelHeightPercentageMeasurementValue = (event: any) => {
-    setBezelHeightPercentageMeasurementValue(event.target.value);
+  const handleSetBezelHeightPercentage = (event: any) => {
+    props.onSetBezelHeightPercentage(event.target.value);
   };
 
-  const handleSetBezelWidthMeasurementValue = (event: any) => {
-    setBezelWidthMeasurementValue(event.target.value);
+  const handleSetBezelWidth = (event: any) => {
+    props.onSetBezelWidth(event.target.value);
   };
   const handleSetBezelHeightMeasurementValue = (event: any) => {
-    setBezelHeightMeasurementValue(event.target.value);
+    props.onSetBezelHeight(event.target.value);
   };
 
   return (
     <div>
       <FormControl component="fieldset">
         <FormLabel component="legend">Bezel Width and Height</FormLabel>
-        <RadioGroup value={bezelMeasureByType} onChange={handleSetBezelMeasureByType}>
+        <RadioGroup value={props.bezelMeasureByType} onChange={handleSetBezelMeasureByType}>
           <FormControlLabel value="byPercentage" control={<Radio />} label="By percentage" />
           <TextField
             id="standard-number"
             label="WidthPercentage"
-            value={bezelWidthPercentageMeasurementValue}
-            onChange={handleSetBezelWidthPercentageMeasurementValue}
+            value={props.bezelWidthPercentage}
+            onChange={handleSetBezelWidthPercentage}
             type="number"
             className={classes.textField}
             InputLabelProps={{
@@ -113,8 +111,8 @@ const BezelForm = (props: BezelFormProps) => {
           <TextField
             id="standard-number"
             label="HeightPercentage"
-            value={bezelHeightPercentageMeasurementValue}
-            onChange={handleSetBezelHeightPercentageMeasurementValue}
+            value={props.bezelHeightPercentage}
+            onChange={handleSetBezelHeightPercentage}
             type="number"
             className={classes.textField}
             InputLabelProps={{
@@ -126,8 +124,8 @@ const BezelForm = (props: BezelFormProps) => {
           <TextField
             id="standard-number"
             label="Width"
-            value={bezelWidthMeasurementValue}
-            onChange={handleSetBezelWidthMeasurementValue}
+            value={props.bezelWidth}
+            onChange={handleSetBezelWidth}
             type="number"
             className={classes.textField}
             InputLabelProps={{
@@ -138,7 +136,7 @@ const BezelForm = (props: BezelFormProps) => {
           <TextField
             id="standard-number"
             label="Height"
-            value={bezelHeightMeasurementValue}
+            value={props.bezelHeight}
             onChange={handleSetBezelHeightMeasurementValue}
             type="number"
             className={classes.textField}
@@ -153,15 +151,15 @@ const BezelForm = (props: BezelFormProps) => {
   );
 };
 
-function mapStateToProps(state: any): Partial<BezelFormProps> {
+function mapStateToProps(state: any, ownProps: BezelFormPropsFromParent): Partial<BezelFormProps> {
   return {
-    bezelMeasureByType: getBezelMeasureByType(state),
-    bezelWidthPercentage: getBezelWidthPercentage(state),
-    bezelHeightPercentage: getBezelHeightPercentage(state),
-    bezelWidth: getBezelWidth(state),
-    bezelHeight: getBezelHeight(state),
-    bezelScreenWidth: getBezelScreenWidth(state),
-    bezelScreenHeight: getBezelScreenHeight(state),
+    bezelMeasureByType: getBezelMeasureByType(state, ownProps.serialNumber),
+    bezelWidthPercentage: getBezelWidthPercentage(state, ownProps.serialNumber),
+    bezelHeightPercentage: getBezelHeightPercentage(state, ownProps.serialNumber),
+    bezelWidth: getBezelWidth(state, ownProps.serialNumber),
+    bezelHeight: getBezelHeight(state, ownProps.serialNumber),
+    bezelScreenWidth: getBezelScreenWidth(state, ownProps.serialNumber),
+    bezelScreenHeight: getBezelScreenHeight(state, ownProps.serialNumber),
   };
 }
 
