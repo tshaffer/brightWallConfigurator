@@ -55,13 +55,13 @@ export interface BezelFormProps extends BezelFormPropsFromParent {
   bezelHeight: number;
   bezelScreenWidth: number;
   bezelScreenHeight: number;
-  onSetBezelMeasureByType: (bezelMeasureByType: BezelMeasureByType) => any;
-  onSetBezelWidthPercentage: (value: number) => any;
-  onSetBezelHeightPercentage: (value: number) => any;
-  onSetBezelWidth: (value: number) => any;
-  onSetBezelHeight: (value: number) => any;
-  onSetBezelScreenWidth: (value: number) => any;
-  onSetBezelScreenHeight: (value: number) => any;
+  onSetBezelMeasureByType: (serialNumber: string, bezelMeasureByType: BezelMeasureByType) => any;
+  onSetBezelWidthPercentage: (serialNumber: string, value: number) => any;
+  onSetBezelHeightPercentage: (serialNumber: string, value: number) => any;
+  onSetBezelWidth: (serialNumber: string, value: number) => any;
+  onSetBezelHeight: (serialNumber: string, value: number) => any;
+  onSetBezelScreenWidth: (serialNumber: string, value: number) => any;
+  onSetBezelScreenHeight: (serialNumber: string, value: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -73,21 +73,21 @@ const BezelForm = (props: BezelFormProps) => {
   const classes = useStyles();
 
   const handleSetBezelMeasureByType = (event: any) => {
-    props.onSetBezelMeasureByType(event.target.value);
+    props.onSetBezelMeasureByType(props.serialNumber, event.target.value);
   };
 
   const handleSetBezelWidthPercentage = (event: any) => {
-    props.onSetBezelWidthPercentage(event.target.value);
+    props.onSetBezelWidthPercentage(props.serialNumber, event.target.value);
   };
   const handleSetBezelHeightPercentage = (event: any) => {
-    props.onSetBezelHeightPercentage(event.target.value);
+    props.onSetBezelHeightPercentage(props.serialNumber, event.target.value);
   };
 
   const handleSetBezelWidth = (event: any) => {
-    props.onSetBezelWidth(event.target.value);
+    props.onSetBezelWidth(props.serialNumber, event.target.value);
   };
   const handleSetBezelHeightMeasurementValue = (event: any) => {
-    props.onSetBezelHeight(event.target.value);
+    props.onSetBezelHeight(props.serialNumber, event.target.value);
   };
 
   return (
