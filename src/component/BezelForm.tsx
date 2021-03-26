@@ -10,6 +10,27 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 
+import { BezelMeasureByType } from '../type';
+
+import {
+  setBezelMeasureByType,
+  setBezelWidthPercentage,
+  setBezelHeightPercentage,
+  setBezelWidth,
+  setBezelHeight,
+  setBezelScreenWidth,
+  setBezelScreenHeight,
+} from '../model';
+import {
+  getBezelHeight,
+  getBezelHeightPercentage,
+  getBezelMeasureByType,
+  getBezelScreenHeight,
+  getBezelScreenWidth,
+  getBezelWidth,
+  getBezelWidthPercentage
+} from '../selector';
+
 const useStyles = makeStyles({
   textField: {
     marginLeft: '10px',
@@ -22,6 +43,20 @@ const useStyles = makeStyles({
 // Types
 // -----------------------------------------------------------------------
 export interface BezelFormProps {
+  bezelMeasureByType: BezelMeasureByType;
+  bezelWidthPercentage: number;
+  bezelHeightPercentage: number;
+  bezelWidth: number;
+  bezelHeight: number;
+  bezelScreenWidth: number;
+  bezelScreenHeight: number;
+  onSetBezelMeasureByType: () => any;
+  onSetBezelWidthPercentage: (value: number) => any;
+  onSetBezelHeightPercentage: (value: number) => any;
+  onSetBezelWidth: (value: number) => any;
+  onSetBezelHeight: (value: number) => any;
+  onSetBezelScreenWidth: (value: number) => any;
+  onSetBezelScreenHeight: (value: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -120,11 +155,25 @@ const BezelForm = (props: BezelFormProps) => {
 
 function mapStateToProps(state: any): Partial<BezelFormProps> {
   return {
+    bezelMeasureByType: getBezelMeasureByType(state),
+    bezelWidthPercentage: getBezelWidthPercentage(state),
+    bezelHeightPercentage: getBezelHeightPercentage(state),
+    bezelWidth: getBezelWidth(state),
+    bezelHeight: getBezelHeight(state),
+    bezelScreenWidth: getBezelScreenWidth(state),
+    bezelScreenHeight: getBezelScreenHeight(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
+    onSetBezelMeasureByType: setBezelMeasureByType,
+    onSetBezelWidthPercentage: setBezelWidthPercentage,
+    onSetBezelHeightPercentage: setBezelHeightPercentage,
+    onSetBezelWidth: setBezelWidth,
+    onSetBezelHeight: setBezelHeight,
+    onSetBezelScreenWidth: setBezelScreenWidth,
+    onSetBezelScreenHeight: setBezelScreenHeight,
   }, dispatch);
 };
 

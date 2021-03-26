@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState } from '../type';
+import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState } from '../type';
 
 export const getIsBrightWall = (state: BrightSignState): boolean => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
@@ -71,3 +71,30 @@ export const getBrightWallUnitAssignments = (state: BrightSignState): string[][]
   return brightWallGrid;
 };
 
+export const getBezelMeasureByType= (state: BrightSignState): BezelMeasureByType => {
+  return BezelMeasureByType.Measurement;
+};
+
+export const getBezelWidthPercentage = (state: BrightSignState): number => {
+  return 0;
+};
+
+export const getBezelHeightPercentage = (state: BrightSignState): number => {
+  return 0;
+};
+
+export const getBezelWidth = (state: BrightSignState): number => {
+  return 0;
+};
+
+export const getBezelHeight = (state: BrightSignState): number => {
+  return 0;
+};
+
+export const getBezelScreenWidth = (state: BrightSignState): number => {
+  return 0;
+};
+
+export const getBezelScreenHeight = (state: BrightSignState): number => {
+  return 0;
+};
