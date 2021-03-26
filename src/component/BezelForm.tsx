@@ -32,135 +32,90 @@ const BezelForm = (props: BezelFormProps) => {
 
   const classes = useStyles();
 
-  const [value, setValue] = React.useState('byMeasurement');
-  const [foodValue, setFoodValue] = React.useState('pizza');
-  const [bezelWidthMeasurementValue, setBezelWidthMeasurementValue] = React.useState('0');
+  const [bezelMeasureByType, setBezelMeasureByType] = React.useState('byMeasurement');
 
-  const handleChange = (event: any) => {
-    setValue(event.target.value);
+  const [bezelWidthPercentageMeasurementValue, setBezelWidthPercentageMeasurementValue] = React.useState('0');
+  const [bezelHeightPercentageMeasurementValue, setBezelHeightPercentageMeasurementValue] = React.useState('0');
+  const [bezelWidthMeasurementValue, setBezelWidthMeasurementValue] = React.useState('0');
+  const [bezelHeightMeasurementValue, setBezelHeightMeasurementValue] = React.useState('0');
+
+  const handleSetBezelMeasureByType = (event: any) => {
+    setBezelMeasureByType(event.target.value);
   };
-  const handleFoodChange = (event: any) => {
-    setFoodValue(event.target.value);
+
+  const handleSetBezelWidthPercentageMeasurementValue = (event: any) => {
+    setBezelWidthPercentageMeasurementValue(event.target.value);
+  };
+  const handleSetBezelHeightPercentageMeasurementValue = (event: any) => {
+    setBezelHeightPercentageMeasurementValue(event.target.value);
   };
 
   const handleSetBezelWidthMeasurementValue = (event: any) => {
     setBezelWidthMeasurementValue(event.target.value);
   };
-  /*
-            <TextField
-              id="standard-number"
-              label="Number"
-              value={this.state.age}
-              onChange={this.handleChange('age')}
-              type="number"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="normal"
-            />
-  */
+  const handleSetBezelHeightMeasurementValue = (event: any) => {
+    setBezelHeightMeasurementValue(event.target.value);
+  };
 
   return (
     <div>
       <FormControl component="fieldset">
         <FormLabel component="legend">Bezel Width and Height</FormLabel>
-        <TextField
-          id="standard-number"
-          label="Number"
-          value={bezelWidthMeasurementValue}
-          onChange={handleSetBezelWidthMeasurementValue}
-          type="number"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          margin="normal"
-        />
-        <RadioGroup value={value} onChange={handleChange}>
+        <RadioGroup value={bezelMeasureByType} onChange={handleSetBezelMeasureByType}>
           <FormControlLabel value="byPercentage" control={<Radio />} label="By percentage" />
+          <TextField
+            id="standard-number"
+            label="WidthPercentage"
+            value={bezelWidthPercentageMeasurementValue}
+            onChange={handleSetBezelWidthPercentageMeasurementValue}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            margin="normal"
+          />
+          <TextField
+            id="standard-number"
+            label="HeightPercentage"
+            value={bezelHeightPercentageMeasurementValue}
+            onChange={handleSetBezelHeightPercentageMeasurementValue}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            margin="normal"
+          />
           <FormControlLabel value="byMeasurement" control={<Radio />} label="By measurement" />
-          <RadioGroup value={foodValue} onChange={handleFoodChange} >
-            <FormControlLabel value="pizza" control={<Radio />} label="Pizza" />
-            <FormControlLabel value="burrito" control={<Radio />} label="Burrito" />
-          </RadioGroup>
+          <TextField
+            id="standard-number"
+            label="Width"
+            value={bezelWidthMeasurementValue}
+            onChange={handleSetBezelWidthMeasurementValue}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            margin="normal"
+          />
+          <TextField
+            id="standard-number"
+            label="Height"
+            value={bezelHeightMeasurementValue}
+            onChange={handleSetBezelHeightMeasurementValue}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            margin="normal"
+          />
         </RadioGroup>
       </FormControl>
     </div>
   );
-  // return (
-  //   <div>
-  //     <input type="radio" value="Male" name="gender">Male</input>
-  //     <input type="radio" value="Female" name="gender" /> Female
-  //     <input type="radio" value="Other" name="gender" /> Other
-  //   </div>);
-
-  // const [selectedValue, setSelectedValue] = React.useState('a');
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSelectedValue(event.target.value);
-  // };
-
-  // return (
-  //   <div>
-  //     <Radio
-  //       checked={selectedValue === 'a'}
-  //       onChange={handleChange}
-  //       value="a"
-  //       aria-label="flibbet"
-  //       name="radio-button-demo"
-  //       inputProps={{ 'aria-label': 'A' }}
-  //     />
-  //     <Radio
-  //       checked={selectedValue === 'b'}
-  //       onChange={handleChange}
-  //       value="b"
-  //       name="radio-button-demo"
-  //       inputProps={{ 'aria-label': 'B' }}
-  //     />
-  //     <Radio
-  //       checked={selectedValue === 'c'}
-  //       onChange={handleChange}
-  //       value="c"
-  //       name="radio-button-demo"
-  //       inputProps={{ 'aria-label': 'C' }}
-  //     />
-  //     <Radio
-  //       checked={selectedValue === 'd'}
-  //       onChange={handleChange}
-  //       value="d"
-  //       color="default"
-  //       name="radio-button-demo"
-  //       inputProps={{ 'aria-label': 'D' }}
-  //     />
-  //     <Radio
-  //       checked={selectedValue === 'e'}
-  //       onChange={handleChange}
-  //       value="e"
-  //       color="default"
-  //       name="radio-button-demo"
-  //       inputProps={{ 'aria-label': 'E' }}
-  //       size="small"
-  //     />
-  //   </div>
-  // );
-
-  // const [value, setValue] = React.useState('female');
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setValue((event.target as HTMLInputElement).value);
-  // };
-
-  // return (
-  //   <div>
-  //     <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-  //       <FormControlLabel value="female" control={<Radio />} label="Female" />
-  //       <FormControlLabel value="male" control={<Radio />} label="Male" />
-  //       <FormControlLabel value="other" control={<Radio />} label="Other" />
-  //       <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
-  //     </RadioGroup>
-  //   </div>
-  // );
 };
 
 function mapStateToProps(state: any): Partial<BezelFormProps> {
