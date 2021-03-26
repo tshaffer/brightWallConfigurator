@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import BezelForm from './BezelForm';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
   launchApp,
@@ -190,11 +192,14 @@ const App = (props: AppProps) => {
     const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
     return (
       <div key={brightSignConfig.brightSignAttributes.serialNumber}>
-        <span>{serialNumberLbl}</span>
-        <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
-        <span>{msdSeparator}</span>
-        <span>{masterSlaveDesignator}</span>
-        <span>{positionLabel}</span>
+        <div>
+          <span>{serialNumberLbl}</span>
+          <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
+          <span>{msdSeparator}</span>
+          <span>{masterSlaveDesignator}</span>
+          <span>{positionLabel}</span>
+        </div>
+        <BezelForm/>
       </div>
     );
   };

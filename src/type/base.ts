@@ -58,12 +58,24 @@ export interface BrightSignAttributes {
   networkInterfaces: NetworkInterfaceMap;
 }
 
+export enum BezelMeasureByType {
+  Percentage = 0,
+  Measurement = 1
+}
+
 export interface BrightWallConfiguration {
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
   numRows: number;
   numColumns: number;
+  bezelMeasureByType: BezelMeasureByType | null;
+  bezelWidthPercentage: number | null;
+  bezelHeightPercentage: number | null;
+  bezelWidth: number | null;
+  bezelHeight: number | null;
+  bezelScreenWidth: number | null;
+  bezelScreenHeight: number | null;
 }
 
 export interface BrightWall {
