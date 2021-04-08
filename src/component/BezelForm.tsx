@@ -79,6 +79,7 @@ const BezelForm = (props: BezelFormProps) => {
   const handleSetBezelWidthPercentage = (event: any) => {
     props.onSetBezelWidthPercentage(props.serialNumber, event.target.value);
   };
+
   const handleSetBezelHeightPercentage = (event: any) => {
     props.onSetBezelHeightPercentage(props.serialNumber, event.target.value);
   };
@@ -86,6 +87,7 @@ const BezelForm = (props: BezelFormProps) => {
   const handleSetBezelWidth = (event: any) => {
     props.onSetBezelWidth(props.serialNumber, event.target.value);
   };
+  
   const handleSetBezelHeightMeasurementValue = (event: any) => {
     props.onSetBezelHeight(props.serialNumber, event.target.value);
   };

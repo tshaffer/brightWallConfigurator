@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 import { setBrightSign, addHostBrightSign } from '../model';
 import { getBrightSignInWall } from '../selector';
-import { BrightSignAttributes, BrightSignConfig, NetworkInterface, NetworkInterfaceMap } from '../type';
+import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignState, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
@@ -21,7 +21,7 @@ export const launchApp = () => {
 
         // get list of BrightSigns in the wall after short timeout
         setTimeout(getBrightWallDeviceList, 1000, dispatch);
-        
+
         // start timer to get list of BrightSigns in the wall
         pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 15000, dispatch);
       });
@@ -64,29 +64,143 @@ export const getBrightSignConfig = (): Promise<BrightSignConfig> => {
     });
 };
 
-export const setBrightSignWallPosition = (
+const getDeviceIpAddress = (
+  state: BrightSignState,
+  serialNumber: string,
+): string => {
+  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignConfig)) {
+    const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+    const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
+    // eslint-disable-next-line no-prototype-builtins
+    if (networkInterfaces.hasOwnProperty('eth0')) {
+      const networkInterface: NetworkInterface = networkInterfaces['eth0'];
+      const ipAddress = networkInterface.currentConfig.ip4_address;
+      return ipAddress;
+    }
+  }
+  return '';
+};
+
+export const setDeviceBrightSignWallPosition = (
   serialNumber: string,
   rowIndex: number,
   columnIndex: number,
 ) => {
   return ((dispatch: any, getState: any): any => {
-    // convert serial number to ip address
-    const state = getState();
-    const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBrightWallPosition?ipAddress=' + ipAddress + '&rowIndex=' + rowIndex.toString() + '&columnIndex=' + columnIndex.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
 
-    if (!isNil(brightSignConfig)) {
-      const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
-      const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
-      // eslint-disable-next-line no-prototype-builtins
-      if (networkInterfaces.hasOwnProperty('eth0')) {
-        const networkInterface: NetworkInterface = networkInterfaces['eth0'];
-        const ipAddress = networkInterface.currentConfig.ip4_address;
-        fetch('/SetBrightWallPosition?ipAddress=' + ipAddress + '&rowIndex=' + rowIndex.toString() + '&columnIndex=' + columnIndex.toString())
-          .then(response => response.json())
-          .then((status: any) => {
-            console.log(status);
-          });
-      }
+export const setDeviceBezelMeasureByType = (
+  serialNumber: string,
+  bezelMeasureByType: BezelMeasureByType,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelMeasureByType?ipAddress=' + ipAddress + '&bezelMeasureByType=' + bezelMeasureByType.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelWidthPercentage = (
+  serialNumber: string,
+  bezelWidthPercentage: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelWidthPercentage?ipAddress=' + ipAddress + '&bezelWidthPercentage=' + bezelWidthPercentage.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelHeightPercentage = (
+  serialNumber: string,
+  bezelHeightPercentage: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelHeightPercentage?ipAddress=' + ipAddress + '&bezelHeightPercentage=' + bezelHeightPercentage.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelWidth = (
+  serialNumber: string,
+  bezelWidth: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelWidth?ipAddress=' + ipAddress + '&bezelWidth=' + bezelWidth.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelHeight = (
+  serialNumber: string,
+  bezelHeight: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelHeight?ipAddress=' + ipAddress + '&bezelHeight=' + bezelHeight.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelScreenWidth = (
+  serialNumber: string,
+  bezelScreenWidth: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelScreenWidth?ipAddress=' + ipAddress + '&bezelScreenWidth=' + bezelScreenWidth.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+export const setDeviceBezelScreenHeight = (
+  serialNumber: string,
+  bezelScreenHeight: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelScreenHeight?ipAddress=' + ipAddress + '&bezelScreenHeight=' + bezelScreenHeight.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
     }
   });
 };

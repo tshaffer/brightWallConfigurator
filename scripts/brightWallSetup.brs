@@ -279,16 +279,24 @@ Sub SetDeviceBrightWallPositionHandler(userData as object, e as object)
 end sub
 
 
+Function GetHostIPAddress() as string
+  
+  nc = CreateObject("roNetworkConfiguration", 0)
+  currentConfig = nc.GetCurrentConfig()
+  ipAddress = currentConfig.ip4_address
+  return ipAddress
+
+end Function
+
+
 Sub SetBrightWallPosition(userData as object, e as object)
 
   print "SetBrightWallPosition handler invoked"
 
   mVar = userData.mVar
 
-  nc = CreateObject("roNetworkConfiguration", 0)
-  currentConfig = nc.GetCurrentConfig()
-  hostIpAddress = currentConfig.ip4_address
-  
+  hostIpAddress = GetHostIPAddress()
+
   ipAddress = e.GetRequestParam("ipAddress")
   print "ipAddress: " + ipAddress
   rowIndex = e.GetRequestParam("rowIndex")
@@ -342,6 +350,370 @@ Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
 end sub
 
 
+Sub SetDeviceBezelMeasureByType(bezelMeasureByType as string)
+
+  print "SetDeviceBezelMeasureByType invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelMeasureByType = bezelMeasureByType
+  globalAA.registrySection.Write("bezelMeasureByType", bezelMeasureByType)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelMeasureByType(userData as object, e as object)
+
+  print "SetBezelMeasureByType handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelMeasureByType = e.GetRequestParam("bezelMeasureByType")
+  print "bezelMeasureByType: " + bezelMeasureByType
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelMeasureByType"
+    SetDeviceBezelMeasureByType(bezelMeasureByType)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelMeasureByType?bezelMeasureByType=" + bezelMeasureByType
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelMeasureByType from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelWidthPercentage(bezelWidthPercentage as string)
+
+  print "SetDeviceBezelWidthPercentage invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelWidthPercentage = bezelWidthPercentage
+  globalAA.registrySection.Write("bezelWidthPercentage", bezelWidthPercentage)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelWidthPercentage(userData as object, e as object)
+
+  print "SetBezelWidthPercentage handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelWidthPercentage = e.GetRequestParam("bezelWidthPercentage")
+  print "bezelWidthPercentage: " + bezelWidthPercentage
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelWidthPercentage"
+    SetDeviceBezelWidthPercentage(bezelWidthPercentage)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelWidthPercentage?bezelWidthPercentage=" + bezelWidthPercentage
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelWidthPercentage from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelHeightPercentage(bezelHeightPercentage as string)
+
+  print "SetDeviceBezelHeightPercentage invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelHeightPercentage = bezelHeightPercentage
+  globalAA.registrySection.Write("bezelHeightPercentage", bezelHeightPercentage)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelHeightPercentage(userData as object, e as object)
+
+  print "SetBezelHeightPercentage handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelHeightPercentage = e.GetRequestParam("bezelHeightPercentage")
+  print "bezelHeightPercentage: " + bezelHeightPercentage
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelHeightPercentage"
+    SetDeviceBezelHeightPercentage(bezelHeightPercentage)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelHeightPercentage?bezelHeightPercentage=" + bezelHeightPercentage
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelHeightPercentage from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelWidth(bezelWidth as string)
+
+  print "SetDeviceBezelWidth invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelWidth = bezelWidth
+  globalAA.registrySection.Write("bezelWidth", bezelWidth)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelWidth(userData as object, e as object)
+
+  print "SetBezelWidth handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelWidth = e.GetRequestParam("bezelWidth")
+  print "bezelWidth: " + bezelWidth
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelWidth"
+    SetDeviceBezelWidth(bezelWidth)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelWidth from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelHeight(bezelHeight as string)
+
+  print "SetDeviceBezelHeight invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelHeight = bezelHeight
+  globalAA.registrySection.Write("bezelHeight", bezelHeight)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelHeight(userData as object, e as object)
+
+  print "SetBezelHeight handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelHeight = e.GetRequestParam("bezelHeight")
+  print "bezelHeight: " + bezelHeight
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelHeight"
+    SetDeviceBezelHeight(bezelHeight)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelHeight from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelScreenWidth(bezelScreenWidth as string)
+
+  print "SetDeviceBezelScreenWidth invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelScreenWidth = bezelScreenWidth
+  globalAA.registrySection.Write("bezelWidth", bezelScreenWidth)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelScreenWidth(userData as object, e as object)
+
+  print "SetBezelScreenWidth handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelWidth = e.GetRequestParam("bezelWidth")
+  print "bezelWidth: " + bezelWidth
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelWidth"
+    SetDeviceBezelWidth(bezelWidth)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelWidth from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBezelScreenHeight(bezelScreenHeight as string)
+
+  print "SetDeviceBezelScreenHeight invoked"
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.bezelScreenHeight = bezelScreenHeight
+  globalAA.registrySection.Write("bezelScreenHeight", bezelScreenHeight)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub SetBezelScreenHeight(userData as object, e as object)
+
+  print "SetBezelScreenHeight handler invoked"
+
+  mVar = userData.mVar
+
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  bezelHeight = e.GetRequestParam("bezelHeight")
+  print "bezelHeight: " + bezelHeight
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBezelHeight"
+    SetDeviceBezelHeight(bezelHeight)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBezelHeight from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
 Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
   print "brightWallSetup_ProcessEvent - entry"
@@ -382,6 +754,27 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
+
+        setBezelMeasureByTypeAA = { HandleEvent: SetBezelMeasureByType, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelMeasureByType", user_data: setBezelMeasureByTypeAA })
+
+        setBezelWidthPercentageAA = { HandleEvent: SetBezelWidthPercentage, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelWidthPercentage", user_data: setBezelWidthPercentageAA })
+
+        setBezelHeightPercentageAA = { HandleEvent: SetBezelHeightPercentage, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelHeightPercentage", user_data: setBezelHeightPercentageAA })
+
+        setBezelWidthAA = { HandleEvent: SetBezelWidth, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelWidth", user_data: setBezelWidthAA })
+
+        setBezelHeightAA = { HandleEvent: SetBezelHeight, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelHeight", user_data: setBezelHeightAA })
+
+        setBezelScreenWidthAA = { HandleEvent: SetBezelScreenWidth, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelScreenWidth", user_data: setBezelScreenWidthAA })
+
+        setBezelScreenHeightAA = { HandleEvent: SetBezelScreenHeight, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelScreenHeight", user_data: setBezelScreenHeightAA })
 
         m.handlersAdded = true
 
