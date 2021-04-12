@@ -87,6 +87,9 @@ const useStyles = makeStyles({
     // fontSize: '3vmin',
     textAlign: 'left',
   },
+  DetailsStyle: {
+    bottomMargin: '16px',
+  },
   DeviceStyle: {
     // fontSize: '3vmin',
     textAlign: 'left',
@@ -205,9 +208,12 @@ const App = (props: AppProps) => {
           <span>{masterSlaveDesignator}</span>
           <span>{positionLabel}</span>
         </div>
-        <BezelForm
-          serialNumber={brightSignConfig.brightSignAttributes.serialNumber}
-        />
+        <details className={classes.DetailsStyle}>
+          <summary>Specify Bezel</summary>
+          <BezelForm
+            serialNumber={brightSignConfig.brightSignAttributes.serialNumber}
+          />
+        </details>
       </div>
     );
   };
