@@ -127,7 +127,8 @@ const BezelForm = (props: BezelFormProps) => {
   return (
     <div className={classes.formStyle}>
 
-      <p>Bezel Width and Height</p>
+      <p style={{ color: 'red' }}>Bezel Width and Height</p>
+      <br></br>
 
       <input
         type="radio"
@@ -139,15 +140,17 @@ const BezelForm = (props: BezelFormProps) => {
       <br></br>
       <br></br>
 
-      <label>Width Percentage:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Width Percentage:</label><br></br>
       <input type="number" id="widthPercentage" name="widthPercentage"
-        min="0" max="100" />
+        min="0" max="100"
+        style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
       <br></br>
-      <label>Height Percentage:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Height Percentage:</label><br></br>
       <input type="number" id="heightPercentage" name="heightPercentage"
-        min="0" max="100" />
+        min="0" max="100"
+        style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
       <br></br>
@@ -160,17 +163,18 @@ const BezelForm = (props: BezelFormProps) => {
       />
       <label>By measurement</label><br></br>
       <br></br>
-      <br></br>
 
-      <label>Width:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Width:</label><br></br>
       <input type="number" id="width" name="width"
-        min="0" max="100" />
+        min="0" max="100"
+        style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
       <br></br>
-      <label>Height:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Height:</label><br></br>
       <input type="number" id="heigh" name="height"
-        min="0" max="100" />
+        min="0" max="100"
+        style={{ marginLeft: '24px', width: '110px' }} />
     </div >
   );
 };
