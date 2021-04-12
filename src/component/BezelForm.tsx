@@ -30,13 +30,33 @@ import {
   getBezelWidth,
   getBezelWidthPercentage
 } from '../selector';
+import { useMemo } from 'react';
+import { withStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
+  formStyle: {
+    textAlign: 'left',
+    color: 'white',
+    marginTop: '10px',
+  },
   textField: {
+    color: 'white',
     marginLeft: '10px',
     marginRight: '10px',
     width: 200,
   },
+  noTopMarginTextField: {
+    color: 'white',
+    marginTop: '0px',
+    marginBottom: '0px',
+    marginLeft: '10px',
+    marginRight: '10px',
+    width: 200,
+    height: 32,
+  },
+  whiteText: {
+    color: 'white',
+  }
 });
 
 // -----------------------------------------------------------------------
@@ -87,68 +107,88 @@ const BezelForm = (props: BezelFormProps) => {
   const handleSetBezelWidth = (event: any) => {
     props.onSetBezelWidth(props.serialNumber, event.target.value);
   };
-  
+
   const handleSetBezelHeightMeasurementValue = (event: any) => {
     props.onSetBezelHeight(props.serialNumber, event.target.value);
   };
 
-  return (
-    <div>
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Bezel Width and Height</FormLabel>
-        <RadioGroup value={props.bezelMeasureByType} onChange={handleSetBezelMeasureByType}>
-          <FormControlLabel value="byPercentage" control={<Radio />} label="By percentage" />
-          <TextField
+  const StyledTextField = useMemo(
+    () => {
+      return withStyles({
+        root: {
+          margin: 0,
+          maxHeight: 24,
+          color: 'white',
+        }
+      })(TextField);
+    }, []
+  );
+
+  /*
+          <StyledTextField
             id="standard-number"
-            label="WidthPercentage"
+            label="Width Percentage"
             value={props.bezelWidthPercentage}
             onChange={handleSetBezelWidthPercentage}
             type="number"
-            className={classes.textField}
             InputLabelProps={{
               shrink: true,
             }}
-            margin="normal"
           />
-          <TextField
-            id="standard-number"
-            label="HeightPercentage"
-            value={props.bezelHeightPercentage}
-            onChange={handleSetBezelHeightPercentage}
-            type="number"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-          />
-          <FormControlLabel value="byMeasurement" control={<Radio />} label="By measurement" />
-          <TextField
-            id="standard-number"
-            label="Width"
-            value={props.bezelWidth}
-            onChange={handleSetBezelWidth}
-            type="number"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-          />
-          <TextField
-            id="standard-number"
-            label="Height"
-            value={props.bezelHeight}
-            onChange={handleSetBezelHeightMeasurementValue}
-            type="number"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-          />
-        </RadioGroup>
-      </FormControl>
+  */
+
+  /*
+      <FormControl component="fieldset" className={classes.whiteText}>
+        <FormLabel component="legend" className={classes.whiteText}>Bezel Width and Height</FormLabel>
+          */
+  return (
+    <div className={classes.formStyle}>
+      Bezel Width and Height
+
+
+      <RadioGroup value={props.bezelMeasureByType} onChange={handleSetBezelMeasureByType} className={classes.whiteText}>
+        <FormControlLabel value="byPercentage" control={<Radio />} label="By percentage" />
+        <StyledTextField
+          label='Width Percentage'
+        />
+        <TextField
+          id="standard-number"
+          label="Height Percentage"
+          value={props.bezelHeightPercentage}
+          onChange={handleSetBezelHeightPercentage}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+        <FormControlLabel value="byMeasurement" control={<Radio />} label="By measurement" />
+        <TextField
+          id="standard-number"
+          label="Width"
+          value={props.bezelWidth}
+          onChange={handleSetBezelWidth}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+        <TextField
+          id="standard-number"
+          label="Height"
+          value={props.bezelHeight}
+          onChange={handleSetBezelHeightMeasurementValue}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+      </RadioGroup>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import BezelForm from './BezelForm';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   launchApp,
-  setBrightSignWallPosition,
+  // setBrightSignWallPosition,
 } from '../controller';
 import {
   getIsBrightWall,
@@ -32,7 +32,7 @@ export interface AppProps {
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
-  onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
+  // onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -84,7 +84,8 @@ const useStyles = makeStyles({
     display: 'inline-block'
   },
   MsgStyle: {
-    fontSize: '3vmin',
+    // fontSize: '3vmin',
+    textAlign: 'left',
   }
 });
 
@@ -110,11 +111,11 @@ const App = (props: AppProps) => {
       const column: number = parseInt(valueParts[2], 10);
       const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
 
-      const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
-      if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
-        props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
-      }
-      props.onSetBrightSignWallPosition(serialNumber, row, column);
+      // const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
+      // if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
+      //   props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
+      // }
+      // props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
   };
 
@@ -192,7 +193,7 @@ const App = (props: AppProps) => {
     const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
     return (
       <div key={brightSignConfig.brightSignAttributes.serialNumber}>
-        <div>
+        <div className={classes.MsgStyle}>
           <span>{serialNumberLbl}</span>
           <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
           <span>{msdSeparator}</span>
@@ -257,7 +258,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
-    onSetBrightSignWallPosition: setBrightSignWallPosition,
+    // onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 
