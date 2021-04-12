@@ -86,6 +86,11 @@ const useStyles = makeStyles({
   MsgStyle: {
     // fontSize: '3vmin',
     textAlign: 'left',
+  },
+  DeviceStyle: {
+    // fontSize: '3vmin',
+    textAlign: 'left',
+    topMargin: '16px',
   }
 });
 
@@ -192,7 +197,7 @@ const App = (props: AppProps) => {
 
     const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
     return (
-      <div key={brightSignConfig.brightSignAttributes.serialNumber}>
+      <div key={brightSignConfig.brightSignAttributes.serialNumber} className={classes.DeviceStyle}>
         <div className={classes.MsgStyle}>
           <span>{serialNumberLbl}</span>
           <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
@@ -239,6 +244,7 @@ const App = (props: AppProps) => {
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
         {wall}
+        <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
         {brightSignsInWall}
       </div>
     </div>

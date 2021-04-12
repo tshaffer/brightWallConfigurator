@@ -38,6 +38,7 @@ const useStyles = makeStyles({
     textAlign: 'left',
     color: 'white',
     marginTop: '10px',
+    marginLeft: '16px',
   },
   textField: {
     color: 'white',
@@ -127,8 +128,7 @@ const BezelForm = (props: BezelFormProps) => {
   return (
     <div className={classes.formStyle}>
 
-      <p style={{ color: 'red' }}>Bezel Width and Height</p>
-      <br></br>
+      <p>Bezel Width and Height</p>
 
       <input
         type="radio"
