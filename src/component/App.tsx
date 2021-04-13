@@ -201,6 +201,7 @@ const App = (props: AppProps) => {
     const masterSlaveDesignator: string = brightSignConfig.brightWallConfiguration.isMaster ? 'Master' : 'Slave';
     return (
       <div key={brightSignConfig.brightSignAttributes.serialNumber} className={classes.DeviceStyle}>
+        <br></br>
         <div className={classes.MsgStyle}>
           <span>{serialNumberLbl}</span>
           <span>{brightSignConfig.brightSignAttributes.serialNumber}</span>
