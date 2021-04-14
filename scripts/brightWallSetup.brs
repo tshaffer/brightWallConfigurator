@@ -362,6 +362,38 @@ Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
 end sub
 
 
+Sub ExitConfigurator(userData as object, e as object)
+
+  print "ExitConfigurator handler invoked"
+
+  hostIpAddress = GetHostIPAddress()
+
+  ExitDeviceConfigurator()
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub ExitDeviceConfigurator()
+
+  print "ExitDeviceConfigurator handler invoked"
+
+  ' hostIpAddress = GetHostIPAddress()
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.brightWallSetupScreenEnabled = false
+  globalAA.registrySection.Write("brightWallSetupScreenEnabled", "0")
+  globalAA.registrySection.Flush()
+
+end sub
+
+
 Sub LaunchAlignmentTool(userData as object, e as object)
 
   print "LaunchAlignmentTool handler invoked"
@@ -835,6 +867,9 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
+
+        exitConfiguratorAA = { HandleEvent: ExitConfigurator, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/ExitConfigurator", user_data: exitConfiguratorAA })
 
         launchAlignmentToolAA = { HandleEvent: LaunchAlignmentTool, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/LaunchAlignmentTool", user_data: launchAlignmentToolAA })

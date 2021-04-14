@@ -6,6 +6,7 @@ import BezelForm from './BezelForm';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  exitConfigurator,
   exitAlignmentTool,
   launchAlignmentTool,
   launchApp,
@@ -37,6 +38,7 @@ export interface AppProps {
   columnIndex: number;
   onLaunchApp: () => any;
   // onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
+  onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
   onExitAlignmentTool: () => any;
 }
@@ -131,6 +133,11 @@ const App = (props: AppProps) => {
       // }
       // props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
+  };
+
+  const handleExitConfigurator = (event: any) => {
+    console.log('handleExitConfigurator invoked');
+    props.onExitConfigurator();
   };
 
   const handleLaunchAlignment = (event: any) => {
@@ -272,6 +279,10 @@ const App = (props: AppProps) => {
         <button onClick={handleLaunchAlignment}>
           {alignLabel}
         </button>
+        <button onClick={handleExitConfigurator}>
+          {'Exit configurator to launch BrightWall'}
+        </button>
+
         {wall}
         <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
         {brightSignsInWall}
@@ -295,6 +306,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
     // onSetBrightSignWallPosition: setBrightSignWallPosition,
+    onExitConfigurator: exitConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
     onExitAlignmentTool: exitAlignmentTool,
   }, dispatch);

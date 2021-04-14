@@ -99,6 +99,21 @@ export const setDeviceBrightSignWallPosition = (
   });
 };
 
+export const exitConfigurator = () => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getSerialNumber(getState());
+    if (ipAddress.length > 0) {
+      fetch('/ExitConfigurator')
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+          fetch('/RebootBrightWall');
+        });
+    }
+  });
+};
+
+
 export const launchAlignmentTool = () => {
   return ((dispatch: any, getState: any): any => {
     const ipAddress = getSerialNumber(getState());
