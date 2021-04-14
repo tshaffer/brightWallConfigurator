@@ -6,23 +6,27 @@ import BezelForm from './BezelForm';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  exitAlignmentTool,
+  launchAlignmentTool,
   launchApp,
   // setBrightSignWallPosition,
 } from '../controller';
 import {
   getIsBrightWall,
+  getBrightWallDeviceSetupActiveScreen,
   getNumRows,
   getNumColumns,
   getBrightSignsInWall,
   getBrightWallUnitAssignments,
 } from '../selector';
-import { BrightSignConfig, BrightSignMap } from '../type';
+import { BrightSignConfig, BrightSignMap, DeviceSetupScreen } from '../type';
 import { cloneDeep } from 'lodash';
 
 /** @internal */
 /** @private */
 export interface AppProps {
   isBrightWall: boolean;
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
   numRows: number;
   numColumns: number;
   brightSignsInWall: BrightSignMap;
@@ -33,6 +37,8 @@ export interface AppProps {
   columnIndex: number;
   onLaunchApp: () => any;
   // onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
+  onLaunchAlignmentTool: () => any;
+  onExitAlignmentTool: () => any;
 }
 
 // -----------------------------------------------------------------------
@@ -124,6 +130,17 @@ const App = (props: AppProps) => {
       //   props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
       // }
       // props.onSetBrightSignWallPosition(serialNumber, row, column);
+    }
+  };
+
+  const handleLaunchAlignment = (event: any) => {
+    console.log('handleLaunchAlignment invoked');
+    console.log(props);
+
+    if (props.brightWallDeviceSetupActiveScreen === DeviceSetupScreen.ConfigureScreen) {
+      props.onLaunchAlignmentTool();
+    } else {
+      props.onExitAlignmentTool();
     }
   };
 
@@ -241,6 +258,8 @@ const App = (props: AppProps) => {
   const wall = renderWall();
   const brightSignsInWall = renderBrightSignsInWall();
 
+  const alignLabel = props.brightWallDeviceSetupActiveScreen === DeviceSetupScreen.ConfigureScreen ? 'Align screens' : 'Exit alignment tool';
+
   return (
     <div className={classes.AppStyle}>
       <header className={classes.AppHeader}>
@@ -250,6 +269,9 @@ const App = (props: AppProps) => {
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
+        <button onClick={handleLaunchAlignment}>
+          {alignLabel}
+        </button>
         {wall}
         <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
         {brightSignsInWall}
@@ -261,6 +283,7 @@ const App = (props: AppProps) => {
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
   return {
     isBrightWall: getIsBrightWall(state),
+    brightWallDeviceSetupActiveScreen: getBrightWallDeviceSetupActiveScreen(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
     brightSignsInWall: getBrightSignsInWall(state),
@@ -272,6 +295,8 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
     // onSetBrightSignWallPosition: setBrightSignWallPosition,
+    onLaunchAlignmentTool: launchAlignmentTool,
+    onExitAlignmentTool: exitAlignmentTool,
   }, dispatch);
 };
 

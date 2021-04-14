@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { setBrightSign, addHostBrightSign } from '../model';
-import { getBrightSignInWall } from '../selector';
+import { getBrightSignInWall, getSerialNumber } from '../selector';
 import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignState, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
@@ -94,6 +94,34 @@ export const setDeviceBrightSignWallPosition = (
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
+        });
+    }
+  });
+};
+
+export const launchAlignmentTool = () => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getSerialNumber(getState());
+    if (ipAddress.length > 0) {
+      fetch('/LaunchAlignmentTool')
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+          fetch('/RebootBrightWall');
+        });
+    }
+  });
+};
+
+export const exitAlignmentTool = () => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getSerialNumber(getState());
+    if (ipAddress.length > 0) {
+      fetch('/ExitAlignmentTool')
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+          fetch('/RebootBrightWall');
         });
     }
   });

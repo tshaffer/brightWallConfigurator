@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState } from '../type';
+import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, DeviceSetupScreen } from '../type';
 
 export const getIsBrightWall = (state: BrightSignState): boolean => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
@@ -8,11 +8,32 @@ export const getIsBrightWall = (state: BrightSignState): boolean => {
   return false;
 };
 
+export const getSerialNumber = (state: BrightSignState): string => {
+  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
+    return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.serialNumber;
+  }
+  return '';
+};
+
 export const getNumRows = (state: BrightSignState): number => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
     return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.numRows;
   }
   return -1;
+};
+
+export const getBrightWallSetupScreenEnabled = (state: BrightSignState): boolean => {
+  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
+    return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.brightWallSetupScreenEnabled;
+  }
+  return false;
+};
+
+export const getBrightWallDeviceSetupActiveScreen = (state: BrightSignState): DeviceSetupScreen => {
+  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
+    return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.brightWallDeviceSetupActiveScreen;
+  }
+  return DeviceSetupScreen.ConfigureScreen;
 };
 
 export const getNumColumns = (state: BrightSignState): number => {

@@ -58,12 +58,19 @@ export interface BrightSignAttributes {
   networkInterfaces: NetworkInterfaceMap;
 }
 
+export enum DeviceSetupScreen {
+  ConfigureScreen = 'configureScreen',
+  AlignScreen = 'alignScreen',
+}
+
 export enum BezelMeasureByType {
   Percentage = 0,
   Measurement = 1
 }
 
 export interface BrightWallConfiguration {
+  brightWallSetupScreenEnabled: boolean;
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;

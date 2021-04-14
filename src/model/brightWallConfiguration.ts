@@ -1,5 +1,5 @@
 import { BrightWallModelAction } from './baseAction';
-import { BrightWallConfiguration, BezelMeasureByType, BrightWall } from '../type';
+import { BrightWallConfiguration, BezelMeasureByType, BrightWall, DeviceSetupScreen } from '../type';
 import { cloneDeep } from 'lodash';
 
 // ------------------------------------
@@ -116,6 +116,8 @@ export const setNumColumns = (
 // ------------------------------------
 
 const initialState: BrightWallConfiguration = {
+  brightWallSetupScreenEnabled: false,
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen.ConfigureScreen,
   isMaster: false,
   rowIndex: -1,
   columnIndex: -1,

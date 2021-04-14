@@ -95,6 +95,18 @@ Function GetConfig(bsp) as object
       config.brightWallConfiguration.AddReplace("numColumns", -1)
     endif
 
+    if IsBoolean(globalAA.registrySettings.brightWallSetupScreenEnabled) and IsTruthy(globalAA.registrySection.Read("brightWallSetupScreenEnabled")) then
+      config.brightWallConfiguration.AddReplace("brightWallSetupScreenEnabled", true)
+    else
+      config.brightWallConfiguration.AddReplace("brightWallSetupScreenEnabled", false)
+    endif
+
+    if len(globalAA.registrySection.Read("brightWallDeviceSetupActiveScreen")) > 0 then
+      config.brightWallConfiguration.AddReplace("brightWallDeviceSetupActiveScreen", globalAA.registrySection.Read("brightWallDeviceSetupActiveScreen"))
+    else
+      config.brightWallConfiguration.AddReplace("brightWallDeviceSetupActiveScreen", -1)
+    endif
+
   endif
 
   return config
@@ -347,6 +359,75 @@ Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
   globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
   globalAA.registrySection.Flush()
 
+end sub
+
+
+Sub LaunchAlignmentTool(userData as object, e as object)
+
+  print "LaunchAlignmentTool handler invoked"
+
+  hostIpAddress = GetHostIPAddress()
+
+  LaunchDeviceAlignmentTool()
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub LaunchDeviceAlignmentTool()
+
+  print "LaunchDeviceAlignmentTool handler invoked"
+
+  ' hostIpAddress = GetHostIPAddress()
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.brightWallDeviceSetupActiveScreen = "alignScreen"
+  globalAA.registrySection.Write("brightWallDeviceSetupActiveScreen", "alignScreen")
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub ExitAlignmentTool(userData as object, e as object)
+
+  print "ExitAlignmentTool handler invoked"
+
+  hostIpAddress = GetHostIPAddress()
+
+  ExitDeviceAlignmentTool()
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub ExitDeviceAlignmentTool()
+
+  print "ExitDeviceAlignmentTool handler invoked"
+
+  ' hostIpAddress = GetHostIPAddress()
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.brightWallDeviceSetupActiveScreen = "configureScreen"
+  globalAA.registrySection.Write("brightWallDeviceSetupActiveScreen", "configureScreen")
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+Sub RebootBrightWall(userData as object, e as object)
+  RebootSystem()
 end sub
 
 
@@ -754,6 +835,15 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
+
+        launchAlignmentToolAA = { HandleEvent: LaunchAlignmentTool, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/LaunchAlignmentTool", user_data: launchAlignmentToolAA })
+
+        exitAlignmentToolAA = { HandleEvent: ExitAlignmentTool, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/ExitAlignmentTool", user_data: exitAlignmentToolAA })
+
+        rebootBrightWallAA = { HandleEvent: RebootBrightWall, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/RebootBrightWall", user_data: rebootBrightWallAA })
 
         setBezelMeasureByTypeAA = { HandleEvent: SetBezelMeasureByType, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelMeasureByType", user_data: setBezelMeasureByTypeAA })
