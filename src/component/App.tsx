@@ -10,6 +10,7 @@ import {
   exitAlignmentTool,
   launchAlignmentTool,
   launchApp,
+  setIsMaster,
   // setBrightSignWallPosition,
 } from '../controller';
 import {
@@ -22,6 +23,7 @@ import {
 } from '../selector';
 import { BrightSignConfig, BrightSignMap, DeviceSetupScreen } from '../type';
 import { cloneDeep } from 'lodash';
+import { brightSignAttributesReducer } from '../model';
 
 /** @internal */
 /** @private */
@@ -41,6 +43,7 @@ export interface AppProps {
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
   onExitAlignmentTool: () => any;
+  onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -210,6 +213,61 @@ const App = (props: AppProps) => {
     );
   };
 
+  const handleAssignDeviceAsMaster = (event: any) => {
+    console.log('handleAssignDeviceAsMaster');
+    console.log(event.target.value);
+
+    // get master before selection
+    let priorMasterDevice = '';
+    for (const key in props.brightSignsInWall) {
+      if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+        if (brightSignInWall.brightWallConfiguration.isMaster) {
+          priorMasterDevice = brightSignInWall.brightSignAttributes.serialNumber;
+        }
+      }
+    }
+
+    if (priorMasterDevice !== 'noneAssigned') {
+      console.log('set ' + priorMasterDevice + ' to slave');
+      props.onSetIsMaster(priorMasterDevice, false);
+    }
+    if (event.target.value !== 'noneAssigned') {
+      console.log('set ' + event.target.value + ' to master');
+      props.onSetIsMaster(event.target.value, true);
+    }
+  };
+
+  const renderMasterSetter = () => {
+
+    const brightSignAttrs: any[] = [];
+
+    for (const key in props.brightSignsInWall) {
+      if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+        brightSignAttrs.push({
+          serialNumber: brightSignInWall.brightSignAttributes.serialNumber,
+          isMaster: brightSignInWall.brightWallConfiguration.isMaster,
+        });
+      }
+    }
+
+    const options = brightSignAttrs.map((brightSignAttr) => {
+      return (
+        <option value={brightSignAttr.serialNumber} key={brightSignAttr.serialNumber} disabled={brightSignAttr.isMaster}>{brightSignAttr.serialNumber}</option>
+      );
+    });
+    options.unshift(<option value={'noneAssigned'}>None assigned</option>);
+
+    return (
+      <div>
+        <select onChange={handleAssignDeviceAsMaster}>
+          {options}
+        </select>
+      </div>
+    );
+  };
+
   const renderBrightSignInWall = (brightSignConfig: BrightSignConfig) => {
 
     const serialNumberLbl = 'Serial Number: ';
@@ -263,6 +321,7 @@ const App = (props: AppProps) => {
   console.log('main render - numColumns: ', props.numColumns);
 
   const wall = renderWall();
+  const masterSetter = renderMasterSetter();
   const brightSignsInWall = renderBrightSignsInWall();
 
   const alignLabel = props.brightWallDeviceSetupActiveScreen === DeviceSetupScreen.ConfigureScreen ? 'Align screens' : 'Exit alignment tool';
@@ -284,6 +343,7 @@ const App = (props: AppProps) => {
         </button>
 
         {wall}
+        {masterSetter}
         <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
         {brightSignsInWall}
       </div>
@@ -309,6 +369,7 @@ const mapDispatchToProps = (dispatch: any) => {
     onExitConfigurator: exitConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
     onExitAlignmentTool: exitAlignmentTool,
+    onSetIsMaster: setIsMaster,
   }, dispatch);
 };
 

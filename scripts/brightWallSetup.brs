@@ -239,58 +239,6 @@ Sub BrightWallDeviceCheckin(userData as object, e as object)
 end sub
 
 
-Sub SetBrightWallIsSyncMaster(userData as object, e as object)
-
-  print "SetBrightWallIsSyncMaster handler invoked"
-
-  mVar = userData.mVar
-  
-  args = e.GetFormData()
-
-  if not mVar.sign.isVideoWall then
-    ' return error
-    stop
-  endif
-
-  if not IsString(args["isSyncMaster"]) then
-    ' return error
-    stop
-  endif
-
-  isSyncMaster = IsTruthy(args["isSyncMaster"])
-  
-  if not IsBoolean(isSyncMaster) then
-    ' return error
-    stop
-  endif
-
-  globalAA = GetGlobalAA()
-
-  globalAA.registrySettings.sync_master = isSyncMaster
-
-  globalAA.registrySection.Write("sync_master", args["isSyncMaster"])
-  globalAA.registrySection.Flush()
-
-  if not e.SendResponse(200) then
-    stop
-  end if
-
-end sub
-
-
-Sub SetDeviceBrightWallPositionHandler(userData as object, e as object)
-
-  print "SetDeviceBrightWallPositionHandler handler invoked"
-
-  rowIndex = e.GetRequestParam("rowIndex")
-  print "rowIndex: " + rowIndex
-  columnIndex = e.GetRequestParam("columnIndex")
-  print "columnIndex: " + columnIndex
-  SetDeviceBrightWallPosition(rowIndex, columnIndex)
-
-end sub
-
-
 Function GetHostIPAddress() as string
   
   nc = CreateObject("roNetworkConfiguration", 0)
@@ -342,6 +290,19 @@ Sub SetBrightWallPosition(userData as object, e as object)
 end sub
 
 
+Sub SetDeviceBrightWallPositionHandler(userData as object, e as object)
+
+  print "SetDeviceBrightWallPositionHandler handler invoked"
+
+  rowIndex = e.GetRequestParam("rowIndex")
+  print "rowIndex: " + rowIndex
+  columnIndex = e.GetRequestParam("columnIndex")
+  print "columnIndex: " + columnIndex
+  SetDeviceBrightWallPosition(rowIndex, columnIndex)
+
+end sub
+
+
 Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
 
   print "SetDeviceBrightWallPosition invoked"
@@ -357,6 +318,73 @@ Sub SetDeviceBrightWallPosition(rowIndex as string, columnIndex as string)
 
   globalAA.registrySection.Write("videoWallRowIndex", rowIndex)
   globalAA.registrySection.Write("videoWallColumnIndex", columnIndex)
+  globalAA.registrySection.Flush()
+
+end sub
+
+
+
+Sub SetBrightWallIsMaster(userData as object, e as object)
+
+  print "SetBrightWallIsMaster handler invoked"
+
+  mVar = userData.mVar
+  
+  hostIpAddress = GetHostIPAddress()
+
+  ipAddress = e.GetRequestParam("ipAddress")
+  print "ipAddress: " + ipAddress
+
+  isMaster = e.GetRequestParam("isMaster")
+  print "isMaster: " + isMaster
+
+  if ipAddress = hostIpAddress then
+    print "invoke SetDeviceBrightWallIsMaster"
+    SetDeviceBrightWallIsMaster(isMaster)
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/SetDeviceBrightWallIsMaster?isMaster=" + isMaster
+    print "url: " + url
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to SetDeviceBrightWallIsMaster from ";serialNumber
+    print str$
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
+end sub
+
+
+Sub SetDeviceBrightWallIsMasterHandler(userData as object, e as object)
+
+  print "SetDeviceBrightWallIsMasterHandler handler invoked"
+
+  isMaster = e.GetRequestParam("isMaster")
+  print "isMaster: " + isMaster
+  SetDeviceBrightWallIsMaster(isMaster)
+
+end sub
+
+
+Sub SetDeviceBrightWallIsMaster(isMaster as string)
+
+  print "SetDeviceBrightWallIsMaster invoked"
+
+  isMasterBool = IsTruthy(isMaster)
+  print "isMasterBool: "; isMasterBool
+
+  globalAA = GetGlobalAA()
+  globalAA.registrySettings.sync_master = isMasterBool
+  globalAA.registrySection.Write("sync_master", isMaster)
   globalAA.registrySection.Flush()
 
 end sub
@@ -867,6 +895,12 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
         setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
+
+        setBrightWallIsMasterAA = { HandleEvent: SetBrightWallIsMaster, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBrightWallIsMaster", user_data: setBrightWallIsMasterAA })
+
+        setDeviceBrightWallIsMasterHandlerAA = { HandleEvent: SetDeviceBrightWallIsMasterHandler, mVar: m.o }
+        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallIsMaster", user_data: setDeviceBrightWallIsMasterHandlerAA })
 
         exitConfiguratorAA = { HandleEvent: ExitConfigurator, mVar: m.o }
         m.o.sign.localServer.AddGetFromEvent({ url_path: "/ExitConfigurator", user_data: exitConfiguratorAA })

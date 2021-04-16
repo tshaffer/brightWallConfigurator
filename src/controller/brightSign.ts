@@ -114,6 +114,22 @@ export const exitConfigurator = () => {
 };
 
 
+export const setIsMaster = (
+  serialNumber: string,
+  isMaster: boolean
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBrightWallIsMaster?ipAddress=' + ipAddress + '&isMaster=' + isMaster.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+        });
+    }
+  });
+};
+
 export const launchAlignmentTool = () => {
   return ((dispatch: any, getState: any): any => {
     const ipAddress = getSerialNumber(getState());

@@ -20,7 +20,7 @@ export interface SetIsMasterPayload {
 }
 type SetIsMasterAction = BrightWallModelAction<SetIsMasterPayload>;
 
-export const setIsMaster = (
+export const setIsMasterPlayer = (
   serialNumber: string,
   isMaster: boolean,
 ): SetIsMasterAction => {
