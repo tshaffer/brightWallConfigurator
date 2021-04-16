@@ -935,7 +935,24 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
       pluginMessage$ = event["PluginMessage"]
 
       m.o.diagnostics.PrintDebug("PluginMessageEvent " + pluginName$ + " " + pluginMessage$)
-      
+
+      globalAA = GetGlobalAA()
+
+      if IsBoolean(globalAA.registrySettings.brightWallSetupScreenEnabled) and IsTruthy(globalAA.registrySection.Read("brightWallSetupScreenEnabled")) then
+        bsPluginMessage$ = "bwDeviceSetup"
+      else
+        bsPluginMessage$ = "launchBrightWall"
+      endif
+
+      if pluginName$ = "brightWallSetup" and pluginMessage$ = "init" then
+        pluginMessageCmd = {
+          EventType    : "EVENT_PLUGIN_MESSAGE",
+          PluginName   : "brightWallSetup",
+          PluginMessage: bsPluginMessage$
+        }
+        m.msgPort.PostMessage(pluginMessageCmd)
+      endif
+
     endif
 
   else if type(event) = "roDatagramEvent" then
