@@ -189,37 +189,6 @@ Sub GetIsBrightWallHandler(userData as object, e as object)
 end sub
 
 
-'Sub GetIsBrightWallSyncMaster(userData as object, e as object)
-  
-'  mVar = userData.mVar
-
-'  if not mVar.sign.isVideoWall then
-    ' return error
-'    stop
-'  endif
-
-  
-'  root = CreateObject("roXMLElement")
-'  root.SetName("BrightSignIsBrightWallSyncMaster")
-
-'  elem = root.AddElement("IsBrightWallSyncMaster")
-
-'  globalAA = GetGlobalAA()
-'  if IsBoolean(globalAA.registrySettings.sync_master) then
-'    elem.SetBody("true")
-'  else
-'    elem.SetBody("false")
-'  endif
-  
-'  xml = root.GenXML({ indent: " ", newline: chr(10), header: true })
-  
-'  e.AddResponseHeader("Content-type", "text/xml; charset=utf-8")
-'  e.SetResponseBodyString(xml)
-'  e.SendResponse(200)
-
-'end sub
-
-
 Sub BrightWallDeviceCheckin(userData as object, e as object)
   
   print "BrightWallDeviceCheckin handler invoked"
@@ -396,7 +365,21 @@ Sub ExitConfigurator(userData as object, e as object)
 
   hostIpAddress = GetHostIPAddress()
 
-  ExitDeviceConfigurator()
+  ipAddress = e.GetRequestParam("ipAddress")
+
+  if ipAddress = hostIpAddress then
+    ExitDeviceConfigurator()
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/ExitConfigurator"
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to ExitConfigurator from ";serialNumber
+    print str$
+  endif
 
   resp = {}
   resp.AddReplace("success", true)
@@ -412,8 +395,6 @@ Sub ExitDeviceConfigurator()
 
   print "ExitDeviceConfigurator handler invoked"
 
-  ' hostIpAddress = GetHostIPAddress()
-
   globalAA = GetGlobalAA()
   globalAA.registrySettings.brightWallSetupScreenEnabled = false
   globalAA.registrySection.Write("brightWallSetupScreenEnabled", "0")
@@ -428,7 +409,21 @@ Sub LaunchAlignmentTool(userData as object, e as object)
 
   hostIpAddress = GetHostIPAddress()
 
-  LaunchDeviceAlignmentTool()
+  ipAddress = e.GetRequestParam("ipAddress")
+
+  if ipAddress = hostIpAddress then
+    LaunchDeviceAlignmentTool()
+  else
+    xfer = CreateObject("roUrlTransfer")
+    xfer.SetPort(mVar.msgPort)
+    xfer.SetTimeout(5000)
+    url = ipAddress + ":8008/LaunchDeviceAlignmentTool"
+    xfer.SetUrl(url)
+    str$ = xfer.GetToString()
+    config = ParseJSON(str$)
+    print "response to LaunchDeviceAlignmentTool from ";serialNumber
+    print str$
+  endif
 
   resp = {}
   resp.AddReplace("success", true)
@@ -443,8 +438,6 @@ end sub
 Sub LaunchDeviceAlignmentTool()
 
   print "LaunchDeviceAlignmentTool handler invoked"
-
-  ' hostIpAddress = GetHostIPAddress()
 
   globalAA = GetGlobalAA()
   globalAA.registrySettings.brightWallDeviceSetupActiveScreen = "alignScreen"
