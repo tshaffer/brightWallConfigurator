@@ -254,19 +254,21 @@ const App = (props: AppProps) => {
       }
     }
 
+    let optionValue = 'noneAssigned';
     const options = brightSignAttrs.map((brightSignAttr) => {
+      if (brightSignAttr.isMaster) {
+        optionValue = brightSignAttr.serialNumber;
+      }
       return (
         <option value={brightSignAttr.serialNumber} key={brightSignAttr.serialNumber} disabled={brightSignAttr.isMaster}>{brightSignAttr.serialNumber}</option>
       );
     });
     options.unshift(<option value={'noneAssigned'}>None assigned</option>);
 
-    // <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
-
     return (
       <div>
         Master:
-        <select onChange={handleAssignDeviceAsMaster}>
+        <select value={optionValue} onChange={handleAssignDeviceAsMaster}>
           {options}
         </select>
       </div>
@@ -343,7 +345,6 @@ const App = (props: AppProps) => {
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
-
 
         {wall}
         
