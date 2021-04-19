@@ -363,6 +363,8 @@ Sub ExitConfigurator(userData as object, e as object)
 
   print "ExitConfigurator handler invoked"
 
+  mVar = userData.mVar
+  
   hostIpAddress = GetHostIPAddress()
 
   ipAddress = e.GetRequestParam("ipAddress")
@@ -407,22 +409,31 @@ Sub LaunchAlignmentTool(userData as object, e as object)
 
   print "LaunchAlignmentTool handler invoked"
 
-  hostIpAddress = GetHostIPAddress()
+  mVar = userData.mVar
+  
+  hostSerialNumber = mVar.sysInfo.deviceUniqueId$
+  
+  if not mVar.brightSignsInWall.isEmpty() then
 
-  ipAddress = e.GetRequestParam("ipAddress")
+    for each serialNumber in mVar.brightSignsInWall
+      if hostSerialNumber <> serialNumber then
+        print "invoke LaunchDeviceAlignmentTool from non host: ";serialNumber
+        xfer = CreateObject("roUrlTransfer")
+        xfer.SetPort(mVar.msgPort)
+        xfer.SetTimeout(5000)
+        url = "http://brightsign-" + serialNumber + ".local:8008/LaunchAlignmentTool"
+        print url
+        xfer.SetUrl(url)
+        str$ = xfer.GetToString()
+        config = ParseJSON(str$)
+        print "response to LaunchDeviceAlignmentTool from ";serialNumber
+        print str$
+      endif
+    next
 
-  if ipAddress = hostIpAddress then
+    print "invoke LaunchDeviceAlignmentTool on host"
     LaunchDeviceAlignmentTool()
-  else
-    xfer = CreateObject("roUrlTransfer")
-    xfer.SetPort(mVar.msgPort)
-    xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/LaunchDeviceAlignmentTool"
-    xfer.SetUrl(url)
-    str$ = xfer.GetToString()
-    config = ParseJSON(str$)
-    print "response to LaunchDeviceAlignmentTool from ";serialNumber
-    print str$
+  
   endif
 
   resp = {}
@@ -430,6 +441,9 @@ Sub LaunchAlignmentTool(userData as object, e as object)
 
   e.AddResponseHeader("Content-type", "application/json")
   e.SetResponseBodyString(FormatJson(resp))
+
+  print "LaunchDeviceAlignmentTool SendResponse(200)"
+
   e.SendResponse(200)
 
 end sub
@@ -443,6 +457,10 @@ Sub LaunchDeviceAlignmentTool()
   globalAA.registrySettings.brightWallDeviceSetupActiveScreen = "alignScreen"
   globalAA.registrySection.Write("brightWallDeviceSetupActiveScreen", "alignScreen")
   globalAA.registrySection.Flush()
+  print "registry flushed"
+  val$ = globalAA.registrySection.Read("brightWallDeviceSetupActiveScreen")
+  print "value is:"
+  print val$
 
 end sub
 
@@ -451,9 +469,32 @@ Sub ExitAlignmentTool(userData as object, e as object)
 
   print "ExitAlignmentTool handler invoked"
 
-  hostIpAddress = GetHostIPAddress()
+  mVar = userData.mVar
+  
+  hostSerialNumber = mVar.sysInfo.deviceUniqueId$
+  
+  if not mVar.brightSignsInWall.isEmpty() then
 
-  ExitDeviceAlignmentTool()
+    for each serialNumber in mVar.brightSignsInWall
+      if hostSerialNumber <> serialNumber then
+        print "invoke ExitDeviceAlignmentTool from non host: ";serialNumber
+        xfer = CreateObject("roUrlTransfer")
+        xfer.SetPort(mVar.msgPort)
+        xfer.SetTimeout(5000)
+        url = "http://brightsign-" + serialNumber + ".local:8008/ExitAlignmentTool"
+        print url
+        xfer.SetUrl(url)
+        str$ = xfer.GetToString()
+        config = ParseJSON(str$)
+        print "response to ExitDeviceAlignmentTool from ";serialNumber
+        print str$
+      endif
+    next
+
+    print "invoke ExitDeviceAlignmentTool on host"
+    ExitDeviceAlignmentTool()
+  
+  endif
 
   resp = {}
   resp.AddReplace("success", true)
@@ -469,8 +510,6 @@ Sub ExitDeviceAlignmentTool()
 
   print "ExitDeviceAlignmentTool handler invoked"
 
-  ' hostIpAddress = GetHostIPAddress()
-
   globalAA = GetGlobalAA()
   globalAA.registrySettings.brightWallDeviceSetupActiveScreen = "configureScreen"
   globalAA.registrySection.Write("brightWallDeviceSetupActiveScreen", "configureScreen")
@@ -480,8 +519,55 @@ end sub
 
 
 Sub RebootBrightWall(userData as object, e as object)
-  RebootSystem()
+
+  print "RebootBrightWall handler invoked"
+
+  mVar = userData.mVar
+  
+  hostSerialNumber = mVar.sysInfo.deviceUniqueId$
+  
+  if not mVar.brightSignsInWall.isEmpty() then
+
+    for each serialNumber in mVar.brightSignsInWall
+      if hostSerialNumber <> serialNumber then
+        print "invoke RebootDeviceBrightWall from non host: ";serialNumber
+        xfer = CreateObject("roUrlTransfer")
+        xfer.SetPort(mVar.msgPort)
+        xfer.SetTimeout(5000)
+        url = "http://brightsign-" + serialNumber + ".local:8008/RebootBrightWall"
+        print url
+        xfer.SetUrl(url)
+        str$ = xfer.GetToString()
+        config = ParseJSON(str$)
+        print "response to RebootDeviceBrightWall from ";serialNumber
+        print str$
+      endif
+    next
+
+    print "invoke RebootDeviceBrightWall on host"
+    RebootDeviceBrightWall()
+  
+  endif
+
+  resp = {}
+  resp.AddReplace("success", true)
+
+  e.AddResponseHeader("Content-type", "application/json")
+  e.SetResponseBodyString(FormatJson(resp))
+  e.SendResponse(200)
+
 end sub
+
+
+Sub RebootDeviceBrightWall()
+
+  RebootSystem()
+
+end sub
+
+
+
+
 
 
 Sub SetDeviceBezelMeasureByType(bezelMeasureByType as string)
