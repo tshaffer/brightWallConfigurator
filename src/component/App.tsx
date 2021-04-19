@@ -78,7 +78,7 @@ const useStyles = makeStyles({
     background: 'linear-gradient(90deg, #753CD9, #290D5B)',
     color: 'white',
     textAlign: 'center',
-    minHeight: '100vh',
+    // minHeight: '100vh',
     // font
   },
   AppHeaderStyle: {
@@ -90,8 +90,10 @@ const useStyles = makeStyles({
   },
   HeaderMsgStyle: {
     // font-family: "roboto";
-    fontSize: '5vmin',
-    textAlign: 'center',
+    // fontSize: '5vmin',
+    // textAlign: 'center',
+    fontSize: 'large',
+    textAlign: 'left',
     display: 'inline-block'
   },
   MsgStyle: {
@@ -259,8 +261,11 @@ const App = (props: AppProps) => {
     });
     options.unshift(<option value={'noneAssigned'}>None assigned</option>);
 
+    // <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
+
     return (
       <div>
+        Master:
         <select onChange={handleAssignDeviceAsMaster}>
           {options}
         </select>
@@ -326,24 +331,37 @@ const App = (props: AppProps) => {
 
   const alignLabel = props.brightWallDeviceSetupActiveScreen === DeviceSetupScreen.ConfigureScreen ? 'Align screens' : 'Exit alignment tool';
 
-  return (
-    <div className={classes.AppStyle}>
+  /*
       <header className={classes.AppHeader}>
         <div className={classes.logoContainerStyle} />
       </header>
-      <div className={classes.bodyDiv}>
+  */
+
+  return (
+    <div className={classes.AppStyle}>
+      <div className={classes.MsgStyle}>
         <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
-        <button onClick={handleLaunchAlignment}>
-          {alignLabel}
-        </button>
-        <button onClick={handleExitConfigurator}>
-          {'Exit configurator to launch BrightWall'}
-        </button>
+
 
         {wall}
+        
+        <br></br>
         {masterSetter}
+
+        <br></br>
+        <button className={classes.MsgStyle} onClick={handleLaunchAlignment}>
+          {alignLabel}
+        </button>
+        <br></br>
+        <br></br>
+        <button className={classes.MsgStyle} onClick={handleExitConfigurator}>
+          {'Exit configurator to launch BrightWall'}
+        </button>
+        <br></br>
+        <br></br>
+
         <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
         {brightSignsInWall}
       </div>
