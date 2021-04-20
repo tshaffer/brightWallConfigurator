@@ -148,7 +148,7 @@ Sub GetBrightWallDeviceList(userData as object, e as object)
     for each serialNumber in mVar.brightSignsInWall
       if hostSerialNumber <> serialNumber then
         print "fetch config from non host"
-        url = "http://brightsign-" + serialNumber + ".local:8008/GetBrightWallConfiguration"
+        url = "http://brightsign-" + serialNumber + ".local:8088/GetBrightWallConfiguration"
         xfer.SetUrl(url)
         str$ = xfer.GetToString()
         config = ParseJSON(str$)
@@ -240,7 +240,7 @@ Sub SetBrightWallPosition(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBrightWallPosition?rowIndex=" + rowIndex + "&columnIndex=" + columnIndex
+    url = ipAddress + ":8088/SetDeviceBrightWallPosition?rowIndex=" + rowIndex + "&columnIndex=" + columnIndex
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -314,7 +314,7 @@ Sub SetBrightWallIsMaster(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBrightWallIsMaster?isMaster=" + isMaster
+    url = ipAddress + ":8088/SetDeviceBrightWallIsMaster?isMaster=" + isMaster
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -375,7 +375,7 @@ Sub ExitConfigurator(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/ExitConfigurator"
+    url = ipAddress + ":8088/ExitConfigurator"
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
     config = ParseJSON(str$)
@@ -421,7 +421,7 @@ Sub LaunchAlignmentTool(userData as object, e as object)
         xfer = CreateObject("roUrlTransfer")
         xfer.SetPort(mVar.msgPort)
         xfer.SetTimeout(5000)
-        url = "http://brightsign-" + serialNumber + ".local:8008/LaunchAlignmentTool"
+        url = "http://brightsign-" + serialNumber + ".local:8088/LaunchAlignmentTool"
         print url
         xfer.SetUrl(url)
         str$ = xfer.GetToString()
@@ -481,7 +481,7 @@ Sub ExitAlignmentTool(userData as object, e as object)
         xfer = CreateObject("roUrlTransfer")
         xfer.SetPort(mVar.msgPort)
         xfer.SetTimeout(5000)
-        url = "http://brightsign-" + serialNumber + ".local:8008/ExitAlignmentTool"
+        url = "http://brightsign-" + serialNumber + ".local:8088/ExitAlignmentTool"
         print url
         xfer.SetUrl(url)
         str$ = xfer.GetToString()
@@ -534,7 +534,7 @@ Sub RebootBrightWall(userData as object, e as object)
         xfer = CreateObject("roUrlTransfer")
         xfer.SetPort(mVar.msgPort)
         xfer.SetTimeout(5000)
-        url = "http://brightsign-" + serialNumber + ".local:8008/RebootBrightWall"
+        url = "http://brightsign-" + serialNumber + ".local:8088/RebootBrightWall"
         print url
         xfer.SetUrl(url)
         str$ = xfer.GetToString()
@@ -603,7 +603,7 @@ Sub SetBezelMeasureByType(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelMeasureByType?bezelMeasureByType=" + bezelMeasureByType
+    url = ipAddress + ":8088/SetDeviceBezelMeasureByType?bezelMeasureByType=" + bezelMeasureByType
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -655,7 +655,7 @@ Sub SetBezelWidthPercentage(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelWidthPercentage?bezelWidthPercentage=" + bezelWidthPercentage
+    url = ipAddress + ":8088/SetDeviceBezelWidthPercentage?bezelWidthPercentage=" + bezelWidthPercentage
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -707,7 +707,7 @@ Sub SetBezelHeightPercentage(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelHeightPercentage?bezelHeightPercentage=" + bezelHeightPercentage
+    url = ipAddress + ":8088/SetDeviceBezelHeightPercentage?bezelHeightPercentage=" + bezelHeightPercentage
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -759,7 +759,7 @@ Sub SetBezelWidth(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
+    url = ipAddress + ":8088/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -811,7 +811,7 @@ Sub SetBezelHeight(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
+    url = ipAddress + ":8088/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -863,7 +863,7 @@ Sub SetBezelScreenWidth(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
+    url = ipAddress + ":8088/SetDeviceBezelWidth?bezelWidth=" + bezelWidth
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -915,7 +915,7 @@ Sub SetBezelScreenHeight(userData as object, e as object)
     xfer = CreateObject("roUrlTransfer")
     xfer.SetPort(mVar.msgPort)
     xfer.SetTimeout(5000)
-    url = ipAddress + ":8008/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
+    url = ipAddress + ":8088/SetDeviceBezelHeight?bezelHeight=" + bezelHeight
     print "url: " + url
     xfer.SetUrl(url)
     str$ = xfer.GetToString()
@@ -946,7 +946,7 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
 
     if not m.handlersAdded then
 
-      if type(m.o.sign) = "roAssociativeArray" and type(m.o.sign.localServer) = "roHttpServer" then
+      if type(m.o.brightWallConfiguratorServer) = "roHttpServer" then
 
         print "add handlers"
 
@@ -958,61 +958,61 @@ Function brightWallSetup_ProcessEvent(event As Object) As Boolean
         m.o.bwUdpReceiver.SetPort(m.o.msgPort)
 
         getIsBrightWallAA = { HandleEvent: GetIsBrightWallHandler, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetIsBrightWall", user_data: getIsBrightWallAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/GetIsBrightWall", user_data: getIsBrightWallAA })
 
         getBrightWallConfigurationAA = { HandleEvent: GetBrightWallConfiguration, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallConfiguration", user_data: getBrightWallConfigurationAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/GetBrightWallConfiguration", user_data: getBrightWallConfigurationAA })
 
         brightWallDeviceCheckinAA = { HandleEvent: BrightWallDeviceCheckin, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/BrightWallDeviceCheckin", user_data: brightWallDeviceCheckinAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/BrightWallDeviceCheckin", user_data: brightWallDeviceCheckinAA })
 
         getBrightWallDeviceListAA = { HandleEvent: GetBrightWallDeviceList, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/GetBrightWallDeviceList", user_data: getBrightWallDeviceListAA })
 
         setBrightWallPositionAA = { HandleEvent: SetBrightWallPosition, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBrightWallPosition", user_data: setBrightWallPositionAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBrightWallPosition", user_data: setBrightWallPositionAA })
 
         setDeviceBrightWallPositionHandlerAA = { HandleEvent: SetDeviceBrightWallPositionHandler, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallPosition", user_data: setDeviceBrightWallPositionHandlerAA })
 
         setBrightWallIsMasterAA = { HandleEvent: SetBrightWallIsMaster, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBrightWallIsMaster", user_data: setBrightWallIsMasterAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBrightWallIsMaster", user_data: setBrightWallIsMasterAA })
 
         setDeviceBrightWallIsMasterHandlerAA = { HandleEvent: SetDeviceBrightWallIsMasterHandler, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallIsMaster", user_data: setDeviceBrightWallIsMasterHandlerAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetDeviceBrightWallIsMaster", user_data: setDeviceBrightWallIsMasterHandlerAA })
 
         exitConfiguratorAA = { HandleEvent: ExitConfigurator, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/ExitConfigurator", user_data: exitConfiguratorAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/ExitConfigurator", user_data: exitConfiguratorAA })
 
         launchAlignmentToolAA = { HandleEvent: LaunchAlignmentTool, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/LaunchAlignmentTool", user_data: launchAlignmentToolAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/LaunchAlignmentTool", user_data: launchAlignmentToolAA })
 
         exitAlignmentToolAA = { HandleEvent: ExitAlignmentTool, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/ExitAlignmentTool", user_data: exitAlignmentToolAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/ExitAlignmentTool", user_data: exitAlignmentToolAA })
 
         rebootBrightWallAA = { HandleEvent: RebootBrightWall, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/RebootBrightWall", user_data: rebootBrightWallAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/RebootBrightWall", user_data: rebootBrightWallAA })
 
         setBezelMeasureByTypeAA = { HandleEvent: SetBezelMeasureByType, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelMeasureByType", user_data: setBezelMeasureByTypeAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelMeasureByType", user_data: setBezelMeasureByTypeAA })
 
         setBezelWidthPercentageAA = { HandleEvent: SetBezelWidthPercentage, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelWidthPercentage", user_data: setBezelWidthPercentageAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelWidthPercentage", user_data: setBezelWidthPercentageAA })
 
         setBezelHeightPercentageAA = { HandleEvent: SetBezelHeightPercentage, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelHeightPercentage", user_data: setBezelHeightPercentageAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelHeightPercentage", user_data: setBezelHeightPercentageAA })
 
         setBezelWidthAA = { HandleEvent: SetBezelWidth, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelWidth", user_data: setBezelWidthAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelWidth", user_data: setBezelWidthAA })
 
         setBezelHeightAA = { HandleEvent: SetBezelHeight, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelHeight", user_data: setBezelHeightAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelHeight", user_data: setBezelHeightAA })
 
         setBezelScreenWidthAA = { HandleEvent: SetBezelScreenWidth, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelScreenWidth", user_data: setBezelScreenWidthAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelScreenWidth", user_data: setBezelScreenWidthAA })
 
         setBezelScreenHeightAA = { HandleEvent: SetBezelScreenHeight, mVar: m.o }
-        m.o.sign.localServer.AddGetFromEvent({ url_path: "/SetBezelScreenHeight", user_data: setBezelScreenHeightAA })
+        m.o.brightWallConfiguratorServer.AddGetFromEvent({ url_path: "/SetBezelScreenHeight", user_data: setBezelScreenHeightAA })
 
         m.handlersAdded = true
 
