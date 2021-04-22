@@ -40,7 +40,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'build/bundle.js', to: '../../../BrightAuthor/baconPresentations/brightWalls/brightWallConfigurator/deviceWebPageArtifacts/build' },
+        { from: 'build/bundle.js', to: '../../../Projects/fb1632/bacon/dist/dev/static/brightWallConfigurator/build' },
       ]
     })
   ]
