@@ -82,7 +82,7 @@ const getDeviceIpAddress = (
   return '';
 };
 
-export const setDeviceBrightSignWallPosition = (
+export const setBrightSignWallPosition = (
   serialNumber: string,
   rowIndex: number,
   columnIndex: number,

@@ -11,7 +11,7 @@ import {
   launchAlignmentTool,
   launchApp,
   setIsMaster,
-  // setBrightSignWallPosition,
+  setBrightSignWallPosition,
 } from '../controller';
 import {
   getIsBrightWall,
@@ -39,7 +39,7 @@ export interface AppProps {
   rowIndex: number;
   columnIndex: number;
   onLaunchApp: () => any;
-  // onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
+  onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
   onExitAlignmentTool: () => any;
@@ -132,11 +132,11 @@ const App = (props: AppProps) => {
       const column: number = parseInt(valueParts[2], 10);
       const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
 
-      // const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
-      // if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
-      //   props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
-      // }
-      // props.onSetBrightSignWallPosition(serialNumber, row, column);
+      const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
+      if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
+        props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
+      }
+      props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
   };
 
@@ -384,7 +384,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
-    // onSetBrightSignWallPosition: setBrightSignWallPosition,
+    onSetBrightSignWallPosition: setBrightSignWallPosition,
     onExitConfigurator: exitConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
     onExitAlignmentTool: exitAlignmentTool,
