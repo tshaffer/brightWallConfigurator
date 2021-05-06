@@ -1,7 +1,7 @@
-import { isNil } from 'lodash';
-import { setBrightSign, addHostBrightSign } from '../model';
+import { isBoolean, isNil } from 'lodash';
+import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex } from '../model';
 import { getBrightSignInWall, getSerialNumber } from '../selector';
-import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignState, NetworkInterface, NetworkInterfaceMap } from '../type';
+import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, BrightWallConfiguration, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
@@ -94,6 +94,39 @@ export const setBrightSignWallPosition = (
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            console.log('setBrightWallPosition success');
+            console.log(ipAddress);
+            console.log(rowIndex);
+            console.log(columnIndex);
+            const state: BrightSignState = getState();
+            console.log(state);
+            const brightWall: BrightWall = state.brightWall;
+            const brightSignMap: BrightSignMap = brightWall.brightSignMap;
+            for (const serialNumber in brightSignMap) {
+              if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
+                const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
+                const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+                // const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
+                const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
+                for (const networkInterfaceName in networkInterfaces) {
+                  if (Object.prototype.hasOwnProperty.call(networkInterfaces, networkInterfaceName)) {
+                    const networkInterface: NetworkInterface = networkInterfaces[networkInterfaceName];
+                    const currentConfig = networkInterface.currentConfig;
+                    if (currentConfig.ip4_address === ipAddress) {
+                      const serialNumber = brightSignAttributes.serialNumber;
+                      console.log('state before');
+                      console.log(getState());
+                      dispatch(setRowIndex(serialNumber, rowIndex));
+                      dispatch(setColumnIndex(serialNumber, columnIndex));
+                      console.log('state after');
+                      console.log(getState());
+                    }
+                  }
+                }
+              }
+            }
+          }
         });
     }
   });

@@ -22,10 +22,51 @@ export const SET_BEZEL_WIDTH = 'SET_BEZEL_WIDTH';
 export const SET_BEZEL_HEIGHT = 'SET_BEZEL_HEIGHT';
 export const SET_BEZEL_SCREEN_WIDTH = 'SET_BEZEL_SCREEN_WIDTH';
 export const SET_BEZEL_SCREEN_HEIGHT = 'SET_BEZEL_SCREEN_HEIGHT';
+export const SET_ROW_INDEX = 'SET_ROW_INDEX';
+export const SET_COLUMN_INDEX = 'SET_COLUMN_INDEX';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+export interface SetRowIndexPayload {
+  serialNumber: string;
+  rowIndex: number;
+}
+type SetRowIndexAction = BrightWallModelAction<SetRowIndexPayload>;
+
+export const setRowIndex = (
+  serialNumber: string,
+  rowIndex: number,
+): SetRowIndexAction => {
+  return {
+    type: SET_ROW_INDEX,
+    payload: {
+      serialNumber,
+      rowIndex,
+    },
+  };
+};
+
+export interface SetColumnIndexPayload {
+  serialNumber: string;
+  columnIndex: number;
+}
+type SetColumnIndexAction = BrightWallModelAction<SetColumnIndexPayload>;
+
+export const setColumnIndex = (
+  serialNumber: string,
+  columnIndex: number,
+): SetColumnIndexAction => {
+  return {
+    type: SET_COLUMN_INDEX,
+    payload: {
+      serialNumber,
+      columnIndex,
+    },
+  };
+};
+
+
 export interface AddHostBrightSignPayload {
   serialNumber: string;
   brightSignConfig: BrightSignConfig;
@@ -209,10 +250,12 @@ const initialState: BrightWall = {
 
 export const brightSignAttributesReducer = (
   state: BrightWall = initialState,
-  action: AddHostBrightSignAction & SetBrightSignAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction,
+  action: AddHostBrightSignAction & SetBrightSignAction & SetRowIndexAction & SetColumnIndexAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction,
 ): BrightWall => {
   let newState;
   let brightWallConfiguration;
+  let brightSignConfig: BrightSignConfig;
+  console.log('****-- brightSignAttributesReducer: ', action.type);
   switch (action.type) {
     case ADD_HOST_BRIGHTSIGN:
       newState = cloneDeep(state) as BrightWall;
@@ -221,6 +264,16 @@ export const brightSignAttributesReducer = (
     case SET_BRIGHTSIGN:
       newState = cloneDeep(state) as BrightWall;
       newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
+      return newState;
+    case SET_ROW_INDEX:
+      newState = cloneDeep(state) as BrightWall;
+      brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
+      brightSignConfig.brightWallConfiguration.rowIndex = action.payload.rowIndex;
+      return newState;
+    case SET_COLUMN_INDEX:
+      newState = cloneDeep(state) as BrightWall;
+      brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
+      brightSignConfig.brightWallConfiguration.rowIndex = action.payload.rowIndex;
       return newState;
     case SET_BEZEL_MEASURE_BY_TYPE:
       newState = cloneDeep(state) as BrightWall;
