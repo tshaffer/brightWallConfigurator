@@ -25,6 +25,7 @@ export const SET_BEZEL_SCREEN_WIDTH = 'SET_BEZEL_SCREEN_WIDTH';
 export const SET_BEZEL_SCREEN_HEIGHT = 'SET_BEZEL_SCREEN_HEIGHT';
 export const SET_ROW_INDEX = 'SET_ROW_INDEX';
 export const SET_COLUMN_INDEX = 'SET_COLUMN_INDEX';
+export const SET_IS_MASTER = 'SET_IS_MASTER';
 
 // ------------------------------------
 // Actions
@@ -63,6 +64,26 @@ export const setColumnIndex = (
     payload: {
       serialNumber,
       columnIndex,
+    },
+  };
+};
+
+export interface SetIsMasterPayload {
+  serialNumber: string;
+  isMaster: boolean;
+}
+type SetIsMasterAction = BrightWallModelAction<SetIsMasterPayload>;
+
+export const setIsMasterPlayer = (
+  serialNumber: string,
+  isMaster: boolean,
+): SetIsMasterAction => {
+  debugger;
+  return {
+    type: SET_IS_MASTER,
+    payload: {
+      serialNumber,
+      isMaster,
     },
   };
 };
@@ -270,7 +291,7 @@ const initialState: BrightWall = {
 
 export const brightSignAttributesReducer = (
   state: BrightWall = initialState,
-  action: AddHostBrightSignAction & SetBrightSignAction & SetRowIndexAction & SetColumnIndexAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction,
+  action: AddHostBrightSignAction & SetBrightSignAction & SetRowIndexAction & SetColumnIndexAction & SetIsMasterAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction,
 ): BrightWall => {
   let newState;
   let brightWallConfiguration;
@@ -289,7 +310,7 @@ export const brightSignAttributesReducer = (
       newState = cloneDeep(state) as BrightWall;
       // eslint-disable-next-line no-prototype-builtins
       if (!newState.brightSignMap.hasOwnProperty(action.payload.serialNumber)) {
-        newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;        
+        newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
       }
       return newState;
     case SET_ROW_INDEX:
@@ -301,6 +322,11 @@ export const brightSignAttributesReducer = (
       newState = cloneDeep(state) as BrightWall;
       brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
       brightSignConfig.brightWallConfiguration.columnIndex = action.payload.columnIndex;
+      return newState;
+    case SET_IS_MASTER:
+      newState = cloneDeep(state) as BrightWall;
+      brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
+      brightSignConfig.brightWallConfiguration.isMaster = action.payload.isMaster;
       return newState;
     case SET_BEZEL_MEASURE_BY_TYPE:
       newState = cloneDeep(state) as BrightWall;

@@ -5,33 +5,12 @@ import { cloneDeep } from 'lodash';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SET_IS_MASTER = 'SET_IS_MASTER';
 export const SET_NUM_ROWS = 'SET_NUM_ROWS';
 export const SET_NUM_COLUMNS = 'SET_NUM_COLUMNS';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export interface SetIsMasterPayload {
-  serialNumber: string;
-  isMaster: boolean;
-}
-type SetIsMasterAction = BrightWallModelAction<SetIsMasterPayload>;
-
-export const setIsMasterPlayer = (
-  serialNumber: string,
-  isMaster: boolean,
-): SetIsMasterAction => {
-  debugger;
-  return {
-    type: SET_IS_MASTER,
-    payload: {
-      serialNumber,
-      isMaster,
-    },
-  };
-};
-
 
 export interface SetNumRowsPayload {
   serialNumber: string;
@@ -98,15 +77,10 @@ const initialState: BrightWallConfiguration = {
 
 export const brightWallConfigurationReducer = (
   state: BrightWallConfiguration = initialState,
-  action: SetIsMasterAction & SetNumRowsAction & SetNumColumnsAction,
+  action: SetNumRowsAction & SetNumColumnsAction,
 ): BrightWallConfiguration => {
   console.log('****-- brightWallConfigurationReducer: ', action.type);
   switch (action.type) {
-    case SET_IS_MASTER:
-      return {
-        ...state,
-        isMaster: action.payload.isMaster,
-      };
     case SET_NUM_ROWS:
       return {
         ...state,

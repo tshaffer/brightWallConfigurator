@@ -1,5 +1,5 @@
 import { isBoolean, isNil } from 'lodash';
-import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex, addNewBrightSign } from '../model';
+import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex, addNewBrightSign, setIsMasterPlayer } from '../model';
 import { getBrightSignInWall, getSerialNumber } from '../selector';
 import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, BrightWallConfiguration, NetworkInterface, NetworkInterfaceMap } from '../type';
 
@@ -161,6 +161,9 @@ export const setIsMaster = (
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            dispatch(setIsMasterPlayer(serialNumber, isMaster));
+          }
         });
     }
   });
