@@ -1,5 +1,5 @@
 import { isBoolean, isNil } from 'lodash';
-import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex } from '../model';
+import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex, addNewBrightSign } from '../model';
 import { getBrightSignInWall, getSerialNumber } from '../selector';
 import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, BrightWallConfiguration, NetworkInterface, NetworkInterfaceMap } from '../type';
 
@@ -10,7 +10,7 @@ interface BrightSignDeviceList {
 }
 
 export const launchApp = () => {
-  return ((dispatch: any): any => {
+  return ((dispatch: any, getState: any): any => {
     getBrightSignConfig()
       .then((brightSignConfig: BrightSignConfig) => {
 
@@ -20,15 +20,15 @@ export const launchApp = () => {
         console.log('launchApp, start timer');
 
         // get list of BrightSigns in the wall after short timeout
-        setTimeout(getBrightWallDeviceList, 1000, dispatch);
+        setTimeout(getBrightWallDeviceList, 1000, dispatch, getState);
 
         // start timer to get list of BrightSigns in the wall
-        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 15000, dispatch);
+        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 15000, dispatch, getState);
       });
   });
 };
 
-const getBrightWallDeviceList = (dispatch: any) => {
+const getBrightWallDeviceList = (dispatch: any, getState: any) => {
   console.log('getBrightWallDeviceList invoked');
   fetch('/GetBrightWallDeviceList')
     .then(response => response.json())
@@ -36,7 +36,10 @@ const getBrightWallDeviceList = (dispatch: any) => {
       console.log('response from GetBrightWallDeviceList');
       console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
-        dispatch(setBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+        const brightSignInWall: BrightSignConfig | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
+        if (isNil(brightSignInWall)) {
+          dispatch(addNewBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+        }
       }
     });
 };

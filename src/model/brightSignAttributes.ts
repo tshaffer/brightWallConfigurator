@@ -15,6 +15,7 @@ import {
 // ------------------------------------
 export const ADD_HOST_BRIGHTSIGN = 'ADD_HOST_BRIGHTSIGN';
 export const SET_BRIGHTSIGN = 'SET_BRIGHTSIGN';
+export const ADD_NEW_BRIGHTSIGN = 'ADD_NEW_BRIGHTSIGN';
 export const SET_BEZEL_MEASURE_BY_TYPE = 'SET_BEZEL_MEASURE_BY_TYPE';
 export const SET_BEZEL_WIDTH_PERCENTAGE = 'SET_BEZEL_WIDTH_PERCENTAGE';
 export const SET_BEZEL_HEIGHT_PERCENTAGE = 'SET_BEZEL_HEIGHT_PERCENTAGE';
@@ -98,6 +99,25 @@ export const setBrightSign = (
 ): SetBrightSignAction => {
   return {
     type: SET_BRIGHTSIGN,
+    payload: {
+      serialNumber,
+      brightSignConfig,
+    },
+  };
+};
+
+export interface AddNewBrightSignPayload {
+  serialNumber: string;
+  brightSignConfig: BrightSignConfig;
+}
+type AddNewBrightSignAction = BrightWallModelAction<AddNewBrightSignPayload>;
+
+export const addNewBrightSign = (
+  serialNumber: string,
+  brightSignConfig: BrightSignConfig,
+): AddNewBrightSignAction => {
+  return {
+    type: ADD_NEW_BRIGHTSIGN,
     payload: {
       serialNumber,
       brightSignConfig,
@@ -265,6 +285,13 @@ export const brightSignAttributesReducer = (
       newState = cloneDeep(state) as BrightWall;
       newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;
       return newState;
+    case ADD_NEW_BRIGHTSIGN:
+      newState = cloneDeep(state) as BrightWall;
+      // eslint-disable-next-line no-prototype-builtins
+      if (!newState.brightSignMap.hasOwnProperty(action.payload.serialNumber)) {
+        newState.brightSignMap[action.payload.serialNumber] = action.payload.brightSignConfig;        
+      }
+      return newState;
     case SET_ROW_INDEX:
       newState = cloneDeep(state) as BrightWall;
       brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
@@ -273,7 +300,7 @@ export const brightSignAttributesReducer = (
     case SET_COLUMN_INDEX:
       newState = cloneDeep(state) as BrightWall;
       brightSignConfig = newState.brightSignMap[action.payload.serialNumber];
-      brightSignConfig.brightWallConfiguration.rowIndex = action.payload.rowIndex;
+      brightSignConfig.brightWallConfiguration.columnIndex = action.payload.columnIndex;
       return newState;
     case SET_BEZEL_MEASURE_BY_TYPE:
       newState = cloneDeep(state) as BrightWall;
