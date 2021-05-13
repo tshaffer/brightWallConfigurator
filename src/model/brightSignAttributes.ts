@@ -152,7 +152,7 @@ export interface SetBezelMeasureByTypePayload {
 }
 type SetBezelMeasureByTypeAction = BrightWallModelAction<SetBezelMeasureByTypePayload>;
 
-export const setBezelMeasureByType = (
+export const updateBezelMeasureByType = (
   serialNumber: string,
   bezelMeasureByType: BezelMeasureByType,
 ): SetBezelMeasureByTypeAction => {
@@ -171,7 +171,7 @@ export interface SetBezelWidthPercentagePayload {
 }
 type SetBezelWidthPercentageAction = BrightWallModelAction<SetBezelWidthPercentagePayload>;
 
-export const setBezelWidthPercentage = (
+export const updateBezelWidthPercentage = (
   serialNumber: string,
   bezelWidthPercentage: number,
 ): SetBezelWidthPercentageAction => {
@@ -190,7 +190,7 @@ export interface SetBezelHeightPercentagePayload {
 }
 type SetBezelHeightPercentageAction = BrightWallModelAction<SetBezelHeightPercentagePayload>;
 
-export const setBezelHeightPercentage = (
+export const updateBezelHeightPercentage = (
   serialNumber: string,
   bezelHeightPercentage: number,
 ): SetBezelHeightPercentageAction => {
@@ -209,7 +209,7 @@ export interface SetBezelWidthPayload {
 }
 type SetBezelWidthAction = BrightWallModelAction<SetBezelWidthPayload>;
 
-export const setBezelWidth = (
+export const updateBezelWidth = (
   serialNumber: string,
   bezelWidth: number,
 ): SetBezelWidthAction => {
@@ -228,7 +228,7 @@ export interface SetBezelHeightPayload {
 }
 type SetBezelHeightAction = BrightWallModelAction<SetBezelHeightPayload>;
 
-export const setBezelHeight = (
+export const updateBezelHeight = (
   serialNumber: string,
   bezelHeight: number,
 ): SetBezelHeightAction => {
@@ -247,7 +247,7 @@ export interface SetBezelScreenWidthPayload {
 }
 type SetBezelScreenWidthAction = BrightWallModelAction<SetBezelScreenWidthPayload>;
 
-export const setBezelScreenWidth = (
+export const updateBezelScreenWidth = (
   serialNumber: string,
   bezelScreenWidth: number,
 ): SetBezelScreenWidthAction => {
@@ -266,7 +266,7 @@ export interface SetBezelScreenHeightPayload {
 }
 type SetBezelScreenHeightAction = BrightWallModelAction<SetBezelScreenHeightPayload>;
 
-export const setBezelScreenHeight = (
+export const updateBezelScreenHeight = (
   serialNumber: string,
   bezelScreenHeight: number,
 ): SetBezelScreenHeightAction => {

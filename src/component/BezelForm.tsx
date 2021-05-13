@@ -3,24 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 
 import { BezelMeasureByType } from '../type';
 
-import {
-  setBezelMeasureByType,
-  setBezelWidthPercentage,
-  setBezelHeightPercentage,
-  setBezelWidth,
-  setBezelHeight,
-  setBezelScreenWidth,
-  setBezelScreenHeight,
-} from '../model';
 import {
   getBezelHeight,
   getBezelHeightPercentage,
@@ -32,6 +18,15 @@ import {
 } from '../selector';
 import { useMemo } from 'react';
 import { withStyles } from '@material-ui/core';
+import {
+  setBezelMeasureByType,
+  setBezelWidthPercentage,
+  setBezelHeightPercentage,
+  setBezelWidth,
+  setBezelHeight,
+  setBezelScreenWidth,
+  setBezelScreenHeight,
+} from '../controller';
 
 const useStyles = makeStyles({
   formStyle: {
@@ -57,7 +52,11 @@ const useStyles = makeStyles({
   },
   whiteText: {
     color: 'white',
-  }
+  },
+  MsgStyle: {
+    // fontSize: '3vmin',
+    textAlign: 'left',
+  },
 });
 
 // -----------------------------------------------------------------------
@@ -93,7 +92,13 @@ const BezelForm = (props: BezelFormProps) => {
 
   const classes = useStyles();
 
+  const handleReplicateBezel = (event: any) => {
+    console.log('handleReplicateBezel invoked');
+  };
+
   const handleSetBezelMeasureByType = (event: any) => {
+    console.log('handleSetBezelMeasureByType invoked:');
+    console.log(event.target.value);
     props.onSetBezelMeasureByType(props.serialNumber, event.target.value);
   };
 
@@ -130,11 +135,18 @@ const BezelForm = (props: BezelFormProps) => {
 
       <p>Bezel Width and Height</p>
 
+      <button className={classes.MsgStyle} onClick={handleReplicateBezel}>
+        {'Replicate on all devices in wall'}
+      </button>
+      <br />
+      <br />
+
       <input
         type="radio"
         id="byPercentage"
         name="bezelMeasurementType"
         value="byPercentage"
+        onClick={handleSetBezelMeasureByType}
       />
       <label>By percentage</label>
       <br></br>
@@ -160,6 +172,7 @@ const BezelForm = (props: BezelFormProps) => {
         id="byMeasurement"
         name="bezelMeasurementType"
         value="byMeasurement"
+        onClick={handleSetBezelMeasureByType}
       />
       <label>By measurement</label><br></br>
       <br></br>

@@ -1,5 +1,18 @@
 import { isBoolean, isNil } from 'lodash';
-import { setBrightSign, addHostBrightSign, setColumnIndex, setRowIndex, addNewBrightSign, setIsMasterPlayer } from '../model';
+import { 
+  addHostBrightSign, 
+  setColumnIndex, 
+  setRowIndex, 
+  addNewBrightSign, 
+  setIsMasterPlayer, 
+  updateBezelMeasureByType, 
+  updateBezelWidthPercentage,
+  updateBezelHeightPercentage,
+  updateBezelWidth,
+  updateBezelHeight,
+  updateBezelScreenWidth,
+  updateBezelScreenHeight
+} from '../model';
 import { getBrightSignInWall, getSerialNumber } from '../selector';
 import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, BrightWallConfiguration, NetworkInterface, NetworkInterfaceMap } from '../type';
 
@@ -197,7 +210,7 @@ export const exitAlignmentTool = () => {
   });
 };
 
-export const setDeviceBezelMeasureByType = (
+export const setBezelMeasureByType = (
   serialNumber: string,
   bezelMeasureByType: BezelMeasureByType,
 ) => {
@@ -207,12 +220,18 @@ export const setDeviceBezelMeasureByType = (
       fetch('/SetBezelMeasureByType?ipAddress=' + ipAddress + '&bezelMeasureByType=' + bezelMeasureByType.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelMeasureByType(serialNumber, bezelMeasureByType));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelWidthPercentage = (
+
+export const setBezelWidthPercentage = (
   serialNumber: string,
   bezelWidthPercentage: number,
 ) => {
@@ -222,12 +241,18 @@ export const setDeviceBezelWidthPercentage = (
       fetch('/SetBezelWidthPercentage?ipAddress=' + ipAddress + '&bezelWidthPercentage=' + bezelWidthPercentage.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelWidthPercentage(serialNumber, bezelWidthPercentage));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelHeightPercentage = (
+
+export const setBezelHeightPercentage = (
   serialNumber: string,
   bezelHeightPercentage: number,
 ) => {
@@ -237,12 +262,18 @@ export const setDeviceBezelHeightPercentage = (
       fetch('/SetBezelHeightPercentage?ipAddress=' + ipAddress + '&bezelHeightPercentage=' + bezelHeightPercentage.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelHeightPercentage(serialNumber, bezelHeightPercentage));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelWidth = (
+
+export const setBezelWidth = (
   serialNumber: string,
   bezelWidth: number,
 ) => {
@@ -252,12 +283,18 @@ export const setDeviceBezelWidth = (
       fetch('/SetBezelWidth?ipAddress=' + ipAddress + '&bezelWidth=' + bezelWidth.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelWidth(serialNumber, bezelWidth));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelHeight = (
+
+export const setBezelHeight = (
   serialNumber: string,
   bezelHeight: number,
 ) => {
@@ -267,12 +304,18 @@ export const setDeviceBezelHeight = (
       fetch('/SetBezelHeight?ipAddress=' + ipAddress + '&bezelHeight=' + bezelHeight.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelHeight(serialNumber, bezelHeight));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelScreenWidth = (
+
+export const setBezelScreenWidth = (
   serialNumber: string,
   bezelScreenWidth: number,
 ) => {
@@ -282,12 +325,18 @@ export const setDeviceBezelScreenWidth = (
       fetch('/SetBezelScreenWidth?ipAddress=' + ipAddress + '&bezelScreenWidth=' + bezelScreenWidth.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelScreenWidth(serialNumber, bezelScreenWidth));
+            }
+          }
         });
     }
   });
 };
-export const setDeviceBezelScreenHeight = (
+
+export const setBezelScreenHeight = (
   serialNumber: string,
   bezelScreenHeight: number,
 ) => {
@@ -297,8 +346,38 @@ export const setDeviceBezelScreenHeight = (
       fetch('/SetBezelScreenHeight?ipAddress=' + ipAddress + '&bezelScreenHeight=' + bezelScreenHeight.toString())
         .then(response => response.json())
         .then((status: any) => {
-          console.log(status);
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelScreenHeight(serialNumber, bezelScreenHeight));
+            }
+          }
         });
     }
   });
 };
+
+const getSerialNumberFromIpAddress = (state: BrightSignState, ipAddress: string): string | null => {
+  const brightWall: BrightWall = state.brightWall;
+  const brightSignMap: BrightSignMap = brightWall.brightSignMap;
+  for (const serialNumber in brightSignMap) {
+    if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
+      const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
+      const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+      const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
+      for (const networkInterfaceName in networkInterfaces) {
+        if (Object.prototype.hasOwnProperty.call(networkInterfaces, networkInterfaceName)) {
+          const networkInterface: NetworkInterface = networkInterfaces[networkInterfaceName];
+          const currentConfig = networkInterface.currentConfig;
+          if (currentConfig.ip4_address === ipAddress) {
+            const serialNumber = brightSignAttributes.serialNumber;
+            return serialNumber;
+          }
+        }
+      }
+    }
+  }
+
+  return null;
+};
+
