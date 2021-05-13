@@ -1,11 +1,11 @@
 import { isBoolean, isNil } from 'lodash';
-import { 
-  addHostBrightSign, 
-  setColumnIndex, 
-  setRowIndex, 
-  addNewBrightSign, 
-  setIsMasterPlayer, 
-  updateBezelMeasureByType, 
+import {
+  addHostBrightSign,
+  setColumnIndex,
+  setRowIndex,
+  addNewBrightSign,
+  setIsMasterPlayer,
+  updateBezelMeasureByType,
   updateBezelWidthPercentage,
   updateBezelHeightPercentage,
   updateBezelWidth,
@@ -13,7 +13,18 @@ import {
   updateBezelScreenWidth,
   updateBezelScreenHeight
 } from '../model';
-import { getBrightSignInWall, getSerialNumber } from '../selector';
+import {
+  getBrightSignInWall,
+  getSerialNumber,
+  getBezelMeasureByType,
+  getBezelWidthPercentage,
+  getBezelHeightPercentage,
+  getBezelWidth,
+  getBezelHeight,
+  getBezelScreenWidth,
+  getBezelScreenHeight,
+  getBrightSignsInWall,
+} from '../selector';
 import { BezelMeasureByType, BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, BrightWallConfiguration, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
@@ -42,12 +53,12 @@ export const launchApp = () => {
 };
 
 const getBrightWallDeviceList = (dispatch: any, getState: any) => {
-  console.log('getBrightWallDeviceList invoked');
+  // console.log('getBrightWallDeviceList invoked');
   fetch('/GetBrightWallDeviceList')
     .then(response => response.json())
     .then((brightSignDeviceList: BrightSignDeviceList) => {
-      console.log('response from GetBrightWallDeviceList');
-      console.log(brightSignDeviceList);
+      // console.log('response from GetBrightWallDeviceList');
+      // console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
         const brightSignInWall: BrightSignConfig | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
         if (isNil(brightSignInWall)) {
@@ -78,24 +89,6 @@ export const getBrightSignConfig = (): Promise<BrightSignConfig> => {
         return Promise.reject();
       }
     });
-};
-
-const getDeviceIpAddress = (
-  state: BrightSignState,
-  serialNumber: string,
-): string => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig)) {
-    const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
-    const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
-    // eslint-disable-next-line no-prototype-builtins
-    if (networkInterfaces.hasOwnProperty('eth0')) {
-      const networkInterface: NetworkInterface = networkInterfaces['eth0'];
-      const ipAddress = networkInterface.currentConfig.ip4_address;
-      return ipAddress;
-    }
-  }
-  return '';
 };
 
 export const setBrightSignWallPosition = (
@@ -206,6 +199,40 @@ export const exitAlignmentTool = () => {
           console.log(status);
           fetch('/RebootBrightWall');
         });
+    }
+  });
+};
+
+export const replicateBezel = (
+  serialNumber: string
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const state = getState();
+    const bezelMeasureByType = getBezelMeasureByType(state, serialNumber);
+    const bezelWidthPercentage = isNil(getBezelWidthPercentage(state, serialNumber)) ? '0' : getBezelWidthPercentage(state, serialNumber);
+    const bezelHeightPercentage = isNil(getBezelHeightPercentage(state, serialNumber)) ? '0' : getBezelHeightPercentage(state, serialNumber);
+    const bezelWidth = isNil(getBezelWidth(state, serialNumber)) ? '0' : getBezelWidth(state, serialNumber);
+    const bezelHeight = isNil(getBezelHeight(state, serialNumber)) ? '0' : getBezelHeight(state, serialNumber);
+    const bezelScreenWidth = isNil(getBezelScreenWidth(state, serialNumber)) ? '0' : getBezelScreenWidth(state, serialNumber);
+    const bezelScreenHeight = isNil(getBezelScreenHeight(state, serialNumber)) ? '0' : getBezelScreenHeight(state, serialNumber);
+
+    const brightSignsInWall: BrightSignMap = getBrightSignsInWall(state);
+    for (const serialNumber in brightSignsInWall) {
+      const ipAddress = getDeviceIpAddress(state, serialNumber);
+      if (ipAddress.length > 0) {
+        fetch('/SetBezelProperties?ipAddress=' + ipAddress
+          + '&type=' + bezelMeasureByType.toString()
+          + '&widthPercentage=' + bezelWidthPercentage.toString()
+          + '&heightPercentage=' + bezelHeightPercentage.toString()
+          + '&width=' + bezelWidth.toString()
+          + '&height=' + bezelHeight.toString()
+          + '&screenWidth=' + bezelScreenWidth.toString()
+          + '&screenHeight=' + bezelScreenHeight.toString())
+          .then(response => response.json())
+          .then((status: any) => {
+            console.log(status);
+          });
+      }
     }
   });
 };
@@ -355,6 +382,24 @@ export const setBezelScreenHeight = (
         });
     }
   });
+};
+
+const getDeviceIpAddress = (
+  state: BrightSignState,
+  serialNumber: string,
+): string => {
+  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignConfig)) {
+    const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+    const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
+    // eslint-disable-next-line no-prototype-builtins
+    if (networkInterfaces.hasOwnProperty('eth0')) {
+      const networkInterface: NetworkInterface = networkInterfaces['eth0'];
+      const ipAddress = networkInterface.currentConfig.ip4_address;
+      return ipAddress;
+    }
+  }
+  return '';
 };
 
 const getSerialNumberFromIpAddress = (state: BrightSignState, ipAddress: string): string | null => {

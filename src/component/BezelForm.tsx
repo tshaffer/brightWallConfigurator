@@ -19,6 +19,7 @@ import {
 import { useMemo } from 'react';
 import { withStyles } from '@material-ui/core';
 import {
+  replicateBezel,
   setBezelMeasureByType,
   setBezelWidthPercentage,
   setBezelHeightPercentage,
@@ -75,6 +76,7 @@ export interface BezelFormProps extends BezelFormPropsFromParent {
   bezelHeight: number;
   bezelScreenWidth: number;
   bezelScreenHeight: number;
+  onReplicateBezel: (serialNumber: string) => any;
   onSetBezelMeasureByType: (serialNumber: string, bezelMeasureByType: BezelMeasureByType) => any;
   onSetBezelWidthPercentage: (serialNumber: string, value: number) => any;
   onSetBezelHeightPercentage: (serialNumber: string, value: number) => any;
@@ -94,6 +96,7 @@ const BezelForm = (props: BezelFormProps) => {
 
   const handleReplicateBezel = (event: any) => {
     console.log('handleReplicateBezel invoked');
+    props.onReplicateBezel(props.serialNumber);
   };
 
   const handleSetBezelMeasureByType = (event: any) => {
@@ -103,6 +106,8 @@ const BezelForm = (props: BezelFormProps) => {
   };
 
   const handleSetBezelWidthPercentage = (event: any) => {
+    console.log('handleSetBezelWidthPercentage invoked:');
+    console.log(event.target.value);
     props.onSetBezelWidthPercentage(props.serialNumber, event.target.value);
   };
 
@@ -114,7 +119,7 @@ const BezelForm = (props: BezelFormProps) => {
     props.onSetBezelWidth(props.serialNumber, event.target.value);
   };
 
-  const handleSetBezelHeightMeasurementValue = (event: any) => {
+  const handleSetBezelHeight = (event: any) => {
     props.onSetBezelHeight(props.serialNumber, event.target.value);
   };
 
@@ -155,6 +160,7 @@ const BezelForm = (props: BezelFormProps) => {
       <label style={{ marginLeft: '24px' }}>Width Percentage:</label><br></br>
       <input type="number" id="widthPercentage" name="widthPercentage"
         min="0" max="100"
+        onChange={handleSetBezelWidthPercentage}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
@@ -162,6 +168,7 @@ const BezelForm = (props: BezelFormProps) => {
       <label style={{ marginLeft: '24px' }}>Height Percentage:</label><br></br>
       <input type="number" id="heightPercentage" name="heightPercentage"
         min="0" max="100"
+        onChange={handleSetBezelHeightPercentage}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
@@ -180,6 +187,7 @@ const BezelForm = (props: BezelFormProps) => {
       <label style={{ marginLeft: '24px' }}>Width:</label><br></br>
       <input type="number" id="width" name="width"
         min="0" max="100"
+        onChange={handleSetBezelWidth}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
@@ -187,6 +195,7 @@ const BezelForm = (props: BezelFormProps) => {
       <label style={{ marginLeft: '24px' }}>Height:</label><br></br>
       <input type="number" id="heigh" name="height"
         min="0" max="100"
+        onChange={handleSetBezelHeight}
         style={{ marginLeft: '24px', width: '110px' }} />
     </div >
   );
@@ -206,6 +215,7 @@ function mapStateToProps(state: any, ownProps: BezelFormPropsFromParent): Partia
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
+    onReplicateBezel: replicateBezel,
     onSetBezelMeasureByType: setBezelMeasureByType,
     onSetBezelWidthPercentage: setBezelWidthPercentage,
     onSetBezelHeightPercentage: setBezelHeightPercentage,

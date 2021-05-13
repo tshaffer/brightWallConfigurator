@@ -118,12 +118,8 @@ const App = (props: AppProps) => {
   React.useEffect(props.onLaunchApp, []);
 
   const handleAssignDeviceToWall = (event: any) => {
-    console.log('handleAssignDeviceToWall');
-    console.log(event);
 
     const valueOfSelectedEntry: string = event.target.value;
-
-    console.log('value of selected item: ', valueOfSelectedEntry);
 
     const valueParts = valueOfSelectedEntry.split('||');
     if (valueParts.length === 3) {
@@ -181,7 +177,6 @@ const App = (props: AppProps) => {
     } else {
       optionValue = props.brightWallUnitAssignments[rowIndex][columnIndex] + '||' + rowIndex.toString() + '||' + columnIndex.toString();
     }
-    console.log('selected device: ', optionValue);
 
     const uniqueId = rowIndex.toString() + '||' + columnIndex.toString();
     return (
@@ -201,9 +196,6 @@ const App = (props: AppProps) => {
 
   const renderWall = () => {
 
-    console.log('renderWall - numRows: ', props.numRows);
-    console.log('renderWall - numColumns: ', props.numColumns);
-
     const rowsInWall: any[] = [];
     for (let rowIndex: number = 0; rowIndex < props.numRows; rowIndex++) {
       rowsInWall.push(renderRowInWall(rowIndex));
@@ -216,8 +208,6 @@ const App = (props: AppProps) => {
   };
 
   const handleAssignDeviceAsMaster = (event: any) => {
-    console.log('handleAssignDeviceAsMaster');
-    console.log(event.target.value);
 
     // get master before selection
     let priorMasterDevice = '';
@@ -321,11 +311,6 @@ const App = (props: AppProps) => {
 
     return brightSignsInWall;
   };
-
-  console.log('render app');
-
-  console.log('main render - numRows: ', props.numRows);
-  console.log('main render - numColumns: ', props.numColumns);
 
   const wall = renderWall();
   const masterSetter = renderMasterSetter();
