@@ -28,6 +28,7 @@ import {
   setBezelScreenWidth,
   setBezelScreenHeight,
 } from '../controller';
+import { PowerInputSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   formStyle: {
@@ -101,26 +102,34 @@ const BezelForm = (props: BezelFormProps) => {
 
   const handleSetBezelMeasureByType = (event: any) => {
     console.log('handleSetBezelMeasureByType invoked:');
-    console.log(event.target.value);
-    props.onSetBezelMeasureByType(props.serialNumber, event.target.value);
+    console.log(parseInt(event.target.value, 10));
+    props.onSetBezelMeasureByType(props.serialNumber, parseInt(event.target.value, 10));
   };
 
   const handleSetBezelWidthPercentage = (event: any) => {
     console.log('handleSetBezelWidthPercentage invoked:');
-    console.log(event.target.value);
-    props.onSetBezelWidthPercentage(props.serialNumber, event.target.value);
+    console.log(parseInt(event.target.value, 10));
+    props.onSetBezelWidthPercentage(props.serialNumber, parseInt(event.target.value, 10));
   };
 
   const handleSetBezelHeightPercentage = (event: any) => {
-    props.onSetBezelHeightPercentage(props.serialNumber, event.target.value);
+    props.onSetBezelHeightPercentage(props.serialNumber, parseInt(event.target.value, 10));
   };
 
   const handleSetBezelWidth = (event: any) => {
-    props.onSetBezelWidth(props.serialNumber, event.target.value);
+    props.onSetBezelWidth(props.serialNumber, parseInt(event.target.value, 10));
   };
 
   const handleSetBezelHeight = (event: any) => {
-    props.onSetBezelHeight(props.serialNumber, event.target.value);
+    props.onSetBezelHeight(props.serialNumber, parseInt(event.target.value, 10));
+  };
+
+  const handleSetScreenWidth = (event: any) => {
+    props.onSetBezelScreenWidth(props.serialNumber, parseInt(event.target.value, 10));
+  };
+
+  const handleSetScreenHeight = (event: any) => {
+    props.onSetBezelScreenHeight(props.serialNumber, parseInt(event.target.value, 10));
   };
 
   const StyledTextField = useMemo(
@@ -150,25 +159,28 @@ const BezelForm = (props: BezelFormProps) => {
         type="radio"
         id="byPercentage"
         name="bezelMeasurementType"
-        value="byPercentage"
+        checked={props.bezelMeasureByType === BezelMeasureByType.Percentage}
+        value={BezelMeasureByType.Percentage}
         onClick={handleSetBezelMeasureByType}
       />
       <label>By percentage</label>
       <br></br>
       <br></br>
 
-      <label style={{ marginLeft: '24px' }}>Width Percentage:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Bezel width Percentage:</label><br></br>
       <input type="number" id="widthPercentage" name="widthPercentage"
         min="0" max="100"
         onChange={handleSetBezelWidthPercentage}
+        value={props.bezelWidthPercentage}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
       <br></br>
-      <label style={{ marginLeft: '24px' }}>Height Percentage:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Bezel height Percentage:</label><br></br>
       <input type="number" id="heightPercentage" name="heightPercentage"
         min="0" max="100"
         onChange={handleSetBezelHeightPercentage}
+        value={props.bezelHeightPercentage}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
@@ -178,25 +190,49 @@ const BezelForm = (props: BezelFormProps) => {
         type="radio"
         id="byMeasurement"
         name="bezelMeasurementType"
-        value="byMeasurement"
+        checked={props.bezelMeasureByType === BezelMeasureByType.Measurement}
+        value={BezelMeasureByType.Measurement}
         onClick={handleSetBezelMeasureByType}
       />
       <label>By measurement</label><br></br>
       <br></br>
 
-      <label style={{ marginLeft: '24px' }}>Width:</label><br></br>
+      <label style={{ marginLeft: '24px' }}>Bezel width (mm):</label><br></br>
       <input type="number" id="width" name="width"
         min="0" max="100"
         onChange={handleSetBezelWidth}
+        value={props.bezelWidth}
         style={{ marginLeft: '24px', width: '110px' }} />
 
       <br></br>
       <br></br>
-      <label style={{ marginLeft: '24px' }}>Height:</label><br></br>
-      <input type="number" id="heigh" name="height"
+
+      <label style={{ marginLeft: '24px' }}>Bezel height (mm):</label><br></br>
+      <input type="number" id="height" name="height"
         min="0" max="100"
         onChange={handleSetBezelHeight}
+        value={props.bezelHeight}
         style={{ marginLeft: '24px', width: '110px' }} />
+
+      <br></br>
+
+      <label style={{ marginLeft: '24px' }}>Screen width (mm):</label><br></br>
+      <input type="number" id="width" name="width"
+        min="0" max="100"
+        onChange={handleSetScreenWidth}
+        value={props.bezelScreenWidth}
+        style={{ marginLeft: '24px', width: '110px' }} />
+
+      <br></br>
+      <br></br>
+
+      <label style={{ marginLeft: '24px' }}>Screen height (mm):</label><br></br>
+      <input type="number" id="height" name="height"
+        min="0" max="100"
+        onChange={handleSetScreenHeight}
+        value={props.bezelScreenHeight}
+        style={{ marginLeft: '24px', width: '110px' }} />
+
     </div >
   );
 };
