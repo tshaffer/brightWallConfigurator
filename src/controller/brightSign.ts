@@ -143,9 +143,10 @@ export const setBrightSignWallPosition = (
 
 export const exitConfigurator = () => {
   return ((dispatch: any, getState: any): any => {
-    const ipAddress = getSerialNumber(getState());
+    const serialNumber = getSerialNumber(getState());
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
     if (ipAddress.length > 0) {
-      fetch('/ExitConfigurator')
+      fetch('/ExitConfigurator?ipAddress=' + ipAddress)
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
@@ -177,9 +178,10 @@ export const setIsMaster = (
 
 export const launchAlignmentTool = () => {
   return ((dispatch: any, getState: any): any => {
-    const ipAddress = getSerialNumber(getState());
+    const serialNumber = getSerialNumber(getState());
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
     if (ipAddress.length > 0) {
-      fetch('/LaunchAlignmentTool')
+      fetch('/LaunchAlignmentTool?ipAddress=' + ipAddress)
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
@@ -191,9 +193,10 @@ export const launchAlignmentTool = () => {
 
 export const exitAlignmentTool = () => {
   return ((dispatch: any, getState: any): any => {
-    const ipAddress = getSerialNumber(getState());
+    const serialNumber = getSerialNumber(getState());
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
     if (ipAddress.length > 0) {
-      fetch('/ExitAlignmentTool')
+      fetch('/ExitAlignmentTool?ipAddress=' + ipAddress)
         .then(response => response.json())
         .then((status: any) => {
           console.log(status);
