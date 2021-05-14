@@ -78,7 +78,6 @@ export const setIsMasterPlayer = (
   serialNumber: string,
   isMaster: boolean,
 ): SetIsMasterAction => {
-  debugger;
   return {
     type: SET_IS_MASTER,
     payload: {
