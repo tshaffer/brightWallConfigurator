@@ -60,9 +60,12 @@ const getBrightWallDeviceList = (dispatch: any, getState: any) => {
       // console.log('response from GetBrightWallDeviceList');
       // console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
-        const brightSignInWall: BrightSignConfig | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
-        if (isNil(brightSignInWall)) {
-          dispatch(addNewBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+        if (!isNil(brightSignConfig)) {
+          const brightSignInWall: BrightSignConfig | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
+          if (isNil(brightSignInWall)) {
+
+            dispatch(addNewBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+          }
         }
       }
     });
@@ -224,13 +227,13 @@ export const replicateBezel = (
       const ipAddress = getDeviceIpAddress(state, serialNumber);
       if (ipAddress.length > 0) {
         fetch('/SetBezelProperties?ipAddress=' + ipAddress
-          + '&type=' + bezelMeasureByType.toString()
-          + '&widthPercentage=' + bezelWidthPercentage.toString()
-          + '&heightPercentage=' + bezelHeightPercentage.toString()
-          + '&width=' + bezelWidth.toString()
-          + '&height=' + bezelHeight.toString()
-          + '&screenWidth=' + bezelScreenWidth.toString()
-          + '&screenHeight=' + bezelScreenHeight.toString())
+          + '&bezelMeasureByType=' + bezelMeasureByType.toString()
+          + '&bezelWidthPercentage=' + bezelWidthPercentage.toString()
+          + '&bezelHeightPercentage=' + bezelHeightPercentage.toString()
+          + '&bezelWidth=' + bezelWidth.toString()
+          + '&bezelHeight=' + bezelHeight.toString()
+          + '&bezelScreenWidth=' + bezelScreenWidth.toString()
+          + '&bezelScreenHeight=' + bezelScreenHeight.toString())
           .then(response => response.json())
           .then((status: any) => {
             console.log(status);

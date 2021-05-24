@@ -59,13 +59,13 @@ export interface BrightSignAttributes {
 }
 
 export enum DeviceSetupScreen {
-  ConfigureScreen = 'configureScreen',
-  AlignScreen = 'alignScreen',
+  ConfigureScreen = 'ConfigureScreen',
+  AlignScreen = 'AlignScreen',
 }
 
 export enum BezelMeasureByType {
-  Percentage = 0,
-  Measurement = 1
+  Percentage = 'Percentage',
+  Measurement = 'Measurement',
 }
 
 export interface BrightWallConfiguration {

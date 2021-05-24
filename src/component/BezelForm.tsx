@@ -102,8 +102,8 @@ const BezelForm = (props: BezelFormProps) => {
 
   const handleSetBezelMeasureByType = (event: any) => {
     console.log('handleSetBezelMeasureByType invoked:');
-    console.log(parseInt(event.target.value, 10));
-    props.onSetBezelMeasureByType(props.serialNumber, parseInt(event.target.value, 10));
+    console.log(event.target.value);
+    props.onSetBezelMeasureByType(props.serialNumber, event.target.value);
   };
 
   const handleSetBezelWidthPercentage = (event: any) => {
@@ -161,7 +161,7 @@ const BezelForm = (props: BezelFormProps) => {
         name="bezelMeasurementType"
         checked={props.bezelMeasureByType === BezelMeasureByType.Percentage}
         value={BezelMeasureByType.Percentage}
-        onClick={handleSetBezelMeasureByType}
+        onChange={handleSetBezelMeasureByType}
       />
       <label>By percentage</label>
       <br></br>
@@ -192,7 +192,7 @@ const BezelForm = (props: BezelFormProps) => {
         name="bezelMeasurementType"
         checked={props.bezelMeasureByType === BezelMeasureByType.Measurement}
         value={BezelMeasureByType.Measurement}
-        onClick={handleSetBezelMeasureByType}
+        onChange={handleSetBezelMeasureByType}
       />
       <label>By measurement</label><br></br>
       <br></br>
