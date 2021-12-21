@@ -160,6 +160,22 @@ export const exitConfigurator = () => {
 };
 
 
+export const reenterConfigurator = () => {
+  return ((dispatch: any, getState: any): any => {
+    const serialNumber = getSerialNumber(getState());
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/ReenterConfigurator?ipAddress=' + ipAddress)
+        .then(response => response.json())
+        .then((status: any) => {
+          console.log(status);
+          fetch('/RebootBrightWall');
+        });
+    }
+  });
+};
+
+
 export const setIsMaster = (
   serialNumber: string,
   isMaster: boolean

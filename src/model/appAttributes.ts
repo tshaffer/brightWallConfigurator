@@ -39,12 +39,12 @@ export const appAttributesReducer = (
   action: SetPlatformAction
 ): AppAttributes => {
   switch (action.type) {
-      case SET_PLATFORM:
-        return {
-          ...state,
-          platform: action.payload.platform,
-        };
-      default:
+    case SET_PLATFORM:
+      return {
+        ...state,
+        platform: action.payload.platform,
+      };
+    default:
       return state;
   }
 };

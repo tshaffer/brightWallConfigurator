@@ -7,6 +7,7 @@ import BezelForm from './BezelForm';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   exitConfigurator,
+  reenterConfigurator,
   exitAlignmentTool,
   launchAlignmentTool,
   launchApp,
@@ -20,15 +21,16 @@ import {
   getNumColumns,
   getBrightSignsInWall,
   getBrightWallUnitAssignments,
+  getBrightWallSetupScreenEnabled,
 } from '../selector';
 import { BrightSignConfig, BrightSignMap, DeviceSetupScreen } from '../type';
 import { cloneDeep } from 'lodash';
-import { brightSignAttributesReducer } from '../model';
 
 /** @internal */
 /** @private */
 export interface AppProps {
   isBrightWall: boolean;
+  brightWallSetupScreenEnabled: boolean;
   brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
   numRows: number;
   numColumns: number;
@@ -41,6 +43,7 @@ export interface AppProps {
   onLaunchApp: () => any;
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
   onExitConfigurator: () => any;
+  onReenterConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
   onExitAlignmentTool: () => any;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
@@ -139,6 +142,11 @@ const App = (props: AppProps) => {
   const handleExitConfigurator = (event: any) => {
     console.log('handleExitConfigurator invoked');
     props.onExitConfigurator();
+  };
+
+  const handleReenterConfigurator = (event: any) => {
+    console.log('handleReenterConfigurator invoked');
+    props.onReenterConfigurator();
   };
 
   const handleLaunchAlignment = (event: any) => {
@@ -312,6 +320,32 @@ const App = (props: AppProps) => {
     return brightSignsInWall;
   };
 
+  const renderBrightWallCommandsUI = () => {
+    if (props.brightWallSetupScreenEnabled) {
+      return (
+        <div>
+          <button className={classes.MsgStyle} onClick={handleLaunchAlignment}>
+            {alignLabel}
+          </button>
+          <br></br>
+          <br></br>
+          <button className={classes.MsgStyle} onClick={handleExitConfigurator}>
+            {'Exit configurator to launch BrightWall'}
+          </button>
+          <br></br>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button className={classes.MsgStyle}  onClick={handleReenterConfigurator}>
+            {'Reboot to reenter device setup'}
+          </button>
+        </div>
+      );
+    }
+  };
+
   const wall = renderWall();
   const masterSetter = renderMasterSetter();
   const brightSignsInWall = renderBrightSignsInWall();
@@ -324,28 +358,22 @@ const App = (props: AppProps) => {
       </header>
   */
 
+  const brightWallCommandsUI = renderBrightWallCommandsUI();
+
   return (
     <div className={classes.AppStyle}>
       <div className={classes.MsgStyle}>
-        <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup'}</p>
+        <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup Application 0'}</p>
         <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
         <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
 
         {wall}
-        
+
         <br></br>
         {masterSetter}
 
         <br></br>
-        <button className={classes.MsgStyle} onClick={handleLaunchAlignment}>
-          {alignLabel}
-        </button>
-        <br></br>
-        <br></br>
-        <button className={classes.MsgStyle} onClick={handleExitConfigurator}>
-          {'Exit configurator to launch BrightWall'}
-        </button>
-        <br></br>
+        {brightWallCommandsUI}
         <br></br>
 
         <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
@@ -358,6 +386,7 @@ const App = (props: AppProps) => {
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
   return {
     isBrightWall: getIsBrightWall(state),
+    brightWallSetupScreenEnabled: getBrightWallSetupScreenEnabled(state),
     brightWallDeviceSetupActiveScreen: getBrightWallDeviceSetupActiveScreen(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
@@ -371,6 +400,7 @@ const mapDispatchToProps = (dispatch: any) => {
     onLaunchApp: launchApp,
     onSetBrightSignWallPosition: setBrightSignWallPosition,
     onExitConfigurator: exitConfigurator,
+    onReenterConfigurator: reenterConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
     onExitAlignmentTool: exitAlignmentTool,
     onSetIsMaster: setIsMaster,
