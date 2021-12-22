@@ -5,6 +5,7 @@ import '../styles/configurator.css';
 import Button from './ButtonComponent';
 
 import DeviceList from './DeviceList';
+import ScreensInWall from './ScreensInWall';
 
 // -----------------------------------------------------------------------
 // Component
@@ -15,6 +16,7 @@ const WallConfiguration = () => {
   return (
     <div className='deviceBezelContainer'>
       <DeviceList />
+      <ScreensInWall />
 
       <div className='leftButtonContainer'>
         <Button label="Test Alignment" wide={true} />
