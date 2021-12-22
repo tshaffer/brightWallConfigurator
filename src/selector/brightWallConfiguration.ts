@@ -1,8 +1,18 @@
-import { BrightSignState } from '../type';
+import {
+  BrightSignState,
+  BrightWall,
+  BrightSignMap,
+  BrightSignConfig,
+  BrightWallConfiguration,
+} from '../type';
 
-// export const getIsMaster = (state: BrightSignState): boolean => {
-//   return state.brightWallConfiguration.isMaster;
-// };
+export const getIsMaster = (state: BrightSignState, serialNumber: string): boolean => {
+  const brightWall: BrightWall = state.brightWall;
+  const brightSignMap: BrightSignMap = brightWall.brightSignMap;
+  const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
+  const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
+  return brightWallConfiguration.isMaster;
+};
 
 // export const getRowIndex = (state: BrightSignState): number => {
 //   return state.brightWallConfiguration.rowIndex;

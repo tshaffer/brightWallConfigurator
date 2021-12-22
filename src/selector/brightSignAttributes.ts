@@ -147,3 +147,19 @@ export const getBezelScreenHeight = (state: BrightSignState, serialNumber: strin
   }
   return 0;
 };
+
+export const getRowIndex = (state: BrightSignState, serialNumber: string): number => {
+  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
+    return brightSignConfig.brightWallConfiguration.rowIndex;
+  }
+  return -1;
+};
+
+export const getColumnIndex = (state: BrightSignState, serialNumber: string): number => {
+  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
+    return brightSignConfig.brightWallConfiguration.columnIndex;
+  }
+  return -1;
+};

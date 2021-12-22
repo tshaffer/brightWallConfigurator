@@ -84,13 +84,6 @@ const useStyles = makeStyles({
     // minHeight: '100vh',
     // font
   },
-  AppHeaderStyle: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 'calc(10px + 2vmin)',
-  },
   HeaderMsgStyle: {
     // font-family: "roboto";
     // fontSize: '5vmin',
