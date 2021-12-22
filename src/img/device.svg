@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="9.4980001mm"
+  height="7.5939999mm"
+  viewBox="0 0 9.498 7.5939999"
+  version="1.1"
+>
+
+  <defs id="defs1">
+    <style type="text/css"><![CDATA[
+      .deviceFront {
+        opacity: 1;
+
+        fill: #000000;
+        fill-opacity: 1;
+
+        stroke: #000000;
+        stroke-width: 0.42199999;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        stroke-opacity: 1;
+      }
+
+      .deviceTop {
+        opacity: 1;
+
+        fill: #000000;
+        fill-opacity: 1;
+
+        stroke: #000000;
+        stroke-width: 0.42199999;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        stroke-opacity: 1
+      }
+
+      .deviceTopPanel {
+        opacity: 1;
+
+        fill: #ffffff;
+        fill-opacity: 1;
+
+        stroke: #000000;
+        stroke-width: 0.0320069;
+        stroke-linecap: round;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        stroke-opacity: 0
+      }
+
+      .deviceFrontPanel {
+        opacity: 1;
+
+        fill: #ffffff;
+        fill-opacity: 1;
+
+        stroke: #000000;
+        stroke-width: 0.03325552;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        stroke-opacity: 0
+      }
+
+      .deviceLed {
+        stroke: #000000;
+        stroke-width: 0.1;
+
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        stroke-opacity: 1;
+
+        fill: #000000;
+        fill-opacity: 1;
+      }
+
+      .disabled {
+
+         stroke: gray;
+         fill: gray;
+      }
+    ]]>
+    </style>
+  </defs>
+
+  <rect
+    width="9.068471"
+    height="3.2834942"
+
+    x="0.211"
+    y="4.0990491"
+
+    ry="0.35364985"
+    rx="0.56786513"
+
+    class="deviceFront"
+  />
+  <path
+    d="m 2.0910651,0.21103999 5.173035,0.004 c 0.111207,8e-5 0.1935,0.002 0.1935,0.002 0,0 0.329474,0.60771 0.528548,1.15073001 l 1.257226,2.92226 C 9.4667051,4.80908 8.7840771,4.05855 8.2190271,4.05855 h -6.81284 c -0.56505095,0 -1.32663195,0.71268 -1.12660195,0.18424 L 1.4386131,1.18087 c 0.200037,-0.52849001 0.433935,-0.96987001 0.433935,-0.96987001 z"
+    class="deviceTop"
+  />
+
+  <path
+    d="m 2.2074581,0.48579999 h 4.859643 c 0.0613,0 0.176882,0.21916 0.199835,0.276 L 8.3595231,3.46767 c 0.02295,0.0568 -0.04935,0.11065 -0.110653,0.11065 h -7.051317 c -0.0613,0 -0.130168,-0.0526 -0.110653,-0.11065 l 0.909505,-2.70587001 c 0.01953,-0.0581 0.14975,-0.276 0.211053,-0.276 z"
+    class="deviceTopPanel"
+  />
+
+  <rect
+    width="8.1639299"
+    height="2.6169362"
+
+    x="0.67048025"
+    y="4.3831372"
+
+    rx="0.35047942"
+    ry="0.35202932"
+
+    class="deviceFrontPanel"
+  />
+
+  <ellipse
+    cx="5.8447356"
+    cy="5.6600232"
+
+    rx="0.48442602"
+    ry="0.46772167"
+
+    class="deviceLed"
+
+  />
+
+  <ellipse
+    cx="7.4012237"
+    cy="5.6600842"
+
+    rx="0.48442602"
+    ry="0.46772167"
+
+    class="deviceLed"
+
+  />
+
+</svg>
