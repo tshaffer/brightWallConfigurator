@@ -18,7 +18,7 @@ body {
   border: 2px solid black;
   padding: 5px 8px 4px 8px;
 
-  font-family: 'Balsamiq Sans', cursive;
+  font-family: 'PTSans';
   font-size: 12px;
 
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
@@ -165,7 +165,7 @@ body {
   grid-gap: 1px 1px;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer {
+.deviceBezelContainer .bezelsContainer .bezelContainer {
   box-sizing: border-box;
   display: flex;
 
@@ -180,12 +180,12 @@ body {
   align-content: flex-start;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer:hover {
+.deviceBezelContainer .bezelsContainer .bezelContainer:hover {
   box-sizing: border-box;
   border-color: #9800FE;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .indexContainer {
+.deviceBezelContainer .bezelsContainer .bezelContainer .indexContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
@@ -196,7 +196,7 @@ body {
   font-size: 16px;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .selectedDeviceContainer {
+.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
@@ -206,14 +206,14 @@ body {
   align-self: center;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .selectedDeviceContainer .deviceImage {
+.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deviceImage {
   box-sizing: border-box;
 
   display: inline-block;
   vertical-align: middle;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .selectedDeviceContainer .deviceNumber {
+.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deviceNumber {
   box-sizing: border-box;
 
   display: inline-block;
@@ -223,7 +223,7 @@ body {
   font-size: 15px;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .selectedDeviceContainer .deleteDeviceButton {
+.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deleteDeviceButton {
   box-sizing: border-box;
 
   width: 11px;
@@ -234,7 +234,7 @@ body {
   cursor: pointer;
 }
 
-.deviceBezelContainer .bezelsContainer .bazelContainer .buttonContainer {
+.deviceBezelContainer .bezelsContainer .bezelContainer .buttonContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
