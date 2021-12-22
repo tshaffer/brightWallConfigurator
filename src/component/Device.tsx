@@ -12,8 +12,13 @@ import {
   getColumnIndex,
   getRowIndex,
   getIsMaster,
-  getUnitName
+  getUnitName,
+  getBrightSignsInWall
 } from '../selector';
+import {
+  BrightSignConfig,
+  BrightSignMap,
+} from '../type';
 
 export interface DevicePropsFromParent {
   serialNumber: string;
@@ -24,6 +29,7 @@ export interface DeviceProps extends DevicePropsFromParent {
   columnIndex: number;
   unitName: string;
   isMaster: boolean;
+  brightSignsInWall: BrightSignMap;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
 }
@@ -35,11 +41,29 @@ export interface DeviceProps extends DevicePropsFromParent {
 const Device = (props: DeviceProps) => {
 
   const getDeviceIsAssigned = (): boolean => {
-    return (props.rowIndex < 0 || props.columnIndex < 0);
-  }
+    return (props.rowIndex >= 0 || props.columnIndex >= 0);
+  };
+
   const handleSetIsMaster = (event: any) => {
     console.log('handleSetMaster invoked:');
-    props.onSetIsMaster(props.serialNumber, event.target.value);
+
+    // get master before selection
+    let priorMasterDevice = '';
+    for (const key in props.brightSignsInWall) {
+      if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+        if (brightSignInWall.brightWallConfiguration.isMaster) {
+          priorMasterDevice = brightSignInWall.brightSignAttributes.serialNumber;
+        }
+      }
+    }
+    if (priorMasterDevice !== 'noneAssigned' && priorMasterDevice !== '') {
+      console.log('set ' + priorMasterDevice + ' to slave');
+      props.onSetIsMaster(priorMasterDevice, false);
+    }
+    
+    console.log('set ' + event.target.id + ' to master');
+    props.onSetIsMaster(event.target.id, true);
   };
 
   let deviceImage = '';
@@ -63,7 +87,12 @@ const Device = (props: DeviceProps) => {
       </div>
 
       <div className='deviceFlag'>
-        <input type='checkbox' id={`device_${props.serialNumber}`} checked={props.isMaster} onChange={handleSetIsMaster} />
+        <input
+          type='radio'
+          id={props.serialNumber}
+          checked={props.isMaster}
+          onChange={handleSetIsMaster}
+        />
         <label htmlFor={`device_${props.serialNumber}`}>Master</label>
       </div>
 
@@ -79,6 +108,7 @@ function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<a
     unitName: getUnitName(state, serialNumber),
     serialNumber,
     isMaster: getIsMaster(state, serialNumber),
+    brightSignsInWall: getBrightSignsInWall(state),
   };
 }
 
