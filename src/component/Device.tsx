@@ -57,18 +57,22 @@ const Device = (props: DeviceProps) => {
 
     const valueOfSelectedEntry: string = event.target.value;
 
-    const valueParts = valueOfSelectedEntry.split('||');
-    if (valueParts.length === 2) {
-      const serialNumber = props.serialNumber;
-      const row: number = parseInt(valueParts[0], 10);
-      const column: number = parseInt(valueParts[1], 10);
-      const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
+    if (valueOfSelectedEntry === 'noneAssigned') {
+      props.onSetBrightSignWallPosition(props.serialNumber, -1, -1);
 
-      const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
-      if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
-        props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
+    } else {
+      const valueParts = valueOfSelectedEntry.split('||');
+      if (valueParts.length === 2) {
+        const row: number = parseInt(valueParts[0], 10);
+        const column: number = parseInt(valueParts[1], 10);
+        const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
+
+        const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
+        if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
+          props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
+        }
+        props.onSetBrightSignWallPosition(props.serialNumber, row, column);
       }
-      props.onSetBrightSignWallPosition(serialNumber, row, column);
     }
   };
 
