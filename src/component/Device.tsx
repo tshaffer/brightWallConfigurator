@@ -11,15 +11,18 @@ import {
 import {
   getColumnIndex,
   getRowIndex,
-  getSerialNumber,
-  getIsMaster
+  getIsMaster,
+  getUnitName
 } from '../selector';
 
-export interface DeviceProps {
+export interface DevicePropsFromParent {
+  serialNumber: string;
+}
+
+export interface DeviceProps extends DevicePropsFromParent {
   rowIndex: number;
   columnIndex: number;
   unitName: string;
-  serialNumber: string;
   isMaster: boolean;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
@@ -68,12 +71,12 @@ const Device = (props: DeviceProps) => {
   );
 };
 
-function mapStateToProps(state: any): Partial<any> {
-  const serialNumber = getSerialNumber(state);
+function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<any> {
+  const serialNumber = ownProps.serialNumber;
   return {
     rowIndex: getRowIndex(state, serialNumber),
     columnIndex: getColumnIndex(state, serialNumber),
-    unitName: 'the unit name',
+    unitName: getUnitName(state, serialNumber),
     serialNumber,
     isMaster: getIsMaster(state, serialNumber),
   };

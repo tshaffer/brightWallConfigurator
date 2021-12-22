@@ -25,6 +25,7 @@ import {
 } from '../selector';
 import { BrightSignConfig, BrightSignMap, DeviceSetupScreen } from '../type';
 import { cloneDeep } from 'lodash';
+import WallConfiguration from './WallConfiguration';
 
 /** @internal */
 /** @private */
@@ -353,26 +354,30 @@ const App = (props: AppProps) => {
 
   const brightWallCommandsUI = renderBrightWallCommandsUI();
 
+  // return (
+  //   <div className={classes.AppStyle}>
+  //     <div className={classes.MsgStyle}>
+  //       <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup Application 0'}</p>
+  //       <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
+  //       <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
+
+  //       {wall}
+
+  //       <br></br>
+  //       {masterSetter}
+
+  //       <br></br>
+  //       {brightWallCommandsUI}
+  //       <br></br>
+
+  //       <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
+  //       {brightSignsInWall}
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className={classes.AppStyle}>
-      <div className={classes.MsgStyle}>
-        <p className={classes.HeaderMsgStyle}>{'BrightWall Device Setup Application 0'}</p>
-        <p className={classes.MsgStyle}>Number of rows:&nbsp;&nbsp;{props.numRows}</p>
-        <p className={classes.MsgStyle}>Number of columns:&nbsp;&nbsp;{props.numColumns}</p>
-
-        {wall}
-
-        <br></br>
-        {masterSetter}
-
-        <br></br>
-        {brightWallCommandsUI}
-        <br></br>
-
-        <p className={classes.HeaderMsgStyle}>{'Devices in Wall'}</p>
-        {brightSignsInWall}
-      </div>
-    </div>
+    <WallConfiguration />
   );
 };
 

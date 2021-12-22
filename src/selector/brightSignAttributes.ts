@@ -163,3 +163,11 @@ export const getColumnIndex = (state: BrightSignState, serialNumber: string): nu
   }
   return -1;
 };
+
+export const getUnitName = (state: BrightSignState, serialNumber: string): string => {
+  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
+    return brightSignConfig.brightSignAttributes.unitName;
+  }
+  return '';
+};
