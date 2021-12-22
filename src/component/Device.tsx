@@ -13,12 +13,15 @@ import {
   getRowIndex,
   getIsMaster,
   getUnitName,
-  getBrightSignsInWall
+  getBrightSignsInWall,
+  getNumRows,
+  getNumColumns,
 } from '../selector';
 import {
   BrightSignConfig,
   BrightSignMap,
 } from '../type';
+import { getDevicePositionLabel } from '../utility';
 
 export interface DevicePropsFromParent {
   serialNumber: string;
@@ -32,6 +35,8 @@ export interface DeviceProps extends DevicePropsFromParent {
   brightSignsInWall: BrightSignMap;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
+  numRows: number;
+  numColumns: number;
 }
 
 // -----------------------------------------------------------------------
@@ -42,6 +47,24 @@ const Device = (props: DeviceProps) => {
 
   const getDeviceIsAssigned = (): boolean => {
     return (props.rowIndex >= 0 || props.columnIndex >= 0);
+  };
+
+  const renderOption = (label: string) => {
+    return (
+      <option value={label} key={label}>{label}</option>
+    );
+  };
+
+  const renderOptions = () => {
+    const options: any[] = [];
+    for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
+      for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
+        const label = getDevicePositionLabel(rowIndex, columnIndex);
+        options.push(renderOption(label));
+      }
+    }
+    options.unshift(<option value={'noneAssigned'}>Unassigned</option>);
+    return options;
   };
 
   const handleSetIsMaster = (event: any) => {
@@ -61,10 +84,16 @@ const Device = (props: DeviceProps) => {
       console.log('set ' + priorMasterDevice + ' to slave');
       props.onSetIsMaster(priorMasterDevice, false);
     }
-    
+
     console.log('set ' + event.target.id + ' to master');
     props.onSetIsMaster(event.target.id, true);
   };
+
+  const handleAssignDeviceToWall = (event: any) => {
+    console.log(handleAssignDeviceToWall);
+    console.log(event);
+    console.log(event.target);
+  }
 
   let deviceImage = '';
   let deviceIdsClassName = '';
@@ -77,6 +106,9 @@ const Device = (props: DeviceProps) => {
     deviceIdsClassName = 'deviceName';
   }
 
+  const options = renderOptions();
+  const optionValue = 'A1';
+
   return (
     <React.Fragment>
       <img className='deviceImage' src={deviceImage} />
@@ -84,6 +116,9 @@ const Device = (props: DeviceProps) => {
       <div className={deviceIdsClassName}>
         <div>{props.unitName}</div>
         <div>{props.serialNumber}</div>
+        <select key={props.serialNumber} value={optionValue} onChange={handleAssignDeviceToWall}>
+          {options}
+        </select>
       </div>
 
       <div className='deviceFlag'>
@@ -95,6 +130,7 @@ const Device = (props: DeviceProps) => {
         />
         <label htmlFor={`device_${props.serialNumber}`}>Master</label>
       </div>
+
 
     </React.Fragment>
   );
@@ -109,6 +145,8 @@ function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<a
     serialNumber,
     isMaster: getIsMaster(state, serialNumber),
     brightSignsInWall: getBrightSignsInWall(state),
+    numRows: getNumRows(state),
+    numColumns: getNumColumns(state),
   };
 }
 
