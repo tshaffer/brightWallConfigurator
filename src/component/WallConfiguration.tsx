@@ -6,6 +6,7 @@ import Button from './ButtonComponent';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
+import BezelConfigurator from './BezelConfigurator';
 
 // -----------------------------------------------------------------------
 // Component

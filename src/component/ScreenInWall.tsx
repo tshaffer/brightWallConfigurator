@@ -10,10 +10,6 @@ import {
 import DeviceInWall from './DeviceInWall';
 import ButtonComponent from './ButtonComponent';
 import { isString } from 'lodash';
-import {
-  getColumnIndex,
-  getRowIndex,
-} from '../selector';
 import { getDevicePositionLabel } from '../utility';
 
 export interface ScreenInWallPropsFromParent {

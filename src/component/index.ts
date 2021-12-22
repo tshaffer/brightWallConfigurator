@@ -1,7 +1,15 @@
 export * from './App';
+export * from './BezelConfigurator';
 export * from './BezelForm';
+export * from './BezelPreview';
+export * from './BezelSettings';
+export * from './BezelSettings';
+export * from './BezelSizeSetting';
+export * from './BezelToolbar';
 export * from './ButtonComponent';
 export * from './Device';
+export * from './DeviceInWall';
 export * from './DeviceList';
+export * from './ScreenInWall';
+export * from './ScreensInWall';
 export * from './WallConfiguration';
-
