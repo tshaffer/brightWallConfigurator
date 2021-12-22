@@ -16,12 +16,15 @@ import {
   getBrightSignsInWall,
   getNumRows,
   getNumColumns,
+  getBrightWallUnitAssignments,
 } from '../selector';
 import {
   BrightSignConfig,
   BrightSignMap,
+  BrightWallConfiguration,
 } from '../type';
 import { getDevicePositionLabel } from '../utility';
+import _, { cloneDeep } from 'lodash';
 
 export interface DevicePropsFromParent {
   serialNumber: string;
@@ -37,6 +40,7 @@ export interface DeviceProps extends DevicePropsFromParent {
   onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
   numRows: number;
   numColumns: number;
+  brightWallUnitAssignments: string[][];
 }
 
 // -----------------------------------------------------------------------
@@ -49,9 +53,64 @@ const Device = (props: DeviceProps) => {
     return (props.rowIndex >= 0 || props.columnIndex >= 0);
   };
 
-  const renderOption = (label: string) => {
+  const handleAssignDeviceToWall = (event: any) => {
+
+    const valueOfSelectedEntry: string = event.target.value;
+
+    const valueParts = valueOfSelectedEntry.split('||');
+    if (valueParts.length === 2) {
+      const serialNumber = props.serialNumber;
+      const row: number = parseInt(valueParts[0], 10);
+      const column: number = parseInt(valueParts[1], 10);
+      const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
+
+      const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
+      if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
+        props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
+      }
+      props.onSetBrightSignWallPosition(serialNumber, row, column);
+    }
+  };
+
+  // const renderDeviceInColumn = (rowIndex: number, columnIndex: number) => {
+
+  //   const serialNumbers: string[] = [];
+  //   for (const key in props.brightSignsInWall) {
+  //     if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
+  //       const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
+  //       serialNumbers.push(brightSignInWall.brightSignAttributes.serialNumber);
+  //     }
+  //   }
+
+  //   const options = serialNumbers.map((serialNumber) => {
+  //     const value = serialNumber + '||' + rowIndex.toString() + '||' + columnIndex.toString();
+  //     return (
+  //       <option value={value} key={serialNumber}>{serialNumber}</option>
+  //     );
+  //   });
+  //   const noneAssignedValue = 'noneAssigned||' + rowIndex.toString() + '||' + columnIndex.toString();
+  //   options.unshift(<option value={noneAssignedValue}>None assigned</option>);
+
+  //   let optionValue;
+  //   if (props.brightWallUnitAssignments.length === 0) {
+  //     optionValue = 'noneAssigned';
+  //   } else {
+  //     optionValue = props.brightWallUnitAssignments[rowIndex][columnIndex] + '||' + rowIndex.toString() + '||' + columnIndex.toString();
+  //   }
+
+  //   const uniqueId = rowIndex.toString() + '||' + columnIndex.toString();
+  //   return (
+  //     <select key={uniqueId} value={optionValue} onChange={handleAssignDeviceToWall}>
+  //       {options}
+  //     </select>
+  //   );
+  // };
+
+
+  const renderOption = (rowIndex: number, columnIndex: number) => {
+    const label = getDevicePositionLabel(rowIndex, columnIndex);
     return (
-      <option value={label} key={label}>{label}</option>
+      <option value={rowIndex.toString() + '||' + columnIndex.toString()} key={label}>{label}</option>
     );
   };
 
@@ -59,12 +118,32 @@ const Device = (props: DeviceProps) => {
     const options: any[] = [];
     for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
       for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
-        const label = getDevicePositionLabel(rowIndex, columnIndex);
-        options.push(renderOption(label));
+        options.push(renderOption(rowIndex, columnIndex));
       }
     }
     options.unshift(<option value={'noneAssigned'}>Unassigned</option>);
     return options;
+  };
+
+  const renderAssignDeviceToWall = () => {
+
+    const options = renderOptions();
+
+    let optionValue = 'noneAssigned';
+
+    if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, props.serialNumber)) {
+      const brightSignConfig: BrightSignConfig = props.brightSignsInWall[props.serialNumber];
+      const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
+      if (brightWallConfiguration.rowIndex >= 0 && brightWallConfiguration.columnIndex >= 0) {
+        optionValue = brightWallConfiguration.rowIndex.toString() + '||' + brightWallConfiguration.columnIndex.toString();
+      }
+    }
+
+    return (
+      <select key={props.serialNumber} value={optionValue} onChange={handleAssignDeviceToWall}>
+        {options}
+      </select>
+    );
   };
 
   const handleSetIsMaster = (event: any) => {
@@ -89,11 +168,11 @@ const Device = (props: DeviceProps) => {
     props.onSetIsMaster(event.target.id, true);
   };
 
-  const handleAssignDeviceToWall = (event: any) => {
-    console.log(handleAssignDeviceToWall);
-    console.log(event);
-    console.log(event.target);
-  }
+  // const handleAssignDeviceToWall = (event: any) => {
+  //   console.log(handleAssignDeviceToWall);
+  //   console.log(event);
+  //   console.log(event.target);
+  // }
 
   let deviceImage = '';
   let deviceIdsClassName = '';
@@ -106,8 +185,7 @@ const Device = (props: DeviceProps) => {
     deviceIdsClassName = 'deviceName';
   }
 
-  const options = renderOptions();
-  const optionValue = 'A1';
+  const assignDeviceToWallSelect = renderAssignDeviceToWall();
 
   return (
     <React.Fragment>
@@ -116,9 +194,7 @@ const Device = (props: DeviceProps) => {
       <div className={deviceIdsClassName}>
         <div>{props.unitName}</div>
         <div>{props.serialNumber}</div>
-        <select key={props.serialNumber} value={optionValue} onChange={handleAssignDeviceToWall}>
-          {options}
-        </select>
+        {assignDeviceToWallSelect}
       </div>
 
       <div className='deviceFlag'>
@@ -147,13 +223,14 @@ function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<a
     brightSignsInWall: getBrightSignsInWall(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
+    brightWallUnitAssignments: getBrightWallUnitAssignments(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onSetIsMaster: setIsMaster,
-    onSetBrightWallPosition: setBrightSignWallPosition,
+    onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 
