@@ -77,7 +77,7 @@ const ScreensInWall = (props: ScreensInWallProps) => {
   );
 };
 
-function mapStateToProps(state: any): Partial<any> {
+function mapStateToProps(state: any): Partial<ScreensInWallProps> {
   return {
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),

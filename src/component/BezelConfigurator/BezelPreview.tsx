@@ -72,7 +72,7 @@ const BezelPreview = (props: BezelPreviewProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: BezelPreviewProps): Partial<any> {
+function mapStateToProps(state: any, ownProps: BezelPreviewPropsFromParent): Partial<BezelPreviewProps> {
   const serialNumber = ownProps.serialNumber;
   return {
     serialNumber,

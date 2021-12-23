@@ -46,7 +46,7 @@ const DeviceInWall = (props: DeviceInWallProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Partial<any> {
+function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Partial<DeviceInWallProps> {
   const serialNumber = ownProps.serialNumber;
   return {
     unitName: getUnitName(state, serialNumber),

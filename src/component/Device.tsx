@@ -181,7 +181,7 @@ const Device = (props: DeviceProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<any> {
+function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<DeviceProps> {
   const serialNumber = ownProps.serialNumber;
   return {
     rowIndex: getRowIndex(state, serialNumber),

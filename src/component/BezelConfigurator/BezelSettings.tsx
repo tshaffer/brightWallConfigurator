@@ -81,7 +81,7 @@ const BezelSettings = (props: BezelSettingsProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: BezelSettingsPropsFromParent): Partial<any> {
+function mapStateToProps(state: any, ownProps: BezelSettingsPropsFromParent): Partial<BezelSettingsProps> {
   const serialNumber = ownProps.serialNumber;
   return {
     serialNumber,

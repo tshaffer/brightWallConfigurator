@@ -93,7 +93,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: ScreenInWallPropsFromParent): Partial<any> {
+function mapStateToProps(state: any, ownProps: ScreenInWallPropsFromParent): Partial<ScreenInWallProps> {
   const { serialNumber, rowIndex, columnIndex } = ownProps;
   return {
     rowIndex,
