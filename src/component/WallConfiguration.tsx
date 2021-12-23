@@ -15,19 +15,22 @@ import BezelConfigurator from './BezelConfigurator';
 const WallConfiguration = () => {
 
   return (
-    <div className='deviceBezelContainer'>
-      <DeviceList />
-      <ScreensInWall />
-
-      <div className='leftButtonContainer'>
-        <Button label="Test Alignment" wide={true} />
-      </div>
-
-      <div className='rightButtonContainer'>
-        <Button label="Start Wall" wide={true} />
-      </div>
-    </div>
+    <BezelConfigurator />
   );
+  // return (
+  //   <div className='deviceBezelContainer'>
+  //     <DeviceList />
+  //     <ScreensInWall />
+
+  //     <div className='leftButtonContainer'>
+  //       <Button label="Test Alignment" wide={true} />
+  //     </div>
+
+  //     <div className='rightButtonContainer'>
+  //       <Button label="Start Wall" wide={true} />
+  //     </div>
+  //   </div>
+  // );
 };
 
 export default WallConfiguration;

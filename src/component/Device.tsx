@@ -76,41 +76,6 @@ const Device = (props: DeviceProps) => {
     }
   };
 
-  // const renderDeviceInColumn = (rowIndex: number, columnIndex: number) => {
-
-  //   const serialNumbers: string[] = [];
-  //   for (const key in props.brightSignsInWall) {
-  //     if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
-  //       const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
-  //       serialNumbers.push(brightSignInWall.brightSignAttributes.serialNumber);
-  //     }
-  //   }
-
-  //   const options = serialNumbers.map((serialNumber) => {
-  //     const value = serialNumber + '||' + rowIndex.toString() + '||' + columnIndex.toString();
-  //     return (
-  //       <option value={value} key={serialNumber}>{serialNumber}</option>
-  //     );
-  //   });
-  //   const noneAssignedValue = 'noneAssigned||' + rowIndex.toString() + '||' + columnIndex.toString();
-  //   options.unshift(<option value={noneAssignedValue}>None assigned</option>);
-
-  //   let optionValue;
-  //   if (props.brightWallUnitAssignments.length === 0) {
-  //     optionValue = 'noneAssigned';
-  //   } else {
-  //     optionValue = props.brightWallUnitAssignments[rowIndex][columnIndex] + '||' + rowIndex.toString() + '||' + columnIndex.toString();
-  //   }
-
-  //   const uniqueId = rowIndex.toString() + '||' + columnIndex.toString();
-  //   return (
-  //     <select key={uniqueId} value={optionValue} onChange={handleAssignDeviceToWall}>
-  //       {options}
-  //     </select>
-  //   );
-  // };
-
-
   const renderOption = (rowIndex: number, columnIndex: number) => {
     const label = getDevicePositionLabel(rowIndex, columnIndex);
     return (

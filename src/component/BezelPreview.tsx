@@ -3,7 +3,11 @@ import { isNil } from 'lodash';
 
 import '../styles/configurator.css';
 
-export interface BezelPreviewProps {
+export interface BezelPreviewPropsFromParent {
+  serialNumber: string;
+}
+
+export interface BezelPreviewProps extends BezelPreviewPropsFromParent {
   top: number;
   bottom: number;
   left: number;
