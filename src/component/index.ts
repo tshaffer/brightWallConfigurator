@@ -1,5 +1,6 @@
 export * from './App';
-export * from './BezelConfigurator'
+export * from './BezelConfigurator';
+export * from './BezelForm';
 export * from './Device';
 export * from './DeviceInWall';
 export * from './DeviceList';

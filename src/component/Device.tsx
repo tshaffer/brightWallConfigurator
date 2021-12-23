@@ -24,7 +24,7 @@ import {
   BrightWallConfiguration,
 } from '../type';
 import { getDevicePositionLabel } from '../utility';
-import _, { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 export interface DevicePropsFromParent {
   serialNumber: string;

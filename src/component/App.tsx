@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import BezelForm from './BezelConfigurator/BezelForm';
+import BezelForm from './BezelForm';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
