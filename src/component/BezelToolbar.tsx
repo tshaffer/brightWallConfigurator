@@ -2,28 +2,36 @@ import * as React from 'react';
 
 import '../styles/configurator.css';
 
-import ButtonComponent from './ButtonComponent';
+export interface BezelToolbarProps {
+  onCloseBezelConfigurator: () => any;
+  serialNumber: string;
+}
 
 // -----------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------
 
-const BezelToolbar = () => {
+const BezelToolbar = (props: BezelToolbarProps) => {
+
+  const handleApplyToAll = () => {
+    console.log('handleApplyToAll');
+  }
+
+  const handleApply = () => {
+    console.log('handleApply');
+  }
+
+  const handleCancel = () => {
+    console.log('handleCancel');
+    props.onCloseBezelConfigurator();
+  }
+
 
   return (
     <div className='buttonContainer'>
-      <ButtonComponent
-        className='firstButton'
-        label='Apply to All'
-      />
-      <ButtonComponent
-        className='button'
-        label='Apply'
-      />
-      <ButtonComponent
-        className='button'
-        label='Cancel'
-      />
+      <button onClick={handleApplyToAll}>Apply to All</button>
+      <button onClick={handleApply}>Apply</button>
+      <button onClick={handleCancel}>Cancel</button>
     </div>
   );
 };

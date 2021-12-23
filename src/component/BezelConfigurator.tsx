@@ -8,6 +8,7 @@ import BezelPreview from './BezelPreview';
 
 export interface BezelConfiguratorProps {
   serialNumber: string;
+  onCloseBezelConfigurator: () => any;
 }
 
 // -----------------------------------------------------------------------
@@ -24,7 +25,10 @@ const BezelConfigurator = (props: BezelConfiguratorProps) => {
       <div className='rightPaddingContainer'/>
       <div className='leftPaddingContainer'/>
 
-      <BezelToolbar/>
+      <BezelToolbar
+        serialNumber={props.serialNumber}
+        onCloseBezelConfigurator={props.onCloseBezelConfigurator}
+      />
     </div>
   );
 };

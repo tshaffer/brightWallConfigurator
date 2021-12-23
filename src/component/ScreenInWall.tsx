@@ -47,6 +47,10 @@ const ScreenInWall = (props: ScreenInWallProps) => {
     setShowBezelConfigurator(true);
   };
 
+  const handleCloseBezelConfigurator = () => {
+    setShowBezelConfigurator(false);
+  };
+
   const renderDeviceInWall = () => {
     if (isString(props.serialNumber) && props.serialNumber.length > 0) {
       return (
@@ -70,7 +74,10 @@ const ScreenInWall = (props: ScreenInWallProps) => {
           style={modalStyle}
           ariaHideApp={false}
         >
-          <BezelConfigurator serialNumber='D7D834000029' />
+          <BezelConfigurator
+            serialNumber={props.serialNumber}
+            onCloseBezelConfigurator={handleCloseBezelConfigurator}
+          />
         </ReactModal>
       </div>
 
