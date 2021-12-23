@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// import ReactModal = require('react-modal');
 import ReactModal from 'react-modal';
 
 import BezelConfigurator from './BezelConfigurator';
@@ -37,12 +36,10 @@ const ScreenInWall = (props: ScreenInWallProps) => {
 
   const modalStyle = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+      top: '10%',
+      left: '10%',
+      right: '10%',
+      bottom: '10%',
     },
   };
 
@@ -64,7 +61,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
 
   const renderedDeviceInWall = renderDeviceInWall();
   const positionLabel = getDevicePositionLabel(props.rowIndex, props.columnIndex);
-  
+
   return (
     <div className='bezelContainer'>
       <div>
@@ -73,9 +70,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
           style={modalStyle}
           ariaHideApp={false}
         >
-          <div>
-            <BezelConfigurator serialNumber='D7D834000029' />
-          </div>
+          <BezelConfigurator serialNumber='D7D834000029' />
         </ReactModal>
       </div>
 
