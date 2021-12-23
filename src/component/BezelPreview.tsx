@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { isNil } from 'lodash';
 
 import '../styles/configurator.css';
+
+import {
+  getBezelWidthPercentage,
+  getBezelHeightPercentage,
+} from '../selector';
 
 export interface BezelPreviewPropsFromParent {
   serialNumber: string;
 }
 
 export interface BezelPreviewProps extends BezelPreviewPropsFromParent {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+  bezelWidthPercentage: number;
+  bezelHeightPercentage: number;
 }
 
 // -----------------------------------------------------------------------
@@ -23,7 +29,11 @@ const BezelPreview = (props: BezelPreviewProps) => {
   let width: number = 0;
   let height: number = 0;
 
-  const { top, bottom, left, right } = props;
+  const { bezelWidthPercentage, bezelHeightPercentage } = props;
+
+  console.log('BezelPreview');
+  console.log('width', bezelWidthPercentage);
+  console.log('height', bezelHeightPercentage);
 
   const $outerContainer = useRef(null);
 
@@ -37,24 +47,43 @@ const BezelPreview = (props: BezelPreviewProps) => {
     }
   }, [$outerContainer.current]);
 
+  let topOffset = 0;
+  let leftOffset = 0;
+
   if (!isNil($outerContainer) && !isNil($outerContainer.current)) {
-    width = outerContainerWidth - (left + right);
-    height = outerContainerHeight - (top + bottom);
+    leftOffset = bezelWidthPercentage / 100 * outerContainerWidth;
+    width = outerContainerWidth - (leftOffset * 2);
+    topOffset = bezelHeightPercentage / 100 * outerContainerHeight;
+    height = outerContainerHeight - (topOffset * 2);
   }
 
   const style = {
     width: `${width}px`,
     height: `${height}px`,
 
-    top: `${top}px`,
-    left: `${left}px`,
-};
+    top: `${topOffset}px`,
+    left: `${leftOffset}px`,
+  };
 
   return (
     <div ref={$outerContainer} className='demoAreaContainer'>
-      <div className='demoElementContainer' style={style}/>
+      <div className='demoElementContainer' style={style} />
     </div>
   );
 };
 
-export default BezelPreview;
+function mapStateToProps(state: any, ownProps: BezelPreviewProps): Partial<any> {
+  const serialNumber = ownProps.serialNumber;
+  return {
+    serialNumber,
+    bezelWidthPercentage: getBezelWidthPercentage(state, serialNumber),
+    bezelHeightPercentage: getBezelHeightPercentage(state, serialNumber),
+  };
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BezelPreview);

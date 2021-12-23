@@ -1,11 +1,17 @@
 import * as React from 'react';
 
 import '../styles/configurator.css';
+import { tryConvertStringToNumber } from '../utility';
 
-export interface BezelSizeSettingProps {
+export interface BezelSizeSettingPropsFromParent {
+  onUpdateBezelSetting: (bezelSetting: number) => any;
+}
+
+export interface BezelSizeSettingProps extends BezelSizeSettingPropsFromParent {
   id: string;
   label: string;
   value: string;
+
 }
 // -----------------------------------------------------------------------
 // Component
@@ -15,9 +21,9 @@ const BezelSizeSetting = (props: BezelSizeSettingProps) => {
 
   const handleChange = (event: any) => {
     console.log('BezelSizeSetting - handleChange invoked', event.target.value);
+    const bezelSetting = tryConvertStringToNumber(event.target.value, 0);
+    props.onUpdateBezelSetting(bezelSetting);
   };
-
-  const placeholder = 'mm';
 
   return (
     <React.Fragment>
@@ -25,7 +31,6 @@ const BezelSizeSetting = (props: BezelSizeSettingProps) => {
       <input
         className='leftToolbarContainerInput'
         id={props.label}
-        placeholder={placeholder}
         value={props.value}
         type='text'
         onChange={handleChange}

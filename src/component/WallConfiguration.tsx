@@ -15,7 +15,7 @@ import BezelConfigurator from './BezelConfigurator';
 const WallConfiguration = () => {
 
   return (
-    <BezelConfigurator />
+    <BezelConfigurator serialNumber='D7D834000029'/>
   );
   // return (
   //   <div className='deviceBezelContainer'>

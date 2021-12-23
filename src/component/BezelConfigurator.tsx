@@ -5,21 +5,21 @@ import '../styles/configurator.css';
 import BezelSettings from './BezelSettings';
 import BezelToolbar from './BezelToolbar';
 import BezelPreview from './BezelPreview';
+
+export interface BezelConfiguratorProps {
+  serialNumber: string;
+}
+
 // -----------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------
 
-const BezelConfigurator = () => {
+const BezelConfigurator = (props: BezelConfiguratorProps) => {
 
   return (
     <div className='bezelConfigurationContainer'>
-      <BezelSettings/>
-      <BezelPreview
-        top={0}
-        bottom={10}
-        left={50}
-        right={0}
-      />
+      <BezelSettings serialNumber={props.serialNumber}/>
+      <BezelPreview serialNumber={props.serialNumber} />
 
       <div className='rightPaddingContainer'/>
       <div className='leftPaddingContainer'/>
