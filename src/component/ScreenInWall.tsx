@@ -2,6 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+// import ReactModal = require('react-modal');
+import ReactModal from 'react-modal';
+
+import BezelConfigurator from './BezelConfigurator';
+
 import '../styles/configurator.css';
 
 import {
@@ -28,6 +33,23 @@ export interface ScreenInWallProps extends ScreenInWallPropsFromParent {
 
 const ScreenInWall = (props: ScreenInWallProps) => {
 
+  const [showBezelConfigurator, setShowBezelConfigurator] = React.useState(false);
+
+  const modalStyle = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
+
+  const handleEditBezel = () => {
+    setShowBezelConfigurator(true);
+  };
+
   const renderDeviceInWall = () => {
     if (isString(props.serialNumber) && props.serialNumber.length > 0) {
       return (
@@ -45,12 +67,26 @@ const ScreenInWall = (props: ScreenInWallProps) => {
   
   return (
     <div className='bezelContainer'>
+      <div>
+        <ReactModal
+          isOpen={showBezelConfigurator}
+          style={modalStyle}
+          ariaHideApp={false}
+        >
+          <div>
+            <BezelConfigurator serialNumber='D7D834000029' />
+          </div>
+        </ReactModal>
+      </div>
+
       <div className='indexContainer'>
         {positionLabel}
       </div>
       {renderedDeviceInWall}
       <div className='buttonContainer'>
-        <ButtonComponent label='Edit Bezel' />
+        <button onClick={handleEditBezel}>
+          Edit Bezel
+        </button>
       </div>
     </div>
   );

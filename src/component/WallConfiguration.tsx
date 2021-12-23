@@ -6,7 +6,6 @@ import Button from './ButtonComponent';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
-import BezelConfigurator from './BezelConfigurator';
 
 // -----------------------------------------------------------------------
 // Component
@@ -15,23 +14,31 @@ import BezelConfigurator from './BezelConfigurator';
 const WallConfiguration = () => {
 
   return (
-    <BezelConfigurator serialNumber='D7D834000029'/>
+    <div className='deviceBezelContainer'>
+
+      <DeviceList />
+      <ScreensInWall />
+
+      <div className='leftButtonContainer'>
+        <button>
+          Test Alignment
+        </button>
+      </div>
+
+      <div className='rightButtonContainer'>
+        <button>
+          Start Wall
+        </button>
+      </div>
+    </div>
   );
-  // return (
-  //   <div className='deviceBezelContainer'>
-  //     <DeviceList />
-  //     <ScreensInWall />
-
-  //     <div className='leftButtonContainer'>
-  //       <Button label="Test Alignment" wide={true} />
-  //     </div>
-
-  //     <div className='rightButtonContainer'>
-  //       <Button label="Start Wall" wide={true} />
-  //     </div>
-  //   </div>
-  // );
 };
+
+/*
+          <button className={classes.MsgStyle} onClick={handleLaunchAlignment}>
+            {alignLabel}
+          </button>
+*/
 
 export default WallConfiguration;
 
