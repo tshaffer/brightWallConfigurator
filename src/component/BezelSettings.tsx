@@ -7,20 +7,26 @@ import '../styles/configurator.css';
 import BezelSizeSetting from './BezelSizeSetting';
 
 import {
-  getBezelWidthPercentage,
-  getBezelHeightPercentage,
+  getBezelWidth,
+  getBezelHeight,
+  getBezelScreenWidth,
+  getBezelScreenHeight,
 } from '../selector';
-import { setBezelHeightPercentage, setBezelWidthPercentage } from '../controller';
+import { setBezelHeight, setBezelScreenHeight, setBezelScreenWidth, setBezelWidth } from '../controller';
 
 export interface BezelSettingsPropsFromParent {
   serialNumber: string;
 }
 
 export interface BezelSettingsProps extends BezelSettingsPropsFromParent {
-  bezelWidthPercentage: number;
-  bezelHeightPercentage: number;
-  onSetBezelWidthPercentage: (serialNumber: string, bezelWidthPercentage: number) => any;
-  onSetBezelHeightPercentage: (serialNumber: string, bezelHeightPercentage: number) => any;
+  bezelWidth: number;
+  bezelHeight: number;
+  screenWidth: number;
+  screenHeight: number;
+  onSetBezelWidth: (serialNumber: string, bezelWidth: number) => any;
+  onSetBezelHeight: (serialNumber: string, bezelHeight: number) => any;
+  onSetBezelScreenWidth: (serialNumber: string, width: number) => any;
+  onSetBezelScreenHeight: (serialNumber: string, height: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -30,28 +36,46 @@ export interface BezelSettingsProps extends BezelSettingsPropsFromParent {
 const BezelSettings = (props: BezelSettingsProps) => {
 
   const handleUpdateBezelWidth = (bezelWidth: number) => {
-    console.log('handleUpdateBezelWidth:', bezelWidth);
-    props.onSetBezelWidthPercentage(props.serialNumber, bezelWidth);
+    props.onSetBezelWidth(props.serialNumber, bezelWidth);
   };
 
   const handleUpdateBezelHeight = (bezelHeight: number) => {
-    console.log('handleUpdateBezelHeight:', bezelHeight);
-    props.onSetBezelHeightPercentage(props.serialNumber, bezelHeight);
+    props.onSetBezelHeight(props.serialNumber, bezelHeight);
+  };
+  
+  const handleUpdateScreenWidth = (width: number) => {
+    props.onSetBezelScreenWidth(props.serialNumber, width);
+  };
+
+  const handleUpdateScreenHeight = (height: number) => {
+    props.onSetBezelScreenHeight(props.serialNumber, height);
   };
   
   return (
     <form className='leftToolbarContainer'>
       <BezelSizeSetting
         id='bezelWidth'
-        label='Bezel Width'
-        value={props.bezelWidthPercentage.toString()}
+        label='Bezel Width (mm)'
+        value={props.bezelWidth.toString()}
         onUpdateBezelSetting={handleUpdateBezelWidth}
       />
       <BezelSizeSetting
         id='bezelHeight'
-        label='Bezel Height'
-        value={props.bezelHeightPercentage.toString()}
+        label='Bezel Height (mm)'
+        value={props.bezelHeight.toString()}
         onUpdateBezelSetting={handleUpdateBezelHeight}
+      />
+      <BezelSizeSetting
+        id='bezelWidth'
+        label='Screen Width (mm)'
+        value={props.screenWidth.toString()}
+        onUpdateBezelSetting={handleUpdateScreenWidth}
+      />
+      <BezelSizeSetting
+        id='bezelHeight'
+        label='Screen Height (mm)'
+        value={props.screenHeight.toString()}
+        onUpdateBezelSetting={handleUpdateScreenHeight}
       />
     </form>
   );
@@ -61,15 +85,19 @@ function mapStateToProps(state: any, ownProps: BezelSettingsPropsFromParent): Pa
   const serialNumber = ownProps.serialNumber;
   return {
     serialNumber,
-    bezelWidthPercentage: getBezelWidthPercentage(state, serialNumber),
-    bezelHeightPercentage: getBezelHeightPercentage(state, serialNumber),
+    bezelWidth: getBezelWidth(state, serialNumber),
+    bezelHeight: getBezelHeight(state, serialNumber),
+    screenWidth: getBezelScreenWidth(state, serialNumber),
+    screenHeight: getBezelScreenHeight(state, serialNumber),
   };
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onSetBezelWidthPercentage: setBezelWidthPercentage,
-    onSetBezelHeightPercentage: setBezelHeightPercentage,
+    onSetBezelWidth: setBezelWidth,
+    onSetBezelHeight: setBezelHeight,
+    onSetBezelScreenWidth: setBezelScreenWidth,
+    onSetBezelScreenHeight: setBezelScreenHeight,
   }, dispatch);
 };
 

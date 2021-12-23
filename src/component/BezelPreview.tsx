@@ -7,8 +7,10 @@ import { isNil } from 'lodash';
 import '../styles/configurator.css';
 
 import {
-  getBezelWidthPercentage,
-  getBezelHeightPercentage,
+  getBezelWidth,
+  getBezelHeight,
+  getBezelScreenWidth,
+  getBezelScreenHeight,
 } from '../selector';
 
 export interface BezelPreviewPropsFromParent {
@@ -16,8 +18,10 @@ export interface BezelPreviewPropsFromParent {
 }
 
 export interface BezelPreviewProps extends BezelPreviewPropsFromParent {
-  bezelWidthPercentage: number;
-  bezelHeightPercentage: number;
+  bezelWidth: number;
+  bezelHeight: number;
+  screenWidth: number;
+  screenHeight: number;
 }
 
 // -----------------------------------------------------------------------
@@ -29,11 +33,7 @@ const BezelPreview = (props: BezelPreviewProps) => {
   let width: number = 0;
   let height: number = 0;
 
-  const { bezelWidthPercentage, bezelHeightPercentage } = props;
-
-  console.log('BezelPreview');
-  console.log('width', bezelWidthPercentage);
-  console.log('height', bezelHeightPercentage);
+  const { bezelWidth, bezelHeight, screenWidth, screenHeight } = props;
 
   const $outerContainer = useRef(null);
 
@@ -51,9 +51,9 @@ const BezelPreview = (props: BezelPreviewProps) => {
   let leftOffset = 0;
 
   if (!isNil($outerContainer) && !isNil($outerContainer.current)) {
-    leftOffset = bezelWidthPercentage / 100 * outerContainerWidth;
+    leftOffset = bezelWidth / screenWidth * outerContainerWidth;
     width = outerContainerWidth - (leftOffset * 2);
-    topOffset = bezelHeightPercentage / 100 * outerContainerHeight;
+    topOffset = bezelHeight / screenHeight * outerContainerHeight;
     height = outerContainerHeight - (topOffset * 2);
   }
 
@@ -76,8 +76,10 @@ function mapStateToProps(state: any, ownProps: BezelPreviewProps): Partial<any> 
   const serialNumber = ownProps.serialNumber;
   return {
     serialNumber,
-    bezelWidthPercentage: getBezelWidthPercentage(state, serialNumber),
-    bezelHeightPercentage: getBezelHeightPercentage(state, serialNumber),
+    bezelWidth: getBezelWidth(state, serialNumber),
+    bezelHeight: getBezelHeight(state, serialNumber),
+    screenWidth: getBezelScreenWidth(state, serialNumber),
+    screenHeight: getBezelScreenHeight(state, serialNumber),
   };
 }
 
