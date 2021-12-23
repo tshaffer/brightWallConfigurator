@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import ReactModal from 'react-modal';
 
-import BezelConfigurator from './BezelConfigurator';
+import BezelConfigurator from './BezelConfigurator/BezelConfigurator';
 
 import '../styles/configurator.css';
 
@@ -12,7 +12,6 @@ import {
   setBrightSignWallPosition,
 } from '../controller';
 import DeviceInWall from './DeviceInWall';
-import ButtonComponent from './ButtonComponent';
 import { isString } from 'lodash';
 import { getDevicePositionLabel } from '../utility';
 

@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import '../styles/configurator.css';
 
-import Button from './ButtonComponent';
-
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
 

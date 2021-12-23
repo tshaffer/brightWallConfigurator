@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import '../styles/configurator.css';
+import '../../styles/configurator.css';
 
 export interface BezelToolbarProps {
   onCloseBezelConfigurator: () => any;
@@ -15,17 +15,16 @@ const BezelToolbar = (props: BezelToolbarProps) => {
 
   const handleApplyToAll = () => {
     console.log('handleApplyToAll');
-  }
+  };
 
   const handleApply = () => {
     console.log('handleApply');
-  }
+  };
 
   const handleCancel = () => {
     console.log('handleCancel');
     props.onCloseBezelConfigurator();
-  }
-
+  };
 
   return (
     <div className='buttonContainer'>

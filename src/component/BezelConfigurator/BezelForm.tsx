@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-import { BezelMeasureByType } from '../type';
+import { BezelMeasureByType } from '../../type';
 
 import {
   getBezelHeight,
@@ -15,7 +15,7 @@ import {
   getBezelScreenWidth,
   getBezelWidth,
   getBezelWidthPercentage
-} from '../selector';
+} from '../../selector';
 import { useMemo } from 'react';
 import { withStyles } from '@material-ui/core';
 import {
@@ -27,7 +27,7 @@ import {
   setBezelHeight,
   setBezelScreenWidth,
   setBezelScreenHeight,
-} from '../controller';
+} from '../../controller';
 import { PowerInputSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import '../styles/configurator.css';
+import '../../styles/configurator.css';
 
 import BezelSettings from './BezelSettings';
 import BezelToolbar from './BezelToolbar';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import '../styles/configurator.css';
-import { tryConvertStringToNumber } from '../utility';
+import '../../styles/configurator.css';
+import { tryConvertStringToNumber } from '../../utility';
 
 export interface BezelSizeSettingPropsFromParent {
   onUpdateBezelSetting: (bezelSetting: number) => any;

@@ -4,14 +4,14 @@ import { bindActionCreators } from 'redux';
 
 import { isNil } from 'lodash';
 
-import '../styles/configurator.css';
+import '../../styles/configurator.css';
 
 import {
   getBezelWidth,
   getBezelHeight,
   getBezelScreenWidth,
   getBezelScreenHeight,
-} from '../selector';
+} from '../../selector';
 
 export interface BezelPreviewPropsFromParent {
   serialNumber: string;

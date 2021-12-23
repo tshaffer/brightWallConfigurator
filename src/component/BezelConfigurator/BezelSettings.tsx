@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import '../styles/configurator.css';
+import '../../styles/configurator.css';
 
 import BezelSizeSetting from './BezelSizeSetting';
 
@@ -11,8 +11,8 @@ import {
   getBezelHeight,
   getBezelScreenWidth,
   getBezelScreenHeight,
-} from '../selector';
-import { setBezelHeight, setBezelScreenHeight, setBezelScreenWidth, setBezelWidth } from '../controller';
+} from '../../selector';
+import { setBezelHeight, setBezelScreenHeight, setBezelScreenWidth, setBezelWidth } from '../../controller';
 
 export interface BezelSettingsPropsFromParent {
   serialNumber: string;
