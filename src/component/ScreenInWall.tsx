@@ -32,15 +32,16 @@ export interface ScreenInWallProps extends ScreenInWallPropsFromParent {
 
 const ScreenInWall = (props: ScreenInWallProps) => {
 
-  const dropDevice = (serialNumber: string, rowIndex: number, columnIndex: number, item: any) => {
-    console.log('dropDevice', serialNumber, rowIndex, columnIndex);
+  const dropDevice = (rowIndex: number, columnIndex: number, item: any) => {
+    console.log('dropDevice', item.serialNumber, rowIndex, columnIndex);
     console.log(item);
+    props.onSetBrightSignWallPosition(item.serialNumber, props.rowIndex, props.columnIndex);
   };
 
   const [, drop] = useDrop(
     () => ({
       accept: 'Device',
-      drop: (item) => dropDevice(props.serialNumber, props.rowIndex, props.columnIndex, item),
+      drop: (item) => dropDevice(props.rowIndex, props.columnIndex, item),
       collect: (monitor) => ({
         isOver: !!monitor.isOver()
       })
@@ -67,11 +68,17 @@ const ScreenInWall = (props: ScreenInWallProps) => {
     setShowBezelConfigurator(false);
   };
 
+  const handleRemoveBrightSignFromWall = () => {
+    console.log('handleRemoveBrightSignFromWall', props);
+    props.onSetBrightSignWallPosition(props.serialNumber, -1, -1);
+  };
+
   const renderDeviceInWall = () => {
     if (isString(props.serialNumber) && props.serialNumber.length > 0) {
       return (
         <DeviceInWall
           serialNumber={props.serialNumber}
+          onRemoveBrightSignFromWall={handleRemoveBrightSignFromWall}
         />
       );
     } else {
@@ -121,7 +128,7 @@ function mapStateToProps(state: any, ownProps: ScreenInWallPropsFromParent): Par
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onSetBrightWallPosition: setBrightSignWallPosition,
+    onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 

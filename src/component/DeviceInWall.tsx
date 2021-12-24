@@ -5,21 +5,18 @@ import { bindActionCreators } from 'redux';
 import '../styles/configurator.css';
 
 import {
-  setBrightSignWallPosition,
-} from '../controller';
-import {
   getUnitName
 } from '../selector';
 
 export interface DeviceInWallPropsFromParent {
   serialNumber: string;
+  onRemoveBrightSignFromWall: () => any;
 }
 
 export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
   unitName: string;
   isMaster: boolean;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
-  onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -27,11 +24,6 @@ export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
 // -----------------------------------------------------------------------
 
 const DeviceInWall = (props: DeviceInWallProps) => {
-
-  const handleRemoveDevice = (event: any) => {
-    console.log('handleRemoveDevice invoked:');
-    // props.onSetIsMaster(props.serialNumber, event.target.value);
-  };
 
   return (
     <div className='selectedDeviceContainer'>
@@ -41,7 +33,13 @@ const DeviceInWall = (props: DeviceInWallProps) => {
         {props.serialNumber}
       </div>
 
-      <img src='/src/img/close.svg' className='deleteDeviceButton' onClick={handleRemoveDevice}/>
+      <img src='/src/img/close.svg' className='deleteDeviceButton' onClick={props.onRemoveBrightSignFromWall}/>
+      <div className='buttonContainer'>
+        <button onClick={props.onRemoveBrightSignFromWall}>
+          Remove Device
+        </button>
+      </div>
+
     </div>
   );
 };
@@ -56,7 +54,6 @@ function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Par
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onSetBrightWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 
