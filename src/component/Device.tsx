@@ -166,6 +166,7 @@ const Device = (props: DeviceProps) => {
           <DeviceIdentifiers
             serialNumber={props.serialNumber}
             unitName={props.unitName}
+            deviceIsAssigned={getDeviceIsAssigned()}
           />
         </div>
         {assignDeviceToWallSelect}

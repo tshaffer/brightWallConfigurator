@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useDrag } from 'react-dnd';
+import { DragSourceMonitor, useDrag } from 'react-dnd';
 
 export interface DeviceIdentifiersProps {
   serialNumber: string;
   unitName: string;
+  deviceIsAssigned: boolean;
 }
 
 // -----------------------------------------------------------------------
@@ -12,16 +13,20 @@ export interface DeviceIdentifiersProps {
 
 const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
 
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const { serialNumber, unitName } = props;
+
+  const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'Device',
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
+    canDrag: !props.deviceIsAssigned,
+    item: { serialNumber, unitName },
+    collect: (monitor: DragSourceMonitor) => ({
+      isDragging: monitor.isDragging(),
     }),
   }));
 
   return (
     <div
-      ref={drag}
+      ref={dragRef}
       style={{
         opacity: isDragging ? 0.5 : 1,
         cursor: 'move',
