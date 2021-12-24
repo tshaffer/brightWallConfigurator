@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import '../styles/configurator.css';
+import DeviceIdentifiers from './DeviceIdentifiers';
 
 import {
   setIsMaster,
@@ -161,8 +162,12 @@ const Device = (props: DeviceProps) => {
       <img className='deviceImage' src={deviceImage} />
 
       <div className={deviceIdsClassName}>
-        <div>{props.unitName}</div>
-        <div>{props.serialNumber}</div>
+        <div>
+          <DeviceIdentifiers
+            serialNumber={props.serialNumber}
+            unitName={props.unitName}
+          />
+        </div>
         {assignDeviceToWallSelect}
       </div>
 
