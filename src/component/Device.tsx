@@ -22,10 +22,7 @@ import {
 import {
   BrightSignConfig,
   BrightSignMap,
-  BrightWallConfiguration,
 } from '../type';
-import { getDevicePositionLabel } from '../utility';
-import { cloneDeep } from 'lodash';
 
 export interface DevicePropsFromParent {
   serialNumber: string;
@@ -54,68 +51,6 @@ const Device = (props: DeviceProps) => {
     return (props.rowIndex >= 0 || props.columnIndex >= 0);
   };
 
-  const handleAssignDeviceToWall = (event: any) => {
-
-    const valueOfSelectedEntry: string = event.target.value;
-
-    if (valueOfSelectedEntry === 'noneAssigned') {
-      props.onSetBrightSignWallPosition(props.serialNumber, -1, -1);
-
-    } else {
-      const valueParts = valueOfSelectedEntry.split('||');
-      if (valueParts.length === 2) {
-        const row: number = parseInt(valueParts[0], 10);
-        const column: number = parseInt(valueParts[1], 10);
-        const brightWallUnitAssignments = cloneDeep(props.brightWallUnitAssignments);
-
-        const priorDeviceAtSelectedPosition: string = brightWallUnitAssignments[row][column];
-        if (priorDeviceAtSelectedPosition !== 'noneAssigned') {
-          props.onSetBrightSignWallPosition(priorDeviceAtSelectedPosition, -1, -1);
-        }
-        props.onSetBrightSignWallPosition(props.serialNumber, row, column);
-      }
-    }
-  };
-
-  const renderOption = (rowIndex: number, columnIndex: number) => {
-    const label = getDevicePositionLabel(rowIndex, columnIndex);
-    return (
-      <option value={rowIndex.toString() + '||' + columnIndex.toString()} key={label}>{label}</option>
-    );
-  };
-
-  const renderOptions = () => {
-    const options: any[] = [];
-    for (let rowIndex = 0; rowIndex < props.numRows; rowIndex++) {
-      for (let columnIndex = 0; columnIndex < props.numColumns; columnIndex++) {
-        options.push(renderOption(rowIndex, columnIndex));
-      }
-    }
-    options.unshift(<option value={'noneAssigned'}>Unassigned</option>);
-    return options;
-  };
-
-  const renderAssignDeviceToWall = () => {
-
-    const options = renderOptions();
-
-    let optionValue = 'noneAssigned';
-
-    if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, props.serialNumber)) {
-      const brightSignConfig: BrightSignConfig = props.brightSignsInWall[props.serialNumber];
-      const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
-      if (brightWallConfiguration.rowIndex >= 0 && brightWallConfiguration.columnIndex >= 0) {
-        optionValue = brightWallConfiguration.rowIndex.toString() + '||' + brightWallConfiguration.columnIndex.toString();
-      }
-    }
-
-    return (
-      <select key={props.serialNumber} value={optionValue} onChange={handleAssignDeviceToWall}>
-        {options}
-      </select>
-    );
-  };
-
   const handleSetIsMaster = (event: any) => {
     console.log('handleSetMaster invoked:');
 
@@ -138,12 +73,6 @@ const Device = (props: DeviceProps) => {
     props.onSetIsMaster(event.target.id, true);
   };
 
-  // const handleAssignDeviceToWall = (event: any) => {
-  //   console.log(handleAssignDeviceToWall);
-  //   console.log(event);
-  //   console.log(event.target);
-  // }
-
   let deviceImage = '';
   let deviceIdsClassName = '';
 
@@ -155,8 +84,6 @@ const Device = (props: DeviceProps) => {
     deviceIdsClassName = 'deviceName';
   }
 
-  const assignDeviceToWallSelect = renderAssignDeviceToWall();
-
   return (
     <React.Fragment>
       <img className='deviceImage' src={deviceImage} />
@@ -166,10 +93,8 @@ const Device = (props: DeviceProps) => {
           <DeviceIdentifiers
             serialNumber={props.serialNumber}
             unitName={props.unitName}
-            deviceIsAssigned={getDeviceIsAssigned()}
           />
         </div>
-        {assignDeviceToWallSelect}
       </div>
 
       <div className='deviceFlag'>
