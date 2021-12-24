@@ -148,6 +148,12 @@ export const getBezelScreenHeight = (state: BrightSignState, serialNumber: strin
   return 0;
 };
 
+export const getDeviceIsInWall = (state: BrightSignState, serialNumber: string): boolean => {
+  const rowIndex = getRowIndex(state, serialNumber);
+  const columnIndex = getColumnIndex(state, serialNumber);
+  return (rowIndex >= 0 && columnIndex >= 0);
+};
+
 export const getRowIndex = (state: BrightSignState, serialNumber: string): number => {
   const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
   if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {

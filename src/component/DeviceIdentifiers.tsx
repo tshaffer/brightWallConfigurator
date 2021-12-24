@@ -1,10 +1,19 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 
-export interface DeviceIdentifiersProps {
+import { getColumnIndex, getDeviceIsInWall, getRowIndex } from '../selector';
+
+export interface DeviceIdentifiersPropsFromParent {
   serialNumber: string;
   unitName: string;
   deviceIsAssigned: boolean;
+}
+
+export interface DeviceIdentifiersProps extends DeviceIdentifiersPropsFromParent {
+  deviceIsInWall: boolean;
+  rowIndex: number;
+  columnIndex: number;
 }
 
 // -----------------------------------------------------------------------
@@ -17,12 +26,15 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
 
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'Device',
-    canDrag: !props.deviceIsAssigned,
+    canDrag: !props.deviceIsInWall,
     item: { serialNumber, unitName },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }));
+  }),
+  [props.deviceIsInWall],
+  );
+
 
   return (
     <div
@@ -38,4 +50,15 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
   );
 };
 
-export default DeviceIdentifiers;
+function mapStateToProps(state: any, ownProps: DeviceIdentifiersPropsFromParent): Partial<DeviceIdentifiersProps> {
+  const serialNumber = ownProps.serialNumber;
+  const rowIndex = getRowIndex(state, serialNumber);
+  const columnIndex = getColumnIndex(state, serialNumber);
+  const deviceIsInWall = rowIndex >= 0 && columnIndex >= 0;
+  console.log(serialNumber, deviceIsInWall);
+  return {
+    deviceIsInWall,
+  };
+}
+
+export default connect(mapStateToProps)(DeviceIdentifiers);
