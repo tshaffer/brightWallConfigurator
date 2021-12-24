@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import '../styles/configurator.css';
 
@@ -12,31 +14,26 @@ import ScreensInWall from './ScreensInWall';
 const WallConfiguration = () => {
 
   return (
-    <div className='deviceBezelContainer'>
+    <DndProvider backend={HTML5Backend}>
+      <div className='deviceBezelContainer'>
+        <DeviceList />
+        <ScreensInWall />
 
-      <DeviceList />
-      <ScreensInWall />
+        <div className='leftButtonContainer'>
+          <button>
+            Test Alignment
+          </button>
+        </div>
 
-      <div className='leftButtonContainer'>
-        <button>
-          Test Alignment
-        </button>
+        <div className='rightButtonContainer'>
+          <button>
+            Start Wall
+          </button>
+        </div>
       </div>
-
-      <div className='rightButtonContainer'>
-        <button>
-          Start Wall
-        </button>
-      </div>
-    </div>
+    </DndProvider>
   );
 };
-
-/*
-          <button className={classes.MsgStyle} onClick={handleLaunchAlignment}>
-            {alignLabel}
-          </button>
-*/
 
 export default WallConfiguration;
 

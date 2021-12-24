@@ -14,6 +14,7 @@ import {
 import DeviceInWall from './DeviceInWall';
 import { isString } from 'lodash';
 import { getDevicePositionLabel } from '../utility';
+import { useDrop } from 'react-dnd';
 
 export interface ScreenInWallPropsFromParent {
   serialNumber: string;
@@ -30,6 +31,22 @@ export interface ScreenInWallProps extends ScreenInWallPropsFromParent {
 // -----------------------------------------------------------------------
 
 const ScreenInWall = (props: ScreenInWallProps) => {
+
+  const dropDevice = (serialNumber: string, rowIndex: number, columnIndex: number, item: any) => {
+    console.log('dropDevice', serialNumber, rowIndex, columnIndex);
+    console.log(item);
+  };
+
+  const [, drop] = useDrop(
+    () => ({
+      accept: 'Device',
+      drop: (item) => dropDevice(props.serialNumber, props.rowIndex, props.columnIndex, item),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver()
+      })
+    }),
+    [props.serialNumber, props.rowIndex, props.columnIndex]
+  );
 
   const [showBezelConfigurator, setShowBezelConfigurator] = React.useState(false);
 
@@ -66,7 +83,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
   const positionLabel = getDevicePositionLabel(props.rowIndex, props.columnIndex);
 
   return (
-    <div className='bezelContainer'>
+    <div className='bezelContainer' ref={drop}>
       <div>
         <ReactModal
           isOpen={showBezelConfigurator}
