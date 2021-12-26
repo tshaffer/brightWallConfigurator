@@ -29,8 +29,10 @@ const DeviceInWall = (props: DeviceInWallProps) => {
   const getEventContainerStyle = (scaleValue: number, isDisabled: boolean) => {
     return style({
       height: 'auto',
-      width: 60 * scaleValue + 'px',
-      margin: '10px 5px 5px 5px',
+      // width: 60 * scaleValue + 'px',
+      // margin: '10px 5px 5px 5px',
+      width: 40 * scaleValue + 'px',
+      margin: '2px 5px 5px 2px',
       display: 'inline-block',
       verticalAlign: 'top',
       backgroundSize: 'contain',
@@ -121,6 +123,7 @@ const DeviceInWall = (props: DeviceInWallProps) => {
     return (
       <div
         className={getEventContainerStyle(scaleValue, false)}
+        onClick={props.onRemoveBrightSignFromWall}
       >
         <div className={getSVGContainerStyle(scaleValue)}>
           <svg className={getSVGStyle()}>
