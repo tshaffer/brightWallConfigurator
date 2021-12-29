@@ -2,23 +2,26 @@ import * as React from 'react';
 
 import '../../styles/configurator.css';
 
-export interface BezelToolbarProps {
+export interface BezelMenuProps {
+  onApply: () => any;
+  onApplyToAll: () => any;
   onCloseBezelConfigurator: () => any;
-  serialNumber: string;
 }
 
 // -----------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------
 
-const BezelToolbar = (props: BezelToolbarProps) => {
-
-  const handleApplyToAll = () => {
-    console.log('handleApplyToAll');
-  };
+const BezelMenu = (props: BezelMenuProps) => {
 
   const handleApply = () => {
     console.log('handleApply');
+    props.onApply();
+  };
+
+  const handleApplyToAll = () => {
+    console.log('handleApplyToAll');
+    props.onApplyToAll();
   };
 
   const handleCancel = () => {
@@ -35,4 +38,4 @@ const BezelToolbar = (props: BezelToolbarProps) => {
   );
 };
 
-export default BezelToolbar;
+export default BezelMenu;

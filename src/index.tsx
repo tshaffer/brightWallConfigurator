@@ -9,16 +9,13 @@ import { brightWallModelReducer } from './model';
 
 import App from './component/App';
 
-// const platform = getPlatform();
-// console.log(platform);
-
 const store = createStore(
   brightWallModelReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 
 const divStyle = {
-  height: '1080px',
+  height: '100%',
 };
 
 ReactDOM.render(

@@ -1,23 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { isNil } from 'lodash';
 
 import '../../styles/configurator.css';
 
-import {
-  getBezelWidth,
-  getBezelHeight,
-  getBezelScreenWidth,
-  getBezelScreenHeight,
-} from '../../selector';
-
-export interface BezelPreviewPropsFromParent {
-  serialNumber: string;
-}
-
-export interface BezelPreviewProps extends BezelPreviewPropsFromParent {
+export interface BezelPreviewProps {
   bezelWidth: number;
   bezelHeight: number;
   screenWidth: number;
@@ -72,20 +59,4 @@ const BezelPreview = (props: BezelPreviewProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: BezelPreviewPropsFromParent): Partial<BezelPreviewProps> {
-  const serialNumber = ownProps.serialNumber;
-  return {
-    serialNumber,
-    bezelWidth: getBezelWidth(state, serialNumber),
-    bezelHeight: getBezelHeight(state, serialNumber),
-    screenWidth: getBezelScreenWidth(state, serialNumber),
-    screenHeight: getBezelScreenHeight(state, serialNumber),
-  };
-}
-
-const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({
-  }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(BezelPreview);
+export default BezelPreview;
