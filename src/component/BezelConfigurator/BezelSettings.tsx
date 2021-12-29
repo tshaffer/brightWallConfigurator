@@ -35,20 +35,29 @@ export interface BezelSettingsProps extends BezelSettingsPropsFromParent {
 
 const BezelSettings = (props: BezelSettingsProps) => {
 
-  const handleUpdateBezelWidth = (bezelWidth: number) => {
-    props.onSetBezelWidth(props.serialNumber, bezelWidth);
+  const [bezelWidth, setBezelWidth] = React.useState(0);
+  const [bezelHeight, setBezelHeight] = React.useState(0);
+  const [screenWidth, setScreenWidth] = React.useState(0);
+  const [screenHeight, setScreenHeight] = React.useState(0);
+
+  const handleUpdateBezelWidth = (width: number) => {
+    // props.onSetBezelWidth(props.serialNumber, bezelWidth);
+    setBezelWidth(width);
   };
 
-  const handleUpdateBezelHeight = (bezelHeight: number) => {
-    props.onSetBezelHeight(props.serialNumber, bezelHeight);
+  const handleUpdateBezelHeight = (height: number) => {
+    // props.onSetBezelHeight(props.serialNumber, bezelHeight);
+    setBezelHeight(height);
   };
   
   const handleUpdateScreenWidth = (width: number) => {
-    props.onSetBezelScreenWidth(props.serialNumber, width);
+    // props.onSetBezelScreenWidth(props.serialNumber, width);
+    setScreenWidth(width);
   };
 
   const handleUpdateScreenHeight = (height: number) => {
-    props.onSetBezelScreenHeight(props.serialNumber, height);
+    // props.onSetBezelScreenHeight(props.serialNumber, height);
+    setScreenHeight(height);
   };
   
   return (
@@ -56,25 +65,25 @@ const BezelSettings = (props: BezelSettingsProps) => {
       <BezelSizeSetting
         id='bezelWidth'
         label='Bezel Width (mm)'
-        value={props.bezelWidth.toString()}
+        value={bezelWidth.toString()}
         onUpdateBezelSetting={handleUpdateBezelWidth}
       />
       <BezelSizeSetting
         id='bezelHeight'
         label='Bezel Height (mm)'
-        value={props.bezelHeight.toString()}
+        value={bezelHeight.toString()}
         onUpdateBezelSetting={handleUpdateBezelHeight}
       />
       <BezelSizeSetting
         id='bezelWidth'
         label='Screen Width (mm)'
-        value={props.screenWidth.toString()}
+        value={screenWidth.toString()}
         onUpdateBezelSetting={handleUpdateScreenWidth}
       />
       <BezelSizeSetting
         id='bezelHeight'
         label='Screen Height (mm)'
-        value={props.screenHeight.toString()}
+        value={screenHeight.toString()}
         onUpdateBezelSetting={handleUpdateScreenHeight}
       />
     </form>
