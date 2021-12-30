@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 
 import { getDeviceIsInWall } from '../selector';
+import Icon from './Icon';
 
 export interface DeviceIdentifiersPropsFromParent {
   serialNumber: string;
@@ -29,7 +30,7 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
       isDragging: monitor.isDragging(),
     }),
   }),
-  [props.deviceIsInWall],
+    [props.deviceIsInWall],
   );
 
 
@@ -41,8 +42,11 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
         cursor: 'move',
       }}
     >
-      <div>{props.unitName}</div>
-      <div>{props.serialNumber}</div>
+      <Icon iconType='device' />
+      <div style={{ display: 'inline-block' }}>
+        <div>{props.unitName}</div>
+        <div>{props.serialNumber}</div>
+      </div>
     </div>
   );
 };

@@ -84,7 +84,7 @@ const Device = (props: DeviceProps) => {
 
   return (
     <React.Fragment>
-      <Icon iconType='device' />
+      {/* <Icon iconType='device' /> */}
 
       <div className={deviceIdsClassName}>
         <div>
@@ -104,6 +104,8 @@ const Device = (props: DeviceProps) => {
         />
         <label htmlFor={`device_${props.serialNumber}`}>Master</label>
       </div>
+
+      <br/>
       
     </React.Fragment>
   );
