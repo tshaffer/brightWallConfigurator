@@ -9,10 +9,8 @@ import BezelMenu from './BezelMenu';
 import BezelPreview from './BezelPreview';
 
 import {
-  setBezelHeight,
-  setBezelScreenHeight,
-  setBezelScreenWidth,
-  setBezelWidth
+  setBezelDimensions,
+  setBezelDimensionsOnAllDevices,
 } from '../../controller';
 import {
   getBezelWidth,
@@ -32,10 +30,20 @@ export interface BezelConfiguratorProps extends BezelConfiguratorPropsFromParent
   screenWidth: number;
   screenHeight: number;
 
-  onSetBezelWidth: (serialNumber: string, bezelWidth: number) => any;
-  onSetBezelHeight: (serialNumber: string, bezelHeight: number) => any;
-  onSetBezelScreenWidth: (serialNumber: string, width: number) => any;
-  onSetBezelScreenHeight: (serialNumber: string, height: number) => any;
+  onSetBezelDimensions: (
+    serialNumber: string,
+    bezelWidth: number,
+    bezelHeight: number,
+    screenWidth: number,
+    screenHeight: number,
+  ) => any;
+
+  onSetBezelDimensionsOnAllDevices: (
+    bezelWidth: number,
+    bezelHeight: number,
+    screenWidth: number,
+    screenHeight: number,
+  ) => any;
 }
 
 // -----------------------------------------------------------------------
@@ -66,15 +74,24 @@ const BezelConfigurator = (props: BezelConfiguratorProps) => {
   };
 
   const handleApply = () => {
-    props.onSetBezelWidth(props.serialNumber, displayedBezelWidth);
-    props.onSetBezelHeight(props.serialNumber, displayedBezelHeight);
-    props.onSetBezelScreenWidth(props.serialNumber, displayedScreenWidth);
-    props.onSetBezelScreenHeight(props.serialNumber, displayedScreenHeight);
+    props.onSetBezelDimensions(
+      props.serialNumber,
+      displayedBezelWidth,
+      displayedBezelHeight,
+      displayedScreenWidth,
+      displayedScreenHeight
+    );
     props.onCloseBezelConfigurator();
   };
 
   const handleApplyToAll = () => {
-
+    props.onSetBezelDimensionsOnAllDevices (
+      displayedBezelWidth,
+      displayedBezelHeight,
+      displayedScreenWidth,
+      displayedScreenHeight
+    );
+    props.onCloseBezelConfigurator();
   };
 
   return (
@@ -121,10 +138,8 @@ function mapStateToProps(state: any, ownProps: BezelConfiguratorPropsFromParent)
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onSetBezelWidth: setBezelWidth,
-    onSetBezelHeight: setBezelHeight,
-    onSetBezelScreenWidth: setBezelScreenWidth,
-    onSetBezelScreenHeight: setBezelScreenHeight,
+    onSetBezelDimensions: setBezelDimensions,
+    onSetBezelDimensionsOnAllDevices: setBezelDimensionsOnAllDevices,
   }, dispatch);
 };
 

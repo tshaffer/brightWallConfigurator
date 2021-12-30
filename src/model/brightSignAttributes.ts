@@ -16,6 +16,7 @@ import {
 export const ADD_HOST_BRIGHTSIGN = 'ADD_HOST_BRIGHTSIGN';
 export const SET_BRIGHTSIGN = 'SET_BRIGHTSIGN';
 export const ADD_NEW_BRIGHTSIGN = 'ADD_NEW_BRIGHTSIGN';
+export const SET_BEZEL_DIMENSIONS = 'SET_BEZEL_DIMENSIONS';
 export const SET_BEZEL_MEASURE_BY_TYPE = 'SET_BEZEL_MEASURE_BY_TYPE';
 export const SET_BEZEL_WIDTH_PERCENTAGE = 'SET_BEZEL_WIDTH_PERCENTAGE';
 export const SET_BEZEL_HEIGHT_PERCENTAGE = 'SET_BEZEL_HEIGHT_PERCENTAGE';
@@ -202,6 +203,34 @@ export const updateBezelHeightPercentage = (
   };
 };
 
+export interface SetBezelDimensionsPayload {
+  serialNumber: string;
+  bezelWidth: number;
+  bezelHeight: number;
+  screenWidth: number;
+  screenHeight: number;
+}
+type SetBezelDimensionsAction = BrightWallModelAction<SetBezelDimensionsPayload>;
+
+export const updateBezelDimensions = (
+  serialNumber: string,
+  bezelWidth: number,
+  bezelHeight: number,
+  screenWidth: number,
+  screenHeight: number,
+): SetBezelDimensionsAction => {
+  return {
+    type: SET_BEZEL_DIMENSIONS,
+    payload: {
+      serialNumber,
+      bezelWidth,
+      bezelHeight,
+      screenWidth,
+      screenHeight,
+    },
+  };
+};
+
 export interface SetBezelWidthPayload {
   serialNumber: string;
   bezelWidth: number;
@@ -290,7 +319,7 @@ const initialState: BrightWall = {
 
 export const brightSignAttributesReducer = (
   state: BrightWall = initialState,
-  action: AddHostBrightSignAction & SetBrightSignAction & SetRowIndexAction & SetColumnIndexAction & SetIsMasterAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction,
+  action: AddHostBrightSignAction & SetBrightSignAction & SetRowIndexAction & SetColumnIndexAction & SetIsMasterAction & SetBezelMeasureByTypeAction & SetBezelWidthPercentageAction & SetBezelHeightPercentageAction & SetBezelWidthAction & SetBezelHeightAction & SetBezelScreenWidthAction & SetBezelScreenHeightAction & SetBezelDimensionsAction,
 ): BrightWall => {
   let newState;
   let brightWallConfiguration;
@@ -341,6 +370,14 @@ export const brightSignAttributesReducer = (
       newState = cloneDeep(state) as BrightWall;
       brightWallConfiguration = newState.brightSignMap[action.payload.serialNumber].brightWallConfiguration as BrightWallConfiguration;
       brightWallConfiguration.bezelHeightPercentage = action.payload.bezelHeightPercentage;
+      return newState;
+    case SET_BEZEL_DIMENSIONS:
+      newState = cloneDeep(state) as BrightWall;
+      brightWallConfiguration = newState.brightSignMap[action.payload.serialNumber].brightWallConfiguration as BrightWallConfiguration;
+      brightWallConfiguration.bezelWidth = action.payload.bezelWidth;
+      brightWallConfiguration.bezelHeight = action.payload.bezelHeight;
+      brightWallConfiguration.bezelScreenWidth = action.payload.screenWidth;
+      brightWallConfiguration.bezelScreenHeight = action.payload.screenHeight;
       return newState;
     case SET_BEZEL_WIDTH:
       newState = cloneDeep(state) as BrightWall;

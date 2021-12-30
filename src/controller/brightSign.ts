@@ -11,7 +11,8 @@ import {
   updateBezelWidth,
   updateBezelHeight,
   updateBezelScreenWidth,
-  updateBezelScreenHeight
+  updateBezelScreenHeight,
+  updateBezelDimensions
 } from '../model';
 import {
   getBrightSignInWall,
@@ -315,6 +316,78 @@ export const setBezelHeightPercentage = (
             const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
             if (!isNil(serialNumber)) {
               dispatch(updateBezelHeightPercentage(serialNumber, bezelHeightPercentage));
+            }
+          }
+        });
+    }
+  });
+};
+
+export const setBezelDimensionsOnAllDevices = (
+  bezelWidth: number,
+  bezelHeight: number,
+  screenWidth: number,
+  screenHeight: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const state = getState();
+    const brightSignsInWall: BrightSignMap = getBrightSignsInWall(state);
+    for (const serialNumber in brightSignsInWall) {
+      // TEDTODOBW - duplicates code in setBezelDimensions
+      const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+      if (ipAddress.length > 0) {
+        fetch('/SetBezelDimensions?ipAddress=' + ipAddress
+          + '&bezelWidth=' + bezelWidth.toString()
+          + '&bezelHeight=' + bezelHeight.toString()
+          + '&screenWidth=' + screenWidth.toString()
+          + '&screenHeight=' + screenHeight.toString())
+          .then(response => response.json())
+          .then((status: any) => {
+            if (!isNil(status) && isBoolean(status.success) && status.success) {
+              const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+              if (!isNil(serialNumber)) {
+                dispatch(updateBezelDimensions(
+                  serialNumber,
+                  bezelWidth,
+                  bezelHeight,
+                  screenWidth,
+                  screenHeight,
+                ));
+              }
+            }
+          });
+      }
+    }
+  });
+};
+
+export const setBezelDimensions = (
+  serialNumber: string,
+  bezelWidth: number,
+  bezelHeight: number,
+  screenWidth: number,
+  screenHeight: number,
+) => {
+  return ((dispatch: any, getState: any): any => {
+    const ipAddress = getDeviceIpAddress(getState(), serialNumber);
+    if (ipAddress.length > 0) {
+      fetch('/SetBezelDimensions?ipAddress=' + ipAddress
+        + '&bezelWidth=' + bezelWidth.toString()
+        + '&bezelHeight=' + bezelHeight.toString()
+        + '&screenWidth=' + screenWidth.toString()
+        + '&screenHeight=' + screenHeight.toString())
+        .then(response => response.json())
+        .then((status: any) => {
+          if (!isNil(status) && isBoolean(status.success) && status.success) {
+            const serialNumber = getSerialNumberFromIpAddress(getState(), ipAddress);
+            if (!isNil(serialNumber)) {
+              dispatch(updateBezelDimensions(
+                serialNumber,
+                bezelWidth,
+                bezelHeight,
+                screenWidth,
+                screenHeight,
+              ));
             }
           }
         });
