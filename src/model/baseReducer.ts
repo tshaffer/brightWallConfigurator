@@ -8,9 +8,7 @@ import { appAttributesReducer } from './appAttributes';
 import {
   brightSignAttributesReducer,
 } from './brightSignAttributes';
-import {
-  brightWallConfigurationReducer
-} from './brightWallConfiguration';
+
 // -----------------------------------------------------------------------
 // Defaults
 // -----------------------------------------------------------------------
@@ -23,8 +21,6 @@ import {
 export const brightWallModelReducer = combineReducers<BrightSignState>({
   appAttributes: appAttributesReducer,
   brightWall: brightSignAttributesReducer,
-  // brightSignAttributes: brightSignAttributesReducer,
-  // brightWallConfiguration: brightWallConfigurationReducer,
 });
 
 // -----------------------------------------------------------------------

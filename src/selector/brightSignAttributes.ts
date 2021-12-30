@@ -22,6 +22,13 @@ export const getNumRows = (state: BrightSignState): number => {
   return -1;
 };
 
+export const getNumColumns = (state: BrightSignState): number => {
+  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
+    return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.numColumns;
+  }
+  return -1;
+};
+
 export const getBrightWallSetupScreenEnabled = (state: BrightSignState): boolean => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
     return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.brightWallSetupScreenEnabled;
@@ -34,13 +41,6 @@ export const getBrightWallDeviceSetupActiveScreen = (state: BrightSignState): De
     return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.brightWallDeviceSetupActiveScreen;
   }
   return DeviceSetupScreen.ConfigureScreen;
-};
-
-export const getNumColumns = (state: BrightSignState): number => {
-  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
-    return state.brightWall.hostBrightWallConfiguration.brightWallConfiguration.numColumns;
-  }
-  return -1;
 };
 
 export const getBrightSignsInWall = (state: BrightSignState): BrightSignMap => {
@@ -90,30 +90,6 @@ export const getBrightWallUnitAssignments = (state: BrightSignState): string[][]
   }
 
   return brightWallGrid;
-};
-
-export const getBezelMeasureByType= (state: BrightSignState, serialNumber: string): BezelMeasureByType => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
-    return brightSignConfig.brightWallConfiguration.bezelMeasureByType;
-  }
-  return BezelMeasureByType.Measurement;
-};
-
-export const getBezelWidthPercentage = (state: BrightSignState, serialNumber: string): number => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
-    return brightSignConfig.brightWallConfiguration.bezelWidthPercentage;
-  }
-  return 0;
-};
-
-export const getBezelHeightPercentage = (state: BrightSignState, serialNumber: string): number => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
-    return brightSignConfig.brightWallConfiguration.bezelHeightPercentage;
-  }
-  return 0;
 };
 
 export const getBezelWidth = (state: BrightSignState, serialNumber: string): number => {
