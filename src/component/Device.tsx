@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import '../styles/configurator.css';
 import DeviceIdentifiers from './DeviceIdentifiers';
+import Icon from './Icon';
 
 import {
   setIsMaster,
@@ -73,20 +74,17 @@ const Device = (props: DeviceProps) => {
     props.onSetIsMaster(event.target.id, true);
   };
 
-  let deviceImage = '';
   let deviceIdsClassName = '';
 
   if (getDeviceIsAssigned()) {
-    deviceImage = 'src/img/deviceDisabled.svg';
     deviceIdsClassName = 'deviceName disabled';
   } else {
-    deviceImage = 'src/img/device.svg';
     deviceIdsClassName = 'deviceName';
   }
 
   return (
     <React.Fragment>
-      <img className='deviceImage' src={deviceImage} />
+      <Icon iconType='device' />
 
       <div className={deviceIdsClassName}>
         <div>
@@ -106,8 +104,7 @@ const Device = (props: DeviceProps) => {
         />
         <label htmlFor={`device_${props.serialNumber}`}>Master</label>
       </div>
-
-
+      
     </React.Fragment>
   );
 };
