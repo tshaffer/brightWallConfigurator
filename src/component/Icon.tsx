@@ -15,8 +15,6 @@ const Icon = (props: IconProps) => {
   const getIconContainerStyle = (scaleValue: number, isDisabled: boolean) => {
     return style({
       height: 'auto',
-      // width: 60 * scaleValue + 'px',
-      // margin: '10px 5px 5px 5px',
       width: 40 * scaleValue + 'px',
       margin: '2px 5px 5px 2px',
       display: 'inline-block',
@@ -52,30 +50,6 @@ const Icon = (props: IconProps) => {
   });
 
   const renderCloseIcon = () => {
-    /*
-            <InteractiveCanvasEdgeEventIcon
-              eventType={type}
-              isSelected={isSelected}
-              pathElementMarkerTranslate={'scale(' + 0.6 * scaleValue + ') translate(1, 0)'}
-              isDisabled={isDisabled}
-            />
-    */
-    // const edgeElementMarkerTranslateStyle = 'scale(0.6) translate(1, 0)';
-    /* timeout icon
-        d={'M32,0A32,32,0,1,0,64,32,32,32,0,0,0,32,0Zm0,61A29,29,0,1,1,61,32,29,29,0,0,1,32,61ZM12'
-          + '.88,26V51.55H50.3V26ZM37,27.74,33,32.84h-6.8l4.08-5.1Zm-20.41,0h6.8l-4.08,5.1H14.58V3'
-          + '0.29Zm29.94,5.1H39.75l4.09-5.1H48.6v2.55ZM12.88,26l36.45-8.47L47.4,9.28,11,17.75ZM46.'
-          + '71,13.81l.58,2.48-4.64,1.08-5.13-4,6.62-1.54ZM30.89,14.87l5.13,4-6.63,1.54-5.13-4ZM13'
-          + ',19,17.64,18l5.13,4-6.63,1.54-2.57-2Z'}
-    */
-    /* close icon from Sergey
-         d={'M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256C397.4,512,512,397.4,512,256S397.4,0,256,0zM336.1'
-           + '303c9.375,9.375,9.375,24.56,0,33.94c-9.381,9.381-24.56,9.373-33.94,0L256,289.9l-47.03'
-           + '47.03c-9.381,9.381-24.56,9.373-33.94,0c-9.375-9.375-9.375-24.56,0-33.94l47.03-47.03L175'
-           + '208.1c-9.375-9.375-9.375-24.56,0-33.94s24.56-9.375,33.94,0L256,222.1l47.03-47.03c9.375-9.375'
-           + '24.56-9.375,33.94,0s9.375,24.56,0,33.94l-47.03,47.03L336.1,303z'}
-    */
-    // const edgeElementMarkerTranslateStyle = 'scale(0.3) translate(1, 0)';
     const edgeElementMarkerTranslateStyle = 'scale(0.6) translate(1, 0)';
     return (
       <path
@@ -106,17 +80,13 @@ const Icon = (props: IconProps) => {
         className={getEventIconStyle(false)}
       />
     );
-  }
+  };
 
   const renderCloseSVG = () => {
 
-    // const isSelected = false;
-    // const scaleType = 'Large';
     const scaleValue = 1;
 
     const closeIcon = renderCloseIcon();
-
-    //         onClick={props.onRemoveBrightSignFromWall}
 
     return (
       <div
@@ -133,8 +103,6 @@ const Icon = (props: IconProps) => {
 
   const renderDeviceSVG = () => {
 
-    // const isSelected = false;
-    // const scaleType = 'Large';
     const scaleValue = 1;
 
     const deviceIcon = renderDeviceIcon();

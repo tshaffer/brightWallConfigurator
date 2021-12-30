@@ -30,13 +30,18 @@ const DeviceInWall = (props: DeviceInWallProps) => {
   return (
     <div className='selectedDeviceContainer'>
 
-      <Icon iconType='device'/>
+      <Icon iconType='device' />
 
       <div className='deviceNumber'>
         {props.serialNumber}
       </div>
 
-      <Icon iconType='close'/>
+      <div
+        style={{ display: 'inline-block' }}
+        onClick={props.onRemoveBrightSignFromWall}
+      >
+        <Icon iconType='close' />
+      </div>
 
     </div>
   );
