@@ -9,13 +9,14 @@ import '../styles/configurator.css';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
-import { exitConfigurator, launchAlignmentTool, reenterConfigurator } from '../controller';
+import { exitConfigurator, launchAlignmentTool, launchApp, reenterConfigurator } from '../controller';
 import {
   getBrightWallSetupScreenEnabled,
 } from '../selector';
 
 export interface WallConfigurationProps {
   brightWallSetupScreenEnabled: boolean;
+  onLaunchApp: () => any;
   onReenterConfigurator: () => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
@@ -28,6 +29,8 @@ export interface WallConfigurationProps {
 // -----------------------------------------------------------------------
 
 const WallConfiguration = (props: WallConfigurationProps) => {
+
+  React.useEffect(props.onLaunchApp, []);
 
   const handleExitConfigurator = (event: any) => {
     console.log('handleExitConfigurator invoked');
@@ -93,6 +96,7 @@ function mapStateToProps(state: any): Partial<WallConfigurationProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
+    onLaunchApp: launchApp,
     onExitConfigurator: exitConfigurator,
     onReenterConfigurator: reenterConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
