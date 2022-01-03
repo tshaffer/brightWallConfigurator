@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { DropTargetMonitor, useDrop } from 'react-dnd';
+
 import ReactModal from 'react-modal';
 
 import BezelConfigurator from './BezelConfigurator/BezelConfigurator';
@@ -14,7 +16,6 @@ import {
 import DeviceInWall from './DeviceInWall';
 import { isString } from 'lodash';
 import { getDevicePositionLabel } from '../utility';
-import { useDrop } from 'react-dnd';
 
 export interface ScreenInWallPropsFromParent {
   serialNumber: string;
@@ -32,18 +33,28 @@ export interface ScreenInWallProps extends ScreenInWallPropsFromParent {
 
 const ScreenInWall = (props: ScreenInWallProps) => {
 
+  const getScreenIsOccupied = (): boolean => {
+    return (isString(props.serialNumber) && props.serialNumber.length > 0);
+  };
+
+  const canDropOntoScreen = (): boolean => {
+    return !getScreenIsOccupied();
+  };
+
   const dropDevice = (rowIndex: number, columnIndex: number, item: any) => {
     console.log('dropDevice', item.serialNumber, rowIndex, columnIndex);
     console.log(item);
     props.onSetBrightSignWallPosition(item.serialNumber, props.rowIndex, props.columnIndex);
   };
 
-  const [, drop] = useDrop(
+  const [ , drop] = useDrop(
     () => ({
       accept: 'Device',
+      canDrop: () => canDropOntoScreen(),
       drop: (item) => dropDevice(props.rowIndex, props.columnIndex, item),
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver()
+      collect: (monitor: DropTargetMonitor) => ({
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
       })
     }),
     [props.serialNumber, props.rowIndex, props.columnIndex]
