@@ -34,7 +34,7 @@ export const launchApp = () => {
         setTimeout(getBrightWallDeviceList, 1000, dispatch, getState);
 
         // start timer to get list of BrightSigns in the wall
-        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 15000, dispatch, getState);
+        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 3000, dispatch, getState);
       });
   });
 };
