@@ -28,7 +28,7 @@ export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
 const DeviceInWall = (props: DeviceInWallProps) => {
 
   return (
-    <div className='selectedDeviceContainer'>
+    <div className='deviceInWallContainer'>
 
       <Icon iconType='device' />
 

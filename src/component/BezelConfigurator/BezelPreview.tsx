@@ -53,8 +53,8 @@ const BezelPreview = (props: BezelPreviewProps) => {
   };
 
   return (
-    <div ref={$outerContainer} className='demoAreaContainer'>
-      <div className='demoElementContainer' style={style} />
+    <div ref={$outerContainer} className='bezelPreviewWrapper'>
+      <div className='bezelPreviewDevice' style={style} />
     </div>
   );
 };

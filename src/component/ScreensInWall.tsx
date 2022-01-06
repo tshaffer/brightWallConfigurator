@@ -71,7 +71,7 @@ const ScreensInWall = (props: ScreensInWallProps) => {
   };
 
   return (
-    <div className='bezelsContainer' style={style}>
+    <div className='screensInWallContainer' style={style}>
       {screensInWall}
     </div>
   );

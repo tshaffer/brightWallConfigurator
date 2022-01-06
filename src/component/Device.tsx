@@ -95,7 +95,7 @@ const Device = (props: DeviceProps) => {
         </div>
       </div>
 
-      <div className='deviceFlag'>
+      <div className='deviceMasterSelector'>
         <input
           type='radio'
           id={props.serialNumber}
@@ -105,8 +105,8 @@ const Device = (props: DeviceProps) => {
         <label htmlFor={`device_${props.serialNumber}`}>Master</label>
       </div>
 
-      <br/>
-      
+      <br />
+
     </React.Fragment>
   );
 };

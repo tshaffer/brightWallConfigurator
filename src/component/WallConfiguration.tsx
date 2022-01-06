@@ -71,7 +71,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className='deviceBezelContainer'>
+      <div className='wallConfigurationContainer'>
         <DeviceList />
         <ScreensInWall />
 

@@ -47,7 +47,7 @@ const DeviceList = (props: DeviceListProps) => {
 
 
   return (
-    <form className='deviceContainer'>
+    <form className='deviceListContainer'>
       {
         map(serialNumbers, serialNumber =>
           <Device

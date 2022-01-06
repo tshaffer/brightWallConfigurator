@@ -47,7 +47,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
     props.onSetBrightSignWallPosition(item.serialNumber, props.rowIndex, props.columnIndex);
   };
 
-  const [ , drop] = useDrop(
+  const [, drop] = useDrop(
     () => ({
       accept: 'Device',
       canDrop: () => canDropOntoScreen(),
@@ -101,7 +101,7 @@ const ScreenInWall = (props: ScreenInWallProps) => {
   const positionLabel = getDevicePositionLabel(props.rowIndex, props.columnIndex);
 
   return (
-    <div className='bezelContainer' ref={drop}>
+    <div className='screenInWallContainer' ref={drop}>
       <div>
         <ReactModal
           isOpen={showBezelConfigurator}

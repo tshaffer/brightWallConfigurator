@@ -36,7 +36,7 @@ body {
   box-shadow: 3px 3px 0px #9800FE;
 }
 
-.deviceBezelContainer {
+.wallConfigurationContainer {
   box-sizing: border-box;
   display: grid;
 
@@ -54,7 +54,7 @@ body {
                     "lb lb rb";
 }
 
-.deviceBezelContainer .deviceContainer {
+.wallConfigurationContainer .deviceListContainer {
   box-sizing: border-box;
   display: grid;
 
@@ -72,11 +72,11 @@ body {
   font-family: 'PTSans';
 }
 
-.deviceBezelContainer .deviceContainer .deviceImage {
+.wallConfigurationContainer .deviceListContainer .deviceImage {
   box-sizing: border-box;
 }
 
-.deviceBezelContainer .deviceContainer .deviceName {
+.wallConfigurationContainer .deviceListContainer .deviceName {
   box-sizing: border-box;
   margin-left: 23px;
 
@@ -85,11 +85,11 @@ body {
   font-size: 13px;
 }
 
-.deviceBezelContainer .deviceContainer .disabled {
+.wallConfigurationContainer .deviceListContainer .disabled {
   color: #989898;
 }
 
-.deviceBezelContainer .deviceContainer input[type="checkbox"] {
+.wallConfigurationContainer .deviceListContainer input[type="checkbox"] {
   appearance: none;
   position: relative;
 
@@ -105,7 +105,7 @@ body {
   font: inherit;
 }
 
-.deviceBezelContainer .deviceContainer input[type="checkbox"]::before {
+.wallConfigurationContainer .deviceListContainer input[type="checkbox"]::before {
   position: absolute;
   display: none;
 
@@ -120,15 +120,15 @@ body {
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-.deviceBezelContainer .deviceContainer input[type="checkbox"]:checked::before {
+.wallConfigurationContainer .deviceListContainer input[type="checkbox"]:checked::before {
   display: inline-block;
 }
 
-.deviceBezelContainer .deviceContainer .disabled input[type="checkbox"] {
+.wallConfigurationContainer .deviceListContainer .disabled input[type="checkbox"] {
   border-color: #989898;
 }
 
-.deviceBezelContainer .deviceContainer .deviceFlag {
+.wallConfigurationContainer .deviceListContainer .deviceMasterSelector {
   box-sizing: border-box;
   margin-left: 35px;
 
@@ -137,20 +137,20 @@ body {
   font-size: 12px;
 }
 
-.deviceBezelContainer .deviceContainer .deviceFlag input {
+.wallConfigurationContainer .deviceListContainer .deviceMasterSelector input {
   box-sizing: border-box;
 
   display: inline-block;
   vertical-align: middle;
 }
 
-.deviceBezelContainer .deviceContainer .deviceFlag label {
+.wallConfigurationContainer .deviceListContainer .deviceMasterSelector label {
   box-sizing: border-box;
 
   margin-left: 4px;
 }
 
-.deviceBezelContainer .bezelsContainer {
+.wallConfigurationContainer .screensInWallContainer {
   box-sizing: border-box;
   display: grid;
 
@@ -165,7 +165,7 @@ body {
   grid-gap: 1px 1px;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer {
   box-sizing: border-box;
   display: flex;
 
@@ -180,12 +180,12 @@ body {
   align-content: flex-start;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer:hover {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer:hover {
   box-sizing: border-box;
   border-color: #9800FE;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .indexContainer {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .indexContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
@@ -196,7 +196,7 @@ body {
   font-size: 16px;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
@@ -206,14 +206,14 @@ body {
   align-self: center;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deviceImage {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceImage {
   box-sizing: border-box;
 
   display: inline-block;
   vertical-align: middle;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deviceNumber {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceNumber {
   box-sizing: border-box;
 
   display: inline-block;
@@ -223,7 +223,7 @@ body {
   font-size: 15px;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .selectedDeviceContainer .deleteDeviceButton {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deleteDeviceButton {
   box-sizing: border-box;
 
   width: 11px;
@@ -234,7 +234,7 @@ body {
   cursor: pointer;
 }
 
-.deviceBezelContainer .bezelsContainer .bezelContainer .buttonContainer {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .buttonContainer {
   box-sizing: border-box;
   flex-basis: auto;
 
@@ -244,7 +244,7 @@ body {
   text-align: center;
 }
 
-.deviceBezelContainer .leftButtonContainer {
+.wallConfigurationContainer .leftButtonContainer {
   box-sizing: border-box;
   grid-area: lb;
 
@@ -252,7 +252,7 @@ body {
   align-self: center;
 }
 
-.deviceBezelContainer .rightButtonContainer {
+.wallConfigurationContainer .rightButtonContainer {
   box-sizing: border-box;
   grid-area: rb;
 
@@ -314,7 +314,7 @@ body {
   font-size: 13px;
 }
 
-.bezelConfigurationContainer .demoAreaContainer {
+.bezelConfigurationContainer .bezelPreviewWrapper {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
@@ -327,7 +327,7 @@ body {
   background-color: #6EA7DB;
 }
 
-.bezelConfigurationContainer .demoAreaContainer .demoElementContainer {
+.bezelConfigurationContainer .bezelPreviewWrapper .bezelPreviewDevice {
   box-sizing: border-box;
   position: relative;
 
