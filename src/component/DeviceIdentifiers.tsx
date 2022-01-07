@@ -34,6 +34,7 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
   );
 
 
+  const iconType = props.deviceIsInWall ? 'deviceDisabled' : 'device';
   return (
     <div
       ref={dragRef}
@@ -42,7 +43,7 @@ const DeviceIdentifiers = (props: DeviceIdentifiersProps) => {
         cursor: 'move',
       }}
     >
-      <Icon iconType='device' />
+      <Icon iconType={iconType} />
       <div style={{ display: 'inline-block' }}>
         <div>{props.unitName}</div>
         <div>{props.serialNumber}</div>
