@@ -12,19 +12,7 @@ export interface IconProps {
 
 const Icon = (props: IconProps) => {
 
-  const getIconContainerStyle = (scaleValue: number, isDisabled: boolean) => {
-    return style({
-      height: 'auto',
-      width: 40 * scaleValue + 'px',
-      margin: '2px 5px 5px 2px',
-      display: 'inline-block',
-      verticalAlign: 'top',
-      backgroundSize: 'contain',
-      cursor: isDisabled ? 'not-allowed' : 'pointer',
-      textAlign: 'center'
-    });
-  };
-
+  // level 0 in hierarchy
   const getDeviceIconContainerStyle = (scaleValue: number, isDisabled: boolean) => {
     return style({
       height: 'auto',
@@ -38,6 +26,37 @@ const Icon = (props: IconProps) => {
     });
   };
 
+  const getCloseIconContainerStyle = (scaleValue: number, isDisabled: boolean) => {
+    return style({
+      backgroundSize: 'contain',
+      cursor: isDisabled ? 'not-allowed' : 'pointer',
+      display: 'inline-block',
+      height: 'auto',
+      margin: '-10px 0 0 0',
+      textAlign: 'center',
+      verticalAlign: 'top',
+      width: '26px',
+    });
+  };
+
+  // level 1 in container
+  const getDeviceSVGContainerStyle = () => {
+    return style({
+      height: '40px',
+      width: '80px',
+      display: 'inline-block'
+    });
+  };
+
+  const getCloseSVGContainerStyle = (scaleValue: number) => {
+    return style({
+      width: '26px',
+      display: 'inline-block'
+    });
+  };
+
+
+  // level 2 in hierarchy
   const getSVGStyle = () => {
     return style({
       alignContent: 'stretch',
@@ -47,28 +66,7 @@ const Icon = (props: IconProps) => {
     });
   };
 
-  const getSVGContainerStyle = (scaleValue: number) => {
-    const scaledSize = 40 * scaleValue;
-    return style({
-      height: scaledSize + 'px',
-      width: scaledSize + 'px',
-      display: 'inline-block'
-    });
-  };
-
-  const getDeviceSVGContainerStyle = () => {
-    return style({
-      height: '40px',
-      width: '80px',
-      display: 'inline-block'
-    });
-  };
-  const getEventIconStyle = (isSelected: boolean) => style({
-    fill: isSelected === true ? '#2db5fd' : '#787878',
-    stroke: isSelected === true ? '#2db5fd' : '#787878',
-    cursor: 'pointer',
-  });
-
+  // level 3 in hierarchy
   const getDeviceEnabledIconStyle = () => style({
     fill: '#31006F',
     fillRule: 'evenodd',
@@ -88,18 +86,21 @@ const Icon = (props: IconProps) => {
     strokeMiterlimit: 10,
   });
 
-  const renderCloseIcon = () => {
-    const edgeElementMarkerTranslateStyle = 'scale(0.6) translate(1, 0)';
+  const getCloseIconStyle = () => style({
+    fill: '#31006F',
+    fillRule: 'evenodd',
+    clipRule: 'evenodd',
+  });
+
+  const renderCloseIcon = (scaleValue: number) => {
+    const edgeElementMarkerTranslateStyle = 'scale(' + scaleValue + ') translate(-640, -136)';
     return (
       <path
         transform={edgeElementMarkerTranslateStyle}
-        d={'M21.125,0H4.875C2.182,0,0,2.182,0,4.875v16.25C0,23.818,2.182,26,4.875,26h16.25'
-          + 'C23.818,26,26,23.818,26,21.125V4.875C26,2.182,23.818,0,21.125,0z M18.78,17.394l-1.388,1.387c-0.254,0.255-0.67,0.255-0.924,0'
-          + 'L13,15.313L9.533,18.78c-0.255,0.255-0.67,0.255-0.925-0.002L7.22,17.394c-0.253-0.256-0.253-0.669,0-0.926l3.468-3.467'
-          + 'L7.221,9.534c-0.254-0.256-0.254-0.672,0-0.925l1.388-1.388c0.255-0.257,0.671-0.257,0.925,0L13,10.689l3.468-3.468'
-          + 'c0.255-0.257,0.671-0.257,0.924,0l1.388,1.386c0.254,0.255,0.254,0.671,0.001,0.927l-3.468,3.467l3.468,3.467'
-          + 'C19.033,16.725,19.033,17.138,18.78,17.394z'}
-        className={getEventIconStyle(false)}
+        d={'M692.1,193.6l-5.3-7c-2.1-2.7-3.4-4.4-4.7-6.3h-0.1c-1.2,1.8-2.4,3.5-4.5,6.3l-5,7h-6.1l12.6-16L666.8,162h6.2'
+          + 'l5.4,7.4c1.5,2.1,2.7,3.7,3.8,5.4h0.2c1.2-1.9,2.2-3.3,3.7-5.4l5.6-7.4h6.2l-12.5,15.4l12.8,16.3H692.1z M716.4,143h-69.6v66.7h69.6'
+          + 'V143z M715.8,144h-68.2v64.9h68.2V144z'}
+        className={getCloseIconStyle()}
       />
     );
   };
@@ -138,15 +139,15 @@ const Icon = (props: IconProps) => {
 
   const renderCloseSVG = () => {
 
-    const scaleValue = 1;
+    const scaleValue = 0.3;
 
-    const closeIcon = renderCloseIcon();
+    const closeIcon = renderCloseIcon(scaleValue);
 
     return (
       <div
-        className={getIconContainerStyle(scaleValue, false)}
+        className={getCloseIconContainerStyle(scaleValue, false)}
       >
-        <div className={getSVGContainerStyle(scaleValue)}>
+        <div className={getCloseSVGContainerStyle(scaleValue)}>
           <svg className={getSVGStyle()}>
             {closeIcon}
           </svg>
