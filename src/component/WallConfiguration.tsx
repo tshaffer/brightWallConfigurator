@@ -9,7 +9,7 @@ import '../styles/configurator.css';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
-import { exitConfigurator, launchAlignmentTool, launchApp, reenterConfigurator } from '../controller';
+import { exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
 import {
   getBrightWallSetupScreenEnabled,
 } from '../selector';
@@ -17,7 +17,6 @@ import {
 export interface WallConfigurationProps {
   brightWallSetupScreenEnabled: boolean;
   onLaunchApp: () => any;
-  onReenterConfigurator: () => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
   onExitAlignmentTool: () => any;
@@ -37,41 +36,27 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     props.onExitConfigurator();
   };
 
-  const handleReenterConfigurator = (event: any) => {
-    console.log('handleReenterConfigurator invoked');
-    props.onReenterConfigurator();
-  };
-
   const handleLaunchAlignment = (event: any) => {
     console.log('handleLaunchAlignment invoked');
     props.onLaunchAlignmentTool();
   };
 
-  const renderConfiguratorEntryExit = () => {
-    if (props.brightWallSetupScreenEnabled) {
-      return (
-        <div className='rightButtonContainer'>
-          <button onClick={handleExitConfigurator}>
-            Start Wall
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className='rightButtonContainer' >
-          <button onClick={handleReenterConfigurator}>
-            Reboot to reenter device setup
-          </button>
-        </div>
-      );
-    }
+  const renderConfiguratorExit = () => {
+    return (
+      <div className='rightButtonContainer'>
+        <button onClick={handleExitConfigurator}>
+          Start Wall
+        </button>
+      </div>
+    );
   };
 
-  const configuratorEntryExit = renderConfiguratorEntryExit();
+  const configuratorExit = renderConfiguratorExit();
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='wallConfigurationContainer'>
+        
         <DeviceList />
         <ScreensInWall />
 
@@ -81,7 +66,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
           </button>
         </div>
 
-        {configuratorEntryExit}
+        {configuratorExit}
 
       </div>
     </DndProvider>
@@ -98,7 +83,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
     onExitConfigurator: exitConfigurator,
-    onReenterConfigurator: reenterConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
   }, dispatch);
 };
