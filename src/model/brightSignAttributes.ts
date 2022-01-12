@@ -4,7 +4,6 @@ import {
 
 import { BrightWallModelAction } from './baseAction';
 import {
-  BezelMeasureByType,
   BrightSignConfig,
   BrightWall,
   BrightWallConfiguration,

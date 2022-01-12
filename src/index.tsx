@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import { brightWallModelReducer } from './model';
 
-import WallConfiguration from './component/WallConfiguration';
+import App from './component/App';
 
 const store = createStore(
   brightWallModelReducer,
@@ -21,7 +21,7 @@ const divStyle = {
 ReactDOM.render(
   <Provider store={store}>
     <div style={divStyle}>
-      <WallConfiguration />
+      <App />
     </div>
   </Provider>,
   document.getElementById('content') as HTMLElement

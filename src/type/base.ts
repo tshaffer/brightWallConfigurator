@@ -52,16 +52,6 @@ export interface NetworkInterfaceMap {
   [key: string]: NetworkInterface;
 }
 
-/*
-  config.brightSignAttributes.AddReplace("autorunVersion", bsp.sysInfo.deviceUniqueID$)
-  config.brightSignAttributes.AddReplace("deviceFWVersion", bsp.sysInfo.deviceFWVersion$)
-  config.brightSignAttributes.AddReplace("deviceModel", bsp.sysInfo.deviceModel$)
-  config.brightSignAttributes.AddReplace("deviceFamily", bsp.sysInfo.deviceFamily$)
-  config.brightSignAttributes.AddReplace("unitName", settings.unitName)
-  config.brightSignAttributes.AddReplace("unitNamingMethod", settings.unitNamingMethod)
-  config.brightSignAttributes.AddReplace("unitDescription", settings.unitDescription)
-*/
-
 export interface BrightSignAttributes {
   isBrightWall: boolean;
   serialNumber: string;
@@ -80,11 +70,6 @@ export enum DeviceSetupScreen {
   AlignScreen = 'AlignScreen',
 }
 
-export enum BezelMeasureByType {
-  Percentage = 'Percentage',
-  Measurement = 'Measurement',
-}
-
 export interface BrightWallConfiguration {
   brightWallSetupScreenEnabled: boolean;
   brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
@@ -93,9 +78,6 @@ export interface BrightWallConfiguration {
   columnIndex: number;
   numRows: number;
   numColumns: number;
-  bezelMeasureByType: BezelMeasureByType;
-  bezelWidthPercentage: number;
-  bezelHeightPercentage: number;
   bezelWidth: number;
   bezelHeight: number;
   bezelScreenWidth: number;

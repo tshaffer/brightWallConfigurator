@@ -1,3 +1,4 @@
+export * from './App';
 export * from './BezelConfigurator';
 export * from './Device';
 export * from './DeviceIdentifiers';

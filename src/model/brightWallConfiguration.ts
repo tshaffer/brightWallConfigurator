@@ -1,6 +1,5 @@
 import { BrightWallModelAction } from './baseAction';
-import { BrightWallConfiguration, BezelMeasureByType, BrightWall, DeviceSetupScreen } from '../type';
-import { cloneDeep } from 'lodash';
+import { BrightWallConfiguration, DeviceSetupScreen } from '../type';
 
 // ------------------------------------
 // Constants
@@ -65,9 +64,6 @@ const initialState: BrightWallConfiguration = {
   columnIndex: -1,
   numRows: -1,
   numColumns: -1,
-  bezelMeasureByType: BezelMeasureByType.Measurement,
-  bezelWidthPercentage: 0,
-  bezelHeightPercentage: 0,
   bezelWidth: 0,
   bezelHeight: 0,
   bezelScreenWidth: 0,
