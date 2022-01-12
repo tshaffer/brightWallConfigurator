@@ -9,6 +9,13 @@ export const getIsBrightWall = (state: BrightSignState): boolean => {
   return false;
 };
 
+export const getActivePresentationName = (state: BrightSignState): string => {
+  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
+    return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.activePresentationName;
+  }
+  return '';
+};
+
 export const getSerialNumber = (state: BrightSignState): string => {
   if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
     return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.serialNumber;

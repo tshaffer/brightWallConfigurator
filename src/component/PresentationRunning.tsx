@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { getActivePresentationName } from '../selector';
 
 import { reenterConfigurator } from '../controller';
 
 export interface PresentationRunningProps {
+  activePresentationName: string;
   onReenterConfigurator: () => any;
 }
 
@@ -23,7 +25,7 @@ const PresentationRunning = (props: PresentationRunningProps) => {
 
   return (
     <div>
-      <p>A presentation is currently running. Would you like to stop it and re-enter configuration?</p>
+      <p>{props.activePresentationName} is currently running. Would you like to stop it and re-enter configuration?</p>
       <button onClick={handleReenterConfigurator}>
         Enter Configuration
       </button>
@@ -34,6 +36,7 @@ const PresentationRunning = (props: PresentationRunningProps) => {
 
 function mapStateToProps(state: any): Partial<PresentationRunningProps> {
   return {
+    activePresentationName: getActivePresentationName(state),
   };
 }
 

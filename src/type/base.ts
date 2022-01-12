@@ -54,6 +54,7 @@ export interface NetworkInterfaceMap {
 
 export interface BrightSignAttributes {
   isBrightWall: boolean;
+  activePresentationName: string;
   serialNumber: string;
   autorunVersion: string;
   deviceFWVersion: string;
