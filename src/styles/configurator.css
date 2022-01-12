@@ -45,13 +45,28 @@ body {
   padding: 18px 63px 0px 10px;
 
   grid-template-columns: auto repeat(2, 1fr);
-  grid-template-rows: minmax(55%, auto) auto;
+  /* grid-template-rows: auto minmax(55%, auto) auto; */
+  grid-template-rows: auto;
 
   grid-gap: 0px 67px;
 
   grid-template-areas:
+                    "pn pn pn"
                     "tl tg tg"
                     "lb lb rb";
+}
+
+.wallConfigurationContainer .presentationName {
+  box-sizing: border-box;
+
+  grid-area: pn;
+
+  justify-self: center;
+  align-self: center;
+
+  font-family: 'PTSans';
+  font-size: 16px;
+
 }
 
 .wallConfigurationContainer .deviceListContainer {

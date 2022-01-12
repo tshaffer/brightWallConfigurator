@@ -57,6 +57,9 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     <DndProvider backend={HTML5Backend}>
       <div className='wallConfigurationContainer'>
         
+        <div className='presentationName'>
+          <p>Presentation Name: flibbert</p>
+        </div>
         <DeviceList />
         <ScreensInWall />
 
