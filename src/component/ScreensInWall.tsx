@@ -4,15 +4,12 @@ import { bindActionCreators } from 'redux';
 
 import '../styles/configurator.css';
 
-import { BrightSignMap } from '../type';
-
 import {
   setBrightSignWallPosition,
 } from '../controller';
 import {
   getNumRows,
   getNumColumns,
-  getBrightSignsInWall,
   getBrightWallUnitAssignments,
 } from '../selector';
 import ScreenInWall from './ScreenInWall';
@@ -20,7 +17,6 @@ import ScreenInWall from './ScreenInWall';
 export interface ScreensInWallProps {
   numRows: number;
   numColumns: number;
-  brightSignsInWall: BrightSignMap;
   brightWallUnitAssignments: string[][];
 }
 
@@ -81,7 +77,6 @@ function mapStateToProps(state: any): Partial<ScreensInWallProps> {
   return {
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
-    brightSignsInWall: getBrightSignsInWall(state),
     brightWallUnitAssignments: getBrightWallUnitAssignments(state),
   };
 }

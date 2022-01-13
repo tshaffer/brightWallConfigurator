@@ -91,6 +91,6 @@ export interface BrightWall {
 }
 
 export interface BrightSignMap {
-  [key: string]: BrightSignConfig;
+  [key: string]: BrightSignConfig;  // key is serialNumber
 }
 

@@ -23,6 +23,22 @@ export const getBrightWallDeviceSetupActiveScreen = (state: BrightSignState): De
   return DeviceSetupScreen.ConfigureScreen;
 };
 
+export const getIsMasterInWall = (state: BrightSignState): boolean => {
+
+  const brightWall: BrightWall = state.brightWall;
+  const brightSignMap: BrightSignMap = brightWall.brightSignMap;
+
+  for (const serialNumber in brightSignMap) {
+    if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
+      const brightSignInWall: BrightSignConfig = brightSignMap[serialNumber];
+      if (brightSignInWall.brightWallConfiguration.isMaster && getDeviceIsInWall(state, serialNumber)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
 
 export const getIsMaster = (state: BrightSignState, serialNumber: string): boolean => {
   const brightWall: BrightWall = state.brightWall;

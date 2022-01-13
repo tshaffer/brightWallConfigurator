@@ -11,11 +11,15 @@ import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
 import { exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
 import {
+  getActivePresentationName,
   getBrightWallSetupScreenEnabled,
+  getIsMasterInWall,
 } from '../selector';
 
 export interface WallConfigurationProps {
   brightWallSetupScreenEnabled: boolean;
+  activePresentationName: string;
+  isMasterInWall: boolean;
   onLaunchApp: () => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
@@ -44,7 +48,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
   const renderConfiguratorExit = () => {
     return (
       <div className='rightButtonContainer'>
-        <button onClick={handleExitConfigurator}>
+        <button onClick={handleExitConfigurator} disabled={!props.isMasterInWall}>
           Start Wall
         </button>
       </div>
@@ -53,12 +57,13 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 
   const configuratorExit = renderConfiguratorExit();
 
+  // TEDTODOBW - what to display if there is no presentation???
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='wallConfigurationContainer'>
-        
+
         <div className='presentationName'>
-          <p>Presentation Name: flibbert</p>
+          <p>Presentation Name: {props.activePresentationName}</p>
         </div>
         <DeviceList />
         <ScreensInWall />
@@ -79,6 +84,8 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 function mapStateToProps(state: any): Partial<WallConfigurationProps> {
   return {
     brightWallSetupScreenEnabled: getBrightWallSetupScreenEnabled(state),
+    activePresentationName: getActivePresentationName(state),
+    isMasterInWall: getIsMasterInWall(state),
   };
 }
 

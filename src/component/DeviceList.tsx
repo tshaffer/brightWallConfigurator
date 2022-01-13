@@ -45,7 +45,6 @@ const DeviceList = (props: DeviceListProps) => {
     }
   }
 
-
   return (
     <form className='deviceListContainer'>
       {
