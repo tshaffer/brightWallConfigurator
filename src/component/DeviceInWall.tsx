@@ -17,8 +17,6 @@ export interface DeviceInWallPropsFromParent {
 
 export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
   unitName: string;
-  isMaster: boolean;
-  onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
 }
 
 // -----------------------------------------------------------------------

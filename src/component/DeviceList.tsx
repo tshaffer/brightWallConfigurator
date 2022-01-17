@@ -14,7 +14,6 @@ import {
   exitAlignmentTool,
   launchAlignmentTool,
   launchApp,
-  setIsMaster,
   setBrightSignWallPosition,
 } from '../controller';
 
@@ -79,7 +78,6 @@ const mapDispatchToProps = (dispatch: any) => {
     onReenterConfigurator: reenterConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
     onExitAlignmentTool: exitAlignmentTool,
-    onSetIsMaster: setIsMaster,
   }, dispatch);
 };
 

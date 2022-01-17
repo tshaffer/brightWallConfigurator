@@ -31,9 +31,9 @@ const BezelMenu = (props: BezelMenuProps) => {
 
   return (
     <div className='buttonContainer'>
-      <button onClick={handleApplyToAll}>Apply to All</button>
-      <button onClick={handleApply}>Apply</button>
-      <button onClick={handleCancel}>Cancel</button>
+      <button className='leftConfiguratorButtonStyle' onClick={handleApplyToAll}>Apply to All</button>
+      <button className='middleConfiguratorButtonStyle' onClick={handleApply}>Apply</button>
+      <button className='rightConfiguratorButtonStyle' onClick={handleCancel}>Cancel</button>
     </div>
   );
 };

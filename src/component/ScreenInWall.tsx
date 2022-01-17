@@ -120,7 +120,10 @@ const ScreenInWall = (props: ScreenInWallProps) => {
       </div>
       {renderedDeviceInWall}
       <div className='buttonContainer'>
-        <button onClick={handleEditBezel}>
+        <button
+          onClick={handleEditBezel}
+          className='configuratorButtonStyle'
+        >
           Edit Bezel
         </button>
       </div>

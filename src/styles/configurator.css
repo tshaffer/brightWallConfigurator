@@ -377,3 +377,39 @@ body {
 .bezelConfigurationContainer .buttonContainer .firstButton {
   margin-left: 0px;
 }
+
+.configuratorButtonStyle {
+  padding: 5px;
+  background-color: #311c6b;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.leftConfiguratorButtonStyle {
+  padding: 5px;
+  background-color: #311c6b;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-right: 8px;
+  color: white;
+}
+
+.middleConfiguratorButtonStyle {
+  padding: 5px;
+  background-color: #311c6b;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: 8px;
+  margin-right: 8px;
+  color: white;
+}
+
+.rightConfiguratorButtonStyle {
+  padding: 5px;
+  background-color: #311c6b;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: 8px;
+  color: white;
+}

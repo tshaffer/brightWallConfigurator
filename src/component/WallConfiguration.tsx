@@ -45,17 +45,34 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     props.onLaunchAlignmentTool();
   };
 
-  const renderConfiguratorExit = () => {
+  const renderStartWall = () => {
     return (
       <div className='rightButtonContainer'>
-        <button onClick={handleExitConfigurator} disabled={!props.isMasterInWall}>
+        <button
+          className='configuratorButtonStyle'
+          onClick={handleExitConfigurator}
+          disabled={!props.isMasterInWall}
+        >
           Start Wall
         </button>
       </div>
     );
   };
 
-  const configuratorExit = renderConfiguratorExit();
+  const renderTestAlignment = () => {
+    return (
+      <div className='leftButtonContainer'>
+        <button
+          className='configuratorButtonStyle'
+          onClick={handleLaunchAlignment}>
+          Test Alignment
+        </button>
+      </div>
+    );
+  };
+
+  const testAlignmentJsx = renderTestAlignment();
+  const startWallJsx = renderStartWall();
 
   // TEDTODOBW - what to display if there is no presentation???
   return (
@@ -68,13 +85,8 @@ const WallConfiguration = (props: WallConfigurationProps) => {
         <DeviceList />
         <ScreensInWall />
 
-        <div className='leftButtonContainer'>
-          <button onClick={handleLaunchAlignment}>
-            Test Alignment
-          </button>
-        </div>
-
-        {configuratorExit}
+        {testAlignmentJsx}
+        {startWallJsx}
 
       </div>
     </DndProvider>
