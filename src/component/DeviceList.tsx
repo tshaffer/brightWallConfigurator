@@ -23,7 +23,6 @@ import {
   getNumColumns,
   getBrightSignsInWall,
   getBrightWallUnitAssignments,
-  getBrightWallSetupScreenEnabled,
 } from '../selector';
 
 import Device from './Device';
@@ -60,7 +59,6 @@ const DeviceList = (props: DeviceListProps) => {
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
   return {
     isBrightWall: getIsBrightWall(state),
-    brightWallSetupScreenEnabled: getBrightWallSetupScreenEnabled(state),
     brightWallDeviceSetupActiveScreen: getBrightWallDeviceSetupActiveScreen(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),

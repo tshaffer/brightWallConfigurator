@@ -6,18 +6,43 @@ export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
 
-export interface BrightSignState {
-  appAttributes: AppAttributes;
-  brightWall: BrightWall;
+export interface AppState {
+  hostSerialNumber: string;
+  brightWallAttributes: BrightWallAttributes;
+  brightSignMap: BrightSignMap;
 }
 
-export interface AppAttributes {
-  platform: string;
+export interface BrightWallAttributes {
+  brightWallSetupScreenEnabled: boolean;
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
+  numRows: number;
+  numColumns: number;
 }
 
-export interface BrightSignConfig {
-  brightSignAttributes: BrightSignAttributes;
-  brightWallConfiguration: BrightWallConfiguration;
+export interface BrightSignMap {
+  [key: string]: BrightSignConfiguration;  // key is serialNumber
+}
+
+export interface BrightSignConfiguration {
+  isBrightWall: boolean;
+  activePresentationName: string;
+  serialNumber: string;
+  autorunVersion: string;
+  deviceFWVersion: string;
+  deviceModel: string;
+  deviceFamily: string;
+  unitName: string;
+  unitNamingMethod: string;
+  unitDescription: string;
+  networkInterfaces: NetworkInterfaceMap;
+
+  isMaster: boolean;
+  rowIndex: number;
+  columnIndex: number;
+  bezelWidth: number;
+  bezelHeight: number;
+  bezelScreenWidth: number;
+  bezelScreenHeight: number;
 }
 
 export interface NetworkConfig {
@@ -52,45 +77,8 @@ export interface NetworkInterfaceMap {
   [key: string]: NetworkInterface;
 }
 
-export interface BrightSignAttributes {
-  isBrightWall: boolean;
-  activePresentationName: string;
-  serialNumber: string;
-  autorunVersion: string;
-  deviceFWVersion: string;
-  deviceModel: string;
-  deviceFamily: string;
-  unitName: string;
-  unitNamingMethod: string;
-  unitDescription: string;
-  networkInterfaces: NetworkInterfaceMap;
-}
-
 export enum DeviceSetupScreen {
   ConfigureScreen = 'ConfigureScreen',
   AlignScreen = 'AlignScreen',
-}
-
-export interface BrightWallConfiguration {
-  brightWallSetupScreenEnabled: boolean;
-  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
-  isMaster: boolean;
-  rowIndex: number;
-  columnIndex: number;
-  numRows: number;
-  numColumns: number;
-  bezelWidth: number;
-  bezelHeight: number;
-  bezelScreenWidth: number;
-  bezelScreenHeight: number;
-}
-
-export interface BrightWall {
-  hostBrightWallConfiguration: BrightSignConfig | null;
-  brightSignMap: BrightSignMap;
-}
-
-export interface BrightSignMap {
-  [key: string]: BrightSignConfig;  // key is serialNumber
 }
 

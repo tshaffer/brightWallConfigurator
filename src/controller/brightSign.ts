@@ -12,7 +12,7 @@ import {
   getSerialNumber,
   getBrightSignsInWall,
 } from '../selector';
-import { BrightSignAttributes, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, NetworkInterface, NetworkInterfaceMap } from '../type';
+import { BrightSignConfiguration, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, NetworkInterface, NetworkInterfaceMap } from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
@@ -105,7 +105,7 @@ export const setBrightSignWallPosition = (
             for (const serialNumber in brightSignMap) {
               if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
                 const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
-                const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+                const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
                 // const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
                 const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
                 for (const networkInterfaceName in networkInterfaces) {
@@ -290,7 +290,7 @@ const getDeviceIpAddress = (
 ): string => {
   const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
   if (!isNil(brightSignConfig)) {
-    const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+    const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
     const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
     // eslint-disable-next-line no-prototype-builtins
     if (networkInterfaces.hasOwnProperty('eth0')) {
@@ -308,7 +308,7 @@ const getSerialNumberFromIpAddress = (state: BrightSignState, ipAddress: string)
   for (const serialNumber in brightSignMap) {
     if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
       const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
-      const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
+      const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
       const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
       for (const networkInterfaceName in networkInterfaces) {
         if (Object.prototype.hasOwnProperty.call(networkInterfaces, networkInterfaceName)) {
