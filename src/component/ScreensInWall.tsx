@@ -5,9 +5,6 @@ import { bindActionCreators } from 'redux';
 import '../styles/configurator.css';
 
 import {
-  setBrightSignWallPosition,
-} from '../controller';
-import {
   getNumRows,
   getNumColumns,
   getBrightWallUnitAssignments,
@@ -83,7 +80,6 @@ function mapStateToProps(state: any): Partial<ScreensInWallProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onSetBrightWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 

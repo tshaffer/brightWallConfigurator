@@ -14,7 +14,6 @@ import {
   exitAlignmentTool,
   launchAlignmentTool,
   launchApp,
-  setBrightSignWallPosition,
 } from '../controller';
 
 import {
@@ -73,7 +72,6 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
-    onSetBrightSignWallPosition: setBrightSignWallPosition,
     onExitConfigurator: exitConfigurator,
     onReenterConfigurator: reenterConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,

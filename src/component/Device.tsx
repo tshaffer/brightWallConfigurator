@@ -4,11 +4,9 @@ import { bindActionCreators } from 'redux';
 
 import '../styles/configurator.css';
 import DeviceIdentifiers from './DeviceIdentifiers';
-import Icon from './Icon';
 
 import {
   setIsMaster,
-  setBrightSignWallPosition,
 } from '../controller';
 import {
   getColumnIndex,
@@ -36,7 +34,6 @@ export interface DeviceProps extends DevicePropsFromParent {
   isMaster: boolean;
   brightSignsInWall: BrightSignMap;
   onSetIsMaster: (serialNumber: string, isMaster: boolean) => any;
-  onSetBrightSignWallPosition: (serialNumber: string, row: number, column: number) => any;
   numRows: number;
   numColumns: number;
   brightWallUnitAssignments: string[][];
@@ -129,7 +126,6 @@ function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<D
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onSetIsMaster: setIsMaster,
-    onSetBrightSignWallPosition: setBrightSignWallPosition,
   }, dispatch);
 };
 
