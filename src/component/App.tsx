@@ -6,7 +6,7 @@ import WallConfiguration from './WallConfiguration';
 import AlignmentRunning from './AlignmentRunning';
 import PresentationRunning from './PresentationRunning';
 
-import { exitConfigurator, launchAlignmentTool, launchApp, reenterConfigurator } from '../controller';
+import { launchApp } from '../controller';
 import {
   getBrightWallDeviceSetupActiveScreen,
   getBrightWallSetupScreenEnabled,
@@ -21,21 +21,7 @@ export interface AppProps {
   brightWallSetupScreenEnabled: boolean;
 
   onLaunchApp: () => any;
-  onReenterConfigurator: () => any;
-  onExitConfigurator: () => any;
-  onLaunchAlignmentTool: () => any;
-  onExitAlignmentTool: () => any;
 }
-
-export interface AppProps {
-  brightWallSetupScreenEnabled: boolean;
-  onLaunchApp: () => any;
-  onReenterConfigurator: () => any;
-  onExitConfigurator: () => any;
-  onLaunchAlignmentTool: () => any;
-  onExitAlignmentTool: () => any;
-}
-
 
 // -----------------------------------------------------------------------
 // Component
@@ -80,9 +66,6 @@ function mapStateToProps(state: any): Partial<AppProps> {
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onLaunchApp: launchApp,
-    onExitConfigurator: exitConfigurator,
-    onReenterConfigurator: reenterConfigurator,
-    onLaunchAlignmentTool: launchAlignmentTool,
   }, dispatch);
 };
 

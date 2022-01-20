@@ -1,10 +1,14 @@
 import { isBoolean, isNil } from 'lodash';
 import {
   addBrightSign,
+  setActiveSetupScreen,
   setColumnIndex,
   setHostSerialNumber,
   setIsMasterPlayer,
+  setNumColumns,
+  setNumRows,
   setRowIndex,
+  setSetupScreenEnabled,
   updateBezelDimensions
 } from '../model/';
 import {
@@ -15,6 +19,7 @@ import {
 import {
   AppState,
   BrightSignAttributes,
+  BrightSignConfig,
   BrightSignMap,
   BrightSignsState,
   NetworkInterface,
@@ -24,17 +29,25 @@ import {
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
 interface BrightSignDeviceList {
-  brightSignDevicesInWallList: BrightSignAttributes[];
+  brightSignDevicesInWallList: BrightSignConfig[];
 }
 
 export const launchApp = () => {
   return ((dispatch: any, getState: any): any => {
     getBrightSignConfig()
-      .then((brightSignAttributes: BrightSignAttributes) => {
+      .then((brightSignConfig: BrightSignConfig) => {
+
+        const hostSerialNumber: string = brightSignConfig.brightSignAttributes.serialNumber;
 
         // add the BrightSign that the custom device web page is running on
-        dispatch(addBrightSign(brightSignAttributes.serialNumber, brightSignAttributes));
-        dispatch(setHostSerialNumber(brightSignAttributes.serialNumber));
+        dispatch(addBrightSign(hostSerialNumber, brightSignConfig.brightSignAttributes));
+
+        dispatch(setHostSerialNumber(hostSerialNumber));
+        dispatch(setNumRows(hostSerialNumber, brightSignConfig.brightWallAttributes.numRows));
+        dispatch(setNumColumns(hostSerialNumber, brightSignConfig.brightWallAttributes.numColumns));
+        dispatch(setSetupScreenEnabled(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallSetupScreenEnabled));
+        dispatch(setActiveSetupScreen(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallDeviceSetupActiveScreen));
+        
         console.log('launchApp, start timer');
 
         // get list of BrightSigns in the wall after short timeout
@@ -52,23 +65,23 @@ const getBrightWallDeviceList = (dispatch: any, getState: any) => {
     .then((brightSignDeviceList: BrightSignDeviceList) => {
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
         if (!isNil(brightSignConfig)) {
-          const brightSignInWall: BrightSignAttributes | null = getBrightSignInWall(getState(), brightSignConfig.serialNumber);
+          const brightSignInWall: BrightSignAttributes | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
           if (isNil(brightSignInWall)) {
-            dispatch(addBrightSign(brightSignConfig.serialNumber, brightSignConfig));
+            dispatch(addBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig.brightSignAttributes));
           }
         }
       }
     });
 };
 
-const getBrightSignConfig = (): Promise<BrightSignAttributes> => {
+const getBrightSignConfig = (): Promise<BrightSignConfig> => {
   return fetch('/GetBrightWallConfiguration')
     .then(response => response.json())
-    .then((brightSignConfig: BrightSignAttributes) => {
+    .then((brightSignConfig: BrightSignConfig) => {
       console.log('response to GetBrightWallConfiguration');
       console.log(brightSignConfig);
 
-      if (brightSignConfig.isBrightWall) {
+      if (brightSignConfig.brightSignAttributes.isBrightWall) {
         return fetch('/BrightWallDeviceCheckin')
           .then(response => response.json())
           .then((status: any) => {

@@ -26,7 +26,6 @@ export const setNumRows = (
   serialNumber: string,
   numRows: number,
 ): SetNumRowsAction => {
-  debugger;
   return {
     type: SET_NUM_ROWS,
     payload: {
@@ -46,7 +45,6 @@ export const setNumColumns = (
   serialNumber: string,
   numColumns: number,
 ): SetNumColumnsAction => {
-  debugger;
   return {
     type: SET_NUM_COLUMNS,
     payload: {
@@ -101,8 +99,8 @@ export const setActiveSetupScreen = (
 const initialState: BrightWallAttributes = {
   numRows: -1,
   numColumns: -1,
-  setupScreenEnabled: true,
-  activeSetupScreen: DeviceSetupScreen.ConfigureScreen,
+  brightWallSetupScreenEnabled: true,
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen.ConfigureScreen,
 };
 
 
@@ -124,12 +122,12 @@ export const brightWallAttributesReducer = (
     case SET_SETUP_SCREEN_ENABLED:
       return {
         ...state,
-        setupScreenEnabled: action.payload.setupScreenEnabled,
+        brightWallSetupScreenEnabled: action.payload.setupScreenEnabled,
       };
     case SET_ACTIVE_SETUP_SCREEN:
       return {
         ...state,
-        activeSetupScreen: action.payload.activeSetupScreen,
+        brightWallDeviceSetupActiveScreen: action.payload.activeSetupScreen,
       };
     default:
       return state;

@@ -6,7 +6,7 @@ import { map } from 'lodash';
 
 import '../styles/configurator.css';
 
-import { BrightSignConfig, BrightSignMap } from '../type';
+import { BrightSignAttributes, BrightSignMap } from '../type';
 
 import {
   exitConfigurator,
@@ -37,8 +37,8 @@ const DeviceList = (props: DeviceListProps) => {
   const serialNumbers: string[] = [];
   for (const key in props.brightSignsInWall) {
     if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
-      const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
-      serialNumbers.push(brightSignInWall.brightSignAttributes.serialNumber);
+      const brightSignInWall: BrightSignAttributes = props.brightSignsInWall[key];
+      serialNumbers.push(brightSignInWall.serialNumber);
     }
   }
 

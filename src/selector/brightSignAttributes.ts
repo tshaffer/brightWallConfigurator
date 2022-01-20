@@ -1,33 +1,96 @@
 import { isNil } from 'lodash';
-import { BrightSignConfig, BrightSignState } from '../type';
-import { getBrightSignInWall } from './brightWallConfiguration';
+import { AppState, BrightSignAttributes, BrightSignsState } from '../type';
+import { getBrightSignInWall } from './brightSignState';
 
-export const getIsBrightWall = (state: BrightSignState): boolean => {
-  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
-    return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.isBrightWall;
+export const getBezelWidth = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelWidth;
+  }
+  return 0;
+};
+
+export const getBezelHeight = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelHeight;
+  }
+  return 0;
+};
+
+export const getBezelScreenWidth = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelScreenWidth;
+  }
+  return 0;
+};
+
+export const getBezelScreenHeight = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelScreenHeight;
+  }
+  return 0;
+};
+
+export const getUnitName = (state: AppState, serialNumber: string): string => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.unitName;
+  }
+  return '';
+};
+
+export const getActivePresentationName = (state: AppState): string => {
+  const brightSigns: BrightSignsState = state.brightSigns;
+  const hostSerialNumber: string = brightSigns.hostSerialNumber;
+  const brightSignAttributes: BrightSignAttributes = brightSigns.brightSignBySerialNumber[hostSerialNumber];
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.activePresentationName;
+  }
+  return '';
+};
+
+export const getIsBrightWall = (state: AppState): boolean => {
+  const brightSigns: BrightSignsState = state.brightSigns;
+  const hostSerialNumber: string = brightSigns.hostSerialNumber;
+  const brightSignAttributes: BrightSignAttributes = brightSigns.brightSignBySerialNumber[hostSerialNumber];
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.isBrightWall;
   }
   return false;
 };
 
-export const getActivePresentationName = (state: BrightSignState): string => {
-  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
-    return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.activePresentationName;
+export const getIsMaster = (state: AppState, serialNumber: string): boolean => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.isMaster;
   }
-  return '';
+  return false;
 };
 
-export const getSerialNumber = (state: BrightSignState): string => {
-  if (!isNil(state.brightWall.hostBrightWallConfiguration)) {
-    return state.brightWall.hostBrightWallConfiguration.brightSignAttributes.serialNumber;
+export const getRowIndex = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.rowIndex;
   }
-  return '';
+  return 0;
 };
 
-export const getUnitName = (state: BrightSignState, serialNumber: string): string => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig) && !isNil(brightSignConfig.brightWallConfiguration)) {
-    return brightSignConfig.brightSignAttributes.unitName;
+export const getColumnIndex = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.columnIndex;
   }
-  return '';
+  return 0;
 };
+
+export const getDeviceIsInWall = (state: AppState, serialNumber: string): boolean => {
+  const rowIndex = getRowIndex(state, serialNumber);
+  const columnIndex = getColumnIndex(state, serialNumber);
+  return (rowIndex >= 0 && columnIndex >= 0);
+};
+
+
 

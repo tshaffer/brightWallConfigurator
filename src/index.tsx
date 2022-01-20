@@ -5,12 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
-import { brightWallModelReducer } from './model';
+import { appStateModelReducer } from './model';
 
 import App from './component/App';
 
 const store = createStore(
-  brightWallModelReducer,
+  appStateModelReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 

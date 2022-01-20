@@ -1,5 +1,5 @@
 /** @module Selector:index */
 
-export * from './appAttributes';
 export * from './brightSignAttributes';
-export * from './brightWallConfiguration';
+export * from './brightSignState';
+export * from './brightWallAttributes';

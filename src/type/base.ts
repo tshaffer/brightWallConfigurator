@@ -12,6 +12,11 @@ export interface BrightSignMap {
   [key: string]: BrightSignAttributes;  // key is serialNumber
 }
 
+export interface BrightSignConfig {
+  brightSignAttributes: BrightSignAttributes;
+  brightWallAttributes: BrightWallAttributes;
+}
+
 export interface BrightSignAttributes {
   serialNumber: string;
   autorunVersion: string;
@@ -23,7 +28,6 @@ export interface BrightSignAttributes {
   unitDescription: string;
   activePresentationName: string;
   networkInterfaces: NetworkInterfaceMap;
-
   isBrightWall: boolean;
   isMaster: boolean;
   rowIndex: number;
@@ -38,8 +42,8 @@ export interface BrightSignAttributes {
 export interface BrightWallAttributes {
   numRows: number;
   numColumns: number;
-  setupScreenEnabled: boolean;
-  activeSetupScreen: DeviceSetupScreen;
+  brightWallSetupScreenEnabled: boolean;
+  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
 }
 
 export interface NetworkConfig {

@@ -19,7 +19,7 @@ import {
   getBrightWallUnitAssignments,
 } from '../selector';
 import {
-  BrightSignConfig,
+  BrightSignAttributes,
   BrightSignMap,
 } from '../type';
 
@@ -56,9 +56,9 @@ const Device = (props: DeviceProps) => {
     let priorMasterDevice = '';
     for (const key in props.brightSignsInWall) {
       if (Object.prototype.hasOwnProperty.call(props.brightSignsInWall, key)) {
-        const brightSignInWall: BrightSignConfig = props.brightSignsInWall[key];
-        if (brightSignInWall.brightWallConfiguration.isMaster) {
-          priorMasterDevice = brightSignInWall.brightSignAttributes.serialNumber;
+        const brightSignInWall: BrightSignAttributes = props.brightSignsInWall[key];
+        if (brightSignInWall.isMaster) {
+          priorMasterDevice = brightSignInWall.serialNumber;
         }
       }
     }
