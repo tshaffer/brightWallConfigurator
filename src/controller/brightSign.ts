@@ -48,13 +48,11 @@ export const launchApp = () => {
         dispatch(setSetupScreenEnabled(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallSetupScreenEnabled));
         dispatch(setActiveSetupScreen(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallDeviceSetupActiveScreen));
         
-        console.log('launchApp, start timer');
-
         // get list of BrightSigns in the wall after short timeout
         setTimeout(getBrightWallDeviceList, 1000, dispatch, getState);
 
         // start timer to get list of BrightSigns in the wall
-        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 3000, dispatch, getState);
+        pollForBrightSignsTimer = setInterval(getBrightWallDeviceList, 10000, dispatch, getState);
       });
   });
 };
