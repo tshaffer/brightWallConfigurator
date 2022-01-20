@@ -1,33 +1,40 @@
 import { isBoolean, isNil } from 'lodash';
 import {
-  addHostBrightSign,
+  addBrightSign,
   setColumnIndex,
-  setRowIndex,
-  addNewBrightSign,
+  setHostSerialNumber,
   setIsMasterPlayer,
+  setRowIndex,
   updateBezelDimensions
-} from '../model';
+} from '../model/';
 import {
   getBrightSignInWall,
   getSerialNumber,
   getBrightSignsInWall,
 } from '../selector';
-import { BrightSignConfiguration, BrightSignConfig, BrightSignMap, BrightSignState, BrightWall, NetworkInterface, NetworkInterfaceMap } from '../type';
+import {
+  AppState,
+  BrightSignAttributes,
+  BrightSignMap,
+  BrightSignsState,
+  NetworkInterface,
+  NetworkInterfaceMap
+} from '../type';
 
 let pollForBrightSignsTimer: ReturnType<typeof setTimeout>;
 
 interface BrightSignDeviceList {
-  brightSignDevicesInWallList: BrightSignConfig[];
+  brightSignDevicesInWallList: BrightSignAttributes[];
 }
 
 export const launchApp = () => {
   return ((dispatch: any, getState: any): any => {
     getBrightSignConfig()
-      .then((brightSignConfig: BrightSignConfig) => {
+      .then((brightSignAttributes: BrightSignAttributes) => {
 
         // add the BrightSign that the custom device web page is running on
-        dispatch(addHostBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
-
+        dispatch(addBrightSign(brightSignAttributes.serialNumber, brightSignAttributes));
+        dispatch(setHostSerialNumber(brightSignAttributes.serialNumber));
         console.log('launchApp, start timer');
 
         // get list of BrightSigns in the wall after short timeout
@@ -40,32 +47,28 @@ export const launchApp = () => {
 };
 
 const getBrightWallDeviceList = (dispatch: any, getState: any) => {
-  // console.log('getBrightWallDeviceList invoked');
   fetch('/GetBrightWallDeviceList')
     .then(response => response.json())
     .then((brightSignDeviceList: BrightSignDeviceList) => {
-      // console.log('response from GetBrightWallDeviceList');
-      // console.log(brightSignDeviceList);
       for (const brightSignConfig of brightSignDeviceList.brightSignDevicesInWallList) {
         if (!isNil(brightSignConfig)) {
-          const brightSignInWall: BrightSignConfig | null = getBrightSignInWall(getState(), brightSignConfig.brightSignAttributes.serialNumber);
+          const brightSignInWall: BrightSignAttributes | null = getBrightSignInWall(getState(), brightSignConfig.serialNumber);
           if (isNil(brightSignInWall)) {
-
-            dispatch(addNewBrightSign(brightSignConfig.brightSignAttributes.serialNumber, brightSignConfig));
+            dispatch(addBrightSign(brightSignConfig.serialNumber, brightSignConfig));
           }
         }
       }
     });
 };
 
-const getBrightSignConfig = (): Promise<BrightSignConfig> => {
+const getBrightSignConfig = (): Promise<BrightSignAttributes> => {
   return fetch('/GetBrightWallConfiguration')
     .then(response => response.json())
-    .then((brightSignConfig: BrightSignConfig) => {
+    .then((brightSignConfig: BrightSignAttributes) => {
       console.log('response to GetBrightWallConfiguration');
       console.log(brightSignConfig);
 
-      if (brightSignConfig.brightSignAttributes.isBrightWall) {
+      if (brightSignConfig.isBrightWall) {
         return fetch('/BrightWallDeviceCheckin')
           .then(response => response.json())
           .then((status: any) => {
@@ -94,19 +97,12 @@ export const setBrightSignWallPosition = (
         .then((status: any) => {
           console.log(status);
           if (!isNil(status) && isBoolean(status.success) && status.success) {
-            console.log('setBrightWallPosition success');
-            console.log(ipAddress);
-            console.log(rowIndex);
-            console.log(columnIndex);
-            const state: BrightSignState = getState();
-            console.log(state);
-            const brightWall: BrightWall = state.brightWall;
-            const brightSignMap: BrightSignMap = brightWall.brightSignMap;
-            for (const serialNumber in brightSignMap) {
-              if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
-                const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
-                const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
-                // const brightWallConfiguration: BrightWallConfiguration = brightSignConfig.brightWallConfiguration;
+            const state: AppState = getState();
+            const brightWall: BrightSignsState = state.brightSigns;
+            const brightSignBySerialNumber: BrightSignMap = brightWall.brightSignBySerialNumber;
+            for (const serialNumber in brightSignBySerialNumber) {
+              if (Object.prototype.hasOwnProperty.call(brightSignBySerialNumber, serialNumber)) {
+                const brightSignAttributes: BrightSignAttributes = brightSignBySerialNumber[serialNumber];
                 const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
                 for (const networkInterfaceName in networkInterfaces) {
                   if (Object.prototype.hasOwnProperty.call(networkInterfaces, networkInterfaceName)) {
@@ -114,12 +110,8 @@ export const setBrightSignWallPosition = (
                     const currentConfig = networkInterface.currentConfig;
                     if (currentConfig.ip4_address === ipAddress) {
                       const serialNumber = brightSignAttributes.serialNumber;
-                      console.log('state before');
-                      console.log(getState());
                       dispatch(setRowIndex(serialNumber, rowIndex));
                       dispatch(setColumnIndex(serialNumber, columnIndex));
-                      console.log('state after');
-                      console.log(getState());
                     }
                   }
                 }
@@ -285,12 +277,11 @@ export const setBezelDimensions = (
 };
 
 const getDeviceIpAddress = (
-  state: BrightSignState,
+  state: AppState,
   serialNumber: string,
 ): string => {
-  const brightSignConfig: BrightSignConfig | null = getBrightSignInWall(state, serialNumber);
-  if (!isNil(brightSignConfig)) {
-    const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
     const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
     // eslint-disable-next-line no-prototype-builtins
     if (networkInterfaces.hasOwnProperty('eth0')) {
@@ -302,13 +293,12 @@ const getDeviceIpAddress = (
   return '';
 };
 
-const getSerialNumberFromIpAddress = (state: BrightSignState, ipAddress: string): string | null => {
-  const brightWall: BrightWall = state.brightWall;
-  const brightSignMap: BrightSignMap = brightWall.brightSignMap;
-  for (const serialNumber in brightSignMap) {
-    if (Object.prototype.hasOwnProperty.call(brightSignMap, serialNumber)) {
-      const brightSignConfig: BrightSignConfig = brightSignMap[serialNumber];
-      const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
+const getSerialNumberFromIpAddress = (state: AppState, ipAddress: string): string | null => {
+  const brightWall: BrightSignsState = state.brightSigns;
+  const brightSignBySerialNumber: BrightSignMap = brightWall.brightSignBySerialNumber;
+  for (const serialNumber in brightSignBySerialNumber) {
+    if (Object.prototype.hasOwnProperty.call(brightSignBySerialNumber, serialNumber)) {
+      const brightSignAttributes: BrightSignAttributes = brightSignBySerialNumber[serialNumber];
       const networkInterfaces: NetworkInterfaceMap = brightSignAttributes.networkInterfaces;
       for (const networkInterfaceName in networkInterfaces) {
         if (Object.prototype.hasOwnProperty.call(networkInterfaces, networkInterfaceName)) {

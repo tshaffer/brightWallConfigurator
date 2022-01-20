@@ -1,31 +1,18 @@
-/** @module Types:base */
-
-/** @internal */
-/** @private */
-export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
-};
-
 export interface AppState {
-  hostSerialNumber: string;
+  brightSigns: BrightSignsState;
   brightWallAttributes: BrightWallAttributes;
-  brightSignMap: BrightSignMap;
 }
 
-export interface BrightWallAttributes {
-  brightWallSetupScreenEnabled: boolean;
-  brightWallDeviceSetupActiveScreen: DeviceSetupScreen;
-  numRows: number;
-  numColumns: number;
+export interface BrightSignsState {
+  hostSerialNumber: string;
+  brightSignBySerialNumber: BrightSignMap;
 }
 
 export interface BrightSignMap {
-  [key: string]: BrightSignConfiguration;  // key is serialNumber
+  [key: string]: BrightSignAttributes;  // key is serialNumber
 }
 
-export interface BrightSignConfiguration {
-  isBrightWall: boolean;
-  activePresentationName: string;
+export interface BrightSignAttributes {
   serialNumber: string;
   autorunVersion: string;
   deviceFWVersion: string;
@@ -34,8 +21,10 @@ export interface BrightSignConfiguration {
   unitName: string;
   unitNamingMethod: string;
   unitDescription: string;
+  activePresentationName: string;
   networkInterfaces: NetworkInterfaceMap;
 
+  isBrightWall: boolean;
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
@@ -43,6 +32,14 @@ export interface BrightSignConfiguration {
   bezelHeight: number;
   bezelScreenWidth: number;
   bezelScreenHeight: number;
+}
+
+// TEDTODOBW - these are reports for all devices, but the code currently only looks at the hosts's settings.
+export interface BrightWallAttributes {
+  numRows: number;
+  numColumns: number;
+  setupScreenEnabled: boolean;
+  activeSetupScreen: DeviceSetupScreen;
 }
 
 export interface NetworkConfig {
@@ -81,4 +78,8 @@ export enum DeviceSetupScreen {
   ConfigureScreen = 'ConfigureScreen',
   AlignScreen = 'AlignScreen',
 }
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
 

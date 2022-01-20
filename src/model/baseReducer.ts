@@ -1,13 +1,10 @@
 /** @module Model:base */
 
-import {
-  combineReducers
-} from 'redux';
-import { BrightSignState } from '../type';
-import { appAttributesReducer } from './appAttributes';
-import {
-  brightSignAttributesReducer,
-} from './brightSignAttributes';
+import { combineReducers } from 'redux';
+import { AppState } from '../type';
+import { brightSignsStateReducer } from './brightSignsState';
+import { brightWallAttributesReducer } from './brightWallAttributes';
+
 
 // -----------------------------------------------------------------------
 // Defaults
@@ -18,9 +15,9 @@ import {
 // -----------------------------------------------------------------------
 // Reducers
 // -----------------------------------------------------------------------
-export const brightWallModelReducer = combineReducers<BrightSignState>({
-  appAttributes: appAttributesReducer,
-  brightWall: brightSignAttributesReducer,
+export const appStateModelReducer = combineReducers<AppState>({
+  brightSigns: brightSignsStateReducer,
+  brightWallAttributes: brightWallAttributesReducer,
 });
 
 // -----------------------------------------------------------------------

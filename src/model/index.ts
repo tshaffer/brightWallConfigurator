@@ -2,5 +2,5 @@
 
 export * from './baseAction';
 export * from './baseReducer';
-export * from './brightSignAttributes';
-export * from './brightWallConfiguration';
+export * from './brightSignsState';
+export * from './brightWallAttributes';

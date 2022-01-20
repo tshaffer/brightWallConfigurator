@@ -6,7 +6,7 @@ import {
   BrightSignConfig,
   BrightWallConfiguration,
   DeviceSetupScreen,
-  BrightSignConfiguration,
+  BrightSignAttributes,
 } from '../type';
 
 export const getBrightWallSetupScreenEnabled = (state: BrightSignState): boolean => {
@@ -156,7 +156,7 @@ export const getBrightSignInWall = (state: BrightSignState, serialNumber: string
   for (const key in brightSignMap) {
     if (Object.prototype.hasOwnProperty.call(brightSignMap, key)) {
       const brightSignConfig: BrightSignConfig = brightSignMap[key];
-      const brightSignAttributes: BrightSignConfiguration = brightSignConfig.brightSignAttributes;
+      const brightSignAttributes: BrightSignAttributes = brightSignConfig.brightSignAttributes;
       if (brightSignAttributes.serialNumber === serialNumber) {
         return brightSignConfig;
       }
