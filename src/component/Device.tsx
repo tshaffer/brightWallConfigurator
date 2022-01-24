@@ -17,6 +17,7 @@ import {
   getNumRows,
   getNumColumns,
   getBrightWallUnitAssignments,
+  getDeviceIsInWall,
 } from '../selector';
 import {
   BrightSignAttributes,
@@ -30,6 +31,7 @@ export interface DevicePropsFromParent {
 export interface DeviceProps extends DevicePropsFromParent {
   rowIndex: number;
   columnIndex: number;
+  deviceIsAssigned: boolean;
   unitName: string;
   isMaster: boolean;
   brightSignsInWall: BrightSignMap;
@@ -44,10 +46,6 @@ export interface DeviceProps extends DevicePropsFromParent {
 // -----------------------------------------------------------------------
 
 const Device = (props: DeviceProps) => {
-
-  const getDeviceIsAssigned = (): boolean => {
-    return (props.rowIndex >= 0 || props.columnIndex >= 0);
-  };
 
   const handleSetIsMaster = (event: any) => {
     console.log('handleSetMaster invoked:');
@@ -73,7 +71,7 @@ const Device = (props: DeviceProps) => {
 
   let deviceIdsClassName = '';
 
-  if (getDeviceIsAssigned()) {
+  if (props.deviceIsAssigned) {
     deviceIdsClassName = 'deviceName disabled';
   } else {
     deviceIdsClassName = 'deviceName';
@@ -113,6 +111,7 @@ function mapStateToProps(state: any, ownProps: DevicePropsFromParent): Partial<D
   return {
     rowIndex: getRowIndex(state, serialNumber),
     columnIndex: getColumnIndex(state, serialNumber),
+    deviceIsAssigned: getDeviceIsInWall(state, serialNumber),
     unitName: getUnitName(state, serialNumber),
     serialNumber,
     isMaster: getIsMaster(state, serialNumber),
