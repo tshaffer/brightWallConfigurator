@@ -236,7 +236,7 @@ body {
 .wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceNumber {
   box-sizing: border-box;
 
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
 
   font-family: 'PTSans';

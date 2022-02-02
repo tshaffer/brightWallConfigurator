@@ -15,7 +15,8 @@ const Icon = (props: IconProps) => {
   const getDeviceIconContainerStyle = (isDisabled: boolean) => {
     return style({
       height: 'auto',
-      width: '80px',
+      // width: '114px',
+      // width: 'auto',
       margin: '-10px 5px 5px 2px',
       display: 'inline-block',
       verticalAlign: 'top',
@@ -27,21 +28,21 @@ const Icon = (props: IconProps) => {
 
   const getCloseIconContainerStyle = (isDisabled: boolean) => {
     return style({
-      backgroundSize: 'contain',
+      // backgroundSize: 'contain',
       cursor: isDisabled ? 'not-allowed' : 'pointer',
       display: 'inline-block',
-      height: 'auto',
-      margin: '-10px 0 0 0',
-      textAlign: 'center',
+      // height: 'auto',
+      margin: '-76px -26px 0 0',
+      // textAlign: 'center',
       verticalAlign: 'top',
-      width: '26px',
+      // width: '26px',
     });
   };
 
   const getDeviceSVGContainerStyle = () => {
     return style({
-      height: '40px',
-      width: '80px',
+      height: '56px',
+      width: '114px',
       display: 'inline-block'
     });
   };
@@ -137,7 +138,7 @@ const Icon = (props: IconProps) => {
 
   const renderDeviceEnabledSVG = () => {
 
-    const scaleValue = 0.1;
+    const scaleValue = 0.15;
 
     const deviceEnabledIcon = renderDeviceIcon(getDeviceEnabledIconStyle(), scaleValue);
 

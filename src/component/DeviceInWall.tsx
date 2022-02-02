@@ -7,7 +7,8 @@ import '../styles/configurator.css';
 import Icon from './Icon';
 
 import {
-  getUnitName
+  getIsMaster,
+  getUnitName,
 } from '../selector';
 
 export interface DeviceInWallPropsFromParent {
@@ -16,6 +17,7 @@ export interface DeviceInWallPropsFromParent {
 }
 
 export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
+  isMaster: boolean;
   unitName: string;
 }
 
@@ -25,13 +27,35 @@ export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
 
 const DeviceInWall = (props: DeviceInWallProps) => {
 
+  const getIsMasterJsx = () => {
+    if (!props.isMaster) {
+      return null;
+    }
+    return (
+      <div className='deviceNumber'>
+        Master
+      </div>
+    );
+  };
+
+  const masterJsx = getIsMasterJsx();
+
   return (
     <div className='deviceInWallContainer'>
 
-      <Icon iconType='device' />
+      <div style={{ display: 'inline-block' }}>
+        <Icon iconType='device' />
 
-      <div className='deviceNumber'>
-        {props.serialNumber}
+        <div className='deviceNumber'>
+          {props.serialNumber}
+        </div>
+
+        <div className='deviceNumber'>
+          {props.unitName}
+        </div>
+
+        {masterJsx}
+        
       </div>
 
       <div
@@ -48,6 +72,7 @@ const DeviceInWall = (props: DeviceInWallProps) => {
 function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Partial<DeviceInWallProps> {
   const serialNumber = ownProps.serialNumber;
   return {
+    isMaster: getIsMaster(state, serialNumber),
     unitName: getUnitName(state, serialNumber),
     serialNumber,
   };
