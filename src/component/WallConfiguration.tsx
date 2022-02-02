@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import ReactModal from 'react-modal';
+
 import '../styles/configurator.css';
 
 import DeviceList from './DeviceList';
@@ -33,16 +35,29 @@ export interface WallConfigurationProps {
 
 const WallConfiguration = (props: WallConfigurationProps) => {
 
+  const [showPlayerIsRebooting, setShowPlayerIsRebooting] = React.useState(false);
+
   React.useEffect(props.onLaunchApp, []);
+
+  const modalStyle = {
+    content: {
+      top: '45%',
+      right: '35%',
+      bottom: '48%',
+      left: '35%',
+    },
+  };
 
   const handleExitConfigurator = (event: any) => {
     console.log('handleExitConfigurator invoked');
     props.onExitConfigurator();
+    setShowPlayerIsRebooting(true);
   };
 
   const handleLaunchAlignment = (event: any) => {
     console.log('handleLaunchAlignment invoked');
     props.onLaunchAlignmentTool();
+    setShowPlayerIsRebooting(true);
   };
 
   const renderStartWall = () => {
@@ -77,6 +92,17 @@ const WallConfiguration = (props: WallConfigurationProps) => {
   // TEDTODOBW - what to display if there is no presentation???
   return (
     <DndProvider backend={HTML5Backend}>
+
+      <div>
+        <ReactModal
+          isOpen={showPlayerIsRebooting}
+          style={modalStyle}
+          ariaHideApp={false}
+        >
+          Player is rebooting. Please wait for a few moments to return to your screen.
+        </ReactModal>
+      </div>
+
       <div className='wallConfigurationContainer'>
 
         <div className='presentationName'>

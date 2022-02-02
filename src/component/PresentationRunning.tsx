@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import ReactModal from 'react-modal';
+
 import { style } from 'typestyle';
 
 import { reenterConfigurator } from '../controller';
@@ -18,6 +20,8 @@ export interface PresentationRunningProps {
 
 
 const PresentationRunning = (props: PresentationRunningProps) => {
+
+  const [showPlayerIsRebooting, setShowPlayerIsRebooting] = React.useState(false);
 
   const getDivStyle = () => {
     return style({
@@ -41,15 +45,35 @@ const PresentationRunning = (props: PresentationRunningProps) => {
     });
   };
 
+  const modalStyle = {
+    content: {
+      top: '45%',
+      right: '35%',
+      bottom: '48%',
+      left: '35%',
+    },
+  };
 
   const handleReenterConfigurator = (event: any) => {
     console.log('handleReenterConfigurator invoked');
     props.onReenterConfigurator();
+    setShowPlayerIsRebooting(true);
   };
 
 
   return (
     <div className={getDivStyle()}>
+
+      <div>
+        <ReactModal
+          isOpen={showPlayerIsRebooting}
+          style={modalStyle}
+          ariaHideApp={false}
+        >
+          Player is rebooting. Please wait for a few moments to return to your screen.
+        </ReactModal>
+      </div>
+
       {props.activePresentationName} is currently running. Would you like to stop it and re-enter configuration?
       <br />
       <button
