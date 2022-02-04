@@ -51,25 +51,25 @@ const BezelSettings = (props: BezelSettingsProps) => {
       <BezelSizeSetting
         id='bezelWidth'
         label='Bezel Width (mm)'
-        value={bezelWidth.toString()}
+        value={bezelWidth}
         onUpdateBezelSetting={handleUpdateBezelWidth}
       />
       <BezelSizeSetting
         id='bezelHeight'
         label='Bezel Height (mm)'
-        value={bezelHeight.toString()}
+        value={bezelHeight}
         onUpdateBezelSetting={handleUpdateBezelHeight}
       />
       <BezelSizeSetting
         id='bezelWidth'
         label='Screen Width (mm)'
-        value={screenWidth.toString()}
+        value={screenWidth}
         onUpdateBezelSetting={handleUpdateScreenWidth}
       />
       <BezelSizeSetting
         id='bezelHeight'
         label='Screen Height (mm)'
-        value={screenHeight.toString()}
+        value={screenHeight}
         onUpdateBezelSetting={handleUpdateScreenHeight}
       />
     </form>
