@@ -47,7 +47,7 @@ export const launchApp = () => {
         dispatch(setNumColumns(hostSerialNumber, brightSignConfig.brightWallAttributes.numColumns));
         dispatch(setSetupScreenEnabled(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallSetupScreenEnabled));
         dispatch(setActiveSetupScreen(hostSerialNumber, brightSignConfig.brightWallAttributes.brightWallDeviceSetupActiveScreen));
-        
+
         // get list of BrightSigns in the wall after short timeout
         setTimeout(getBrightWallDeviceList, 1000, dispatch, getState);
 
@@ -72,6 +72,7 @@ const getBrightWallDeviceList = (dispatch: any, getState: any) => {
     });
 };
 
+// Get configuration of host device
 const getBrightSignConfig = (): Promise<BrightSignConfig> => {
   return fetch('/GetBrightWallConfiguration')
     .then(response => response.json())
@@ -80,18 +81,13 @@ const getBrightSignConfig = (): Promise<BrightSignConfig> => {
       console.log(brightSignConfig);
 
       if (brightSignConfig.brightSignAttributes.isBrightWall) {
-        return fetch('/BrightWallDeviceCheckin')
-          .then(response => response.json())
-          .then((status: any) => {
-            if (!isNil(status) && status.success) {
-              return Promise.resolve(brightSignConfig);
-            } else {
-              return Promise.reject();
-            }
-          });
+        return Promise.resolve(brightSignConfig);
       } else {
         return Promise.reject();
       }
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };
 
