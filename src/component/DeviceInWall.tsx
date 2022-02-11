@@ -9,6 +9,10 @@ import Icon from './Icon';
 import {
   getIsMaster,
   getUnitName,
+  getBezelWidth,
+  getBezelHeight,
+  getBezelScreenWidth,
+  getBezelScreenHeight,
 } from '../selector';
 
 export interface DeviceInWallPropsFromParent {
@@ -19,6 +23,10 @@ export interface DeviceInWallPropsFromParent {
 export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
   isMaster: boolean;
   unitName: string;
+  bezelWidth: number;
+  bezelHeight: number;
+  screenWidth: number;
+  screenHeight: number;
 }
 
 // -----------------------------------------------------------------------
@@ -29,7 +37,11 @@ const DeviceInWall = (props: DeviceInWallProps) => {
 
   const getIsMasterJsx = () => {
     if (!props.isMaster) {
-      return null;
+      return (
+        <div className='deviceNumber'>
+          Slave
+        </div>
+      );
     }
     return (
       <div className='deviceNumber'>
@@ -55,7 +67,23 @@ const DeviceInWall = (props: DeviceInWallProps) => {
         </div>
 
         {masterJsx}
-        
+
+        <div className='deviceNumber'>
+          {'Bezel width: ' + props.bezelWidth}
+        </div>
+
+        <div className='deviceNumber'>
+          {'Bezel height: ' + props.bezelHeight}
+        </div>
+
+        <div className='deviceNumber'>
+          {'Screen width: ' + props.screenWidth}
+        </div>
+
+        <div className='deviceNumber'>
+          {'Screen height: ' + props.screenHeight}
+        </div>
+
       </div>
 
       <div
@@ -72,9 +100,13 @@ const DeviceInWall = (props: DeviceInWallProps) => {
 function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Partial<DeviceInWallProps> {
   const serialNumber = ownProps.serialNumber;
   return {
+    serialNumber,
     isMaster: getIsMaster(state, serialNumber),
     unitName: getUnitName(state, serialNumber),
-    serialNumber,
+    bezelWidth: getBezelWidth(state, serialNumber),
+    bezelHeight: getBezelHeight(state, serialNumber),
+    screenWidth: getBezelScreenWidth(state, serialNumber),
+    screenHeight: getBezelScreenHeight(state, serialNumber),
   };
 }
 
