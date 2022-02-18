@@ -11,7 +11,7 @@ import '../styles/configurator.css';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
-import { exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
+import { broadcastReenterDeviceSetup, exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
 import {
   getActivePresentationName,
   getBrightWallSetupScreenEnabled,
@@ -25,6 +25,7 @@ export interface WallConfigurationProps {
   onLaunchApp: () => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
+  onBroadcastReenterDeviceSetup: () => any;
   onExitAlignmentTool: () => any;
 }
 
@@ -60,6 +61,12 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     setShowPlayerIsRebooting(true);
   };
 
+  const handleBroadcastReenterDeviceSetup = (event: any) => {
+    console.log('handleBroadcastReenterDeviceSetup invoked');
+    props.onBroadcastReenterDeviceSetup();
+    // setShowPlayerIsRebooting(true);
+  };
+
   const renderStartWall = () => {
     return (
       <div className='rightButtonContainer'>
@@ -76,7 +83,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 
   const renderTestAlignment = () => {
     return (
-      <div className='leftButtonContainer'>
+      <div className='middleButtonContainer'>
         <button
           className='configuratorButtonStyle'
           onClick={handleLaunchAlignment}>
@@ -86,10 +93,25 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     );
   };
 
+  const renderBroadcastReenter = () => {
+    return (
+      <div className='leftButtonContainer'>
+        <button
+          className='configuratorButtonStyle'
+          onClick={handleBroadcastReenterDeviceSetup}>
+          Broadcast Reenter Device Setup
+        </button>
+      </div>
+    );
+  };
+
   const testAlignmentJsx = renderTestAlignment();
   const startWallJsx = renderStartWall();
+  const broadcastReenterDeviceSetupJsx = renderBroadcastReenter();
 
   // TEDTODOBW - what to display if there is no presentation???
+  //         
+
   return (
     <DndProvider backend={HTML5Backend}>
 
@@ -112,6 +134,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
         <ScreensInWall />
 
         {testAlignmentJsx}
+        {broadcastReenterDeviceSetupJsx}
         {startWallJsx}
 
       </div>
@@ -132,6 +155,7 @@ const mapDispatchToProps = (dispatch: any) => {
     onLaunchApp: launchApp,
     onExitConfigurator: exitConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
+    onBroadcastReenterDeviceSetup: broadcastReenterDeviceSetup,
   }, dispatch);
 };
 

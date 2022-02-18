@@ -50,7 +50,7 @@ body {
 
   padding: 18px 63px 0px 10px;
 
-  grid-template-columns: auto repeat(2, 1fr);
+  grid-template-columns: auto repeat(3, 1fr);
   grid-template-rows: min-content auto min-content;
 
   grid-gap: 0px 67px;
@@ -58,7 +58,7 @@ body {
   grid-template-areas:
                     "pn pn pn"
                     "tl tg tg"
-                    "lb lb rb";
+                    "lb mb rb";
 }
 
 .wallConfigurationContainer .presentationName {
@@ -271,6 +271,15 @@ body {
   justify-self: center;
   align-self: center;
 }
+
+.wallConfigurationContainer .middleButtonContainer {
+  box-sizing: border-box;
+  grid-area: mb;
+
+  justify-self: center;
+  align-self: center;
+}
+
 
 .wallConfigurationContainer .rightButtonContainer {
   box-sizing: border-box;

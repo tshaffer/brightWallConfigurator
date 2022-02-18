@@ -15,17 +15,14 @@ export interface BezelMenuProps {
 const BezelMenu = (props: BezelMenuProps) => {
 
   const handleApply = () => {
-    console.log('handleApply');
     props.onApply();
   };
 
   const handleApplyToAll = () => {
-    console.log('handleApplyToAll');
     props.onApplyToAll();
   };
 
   const handleCancel = () => {
-    console.log('handleCancel');
     props.onCloseBezelConfigurator();
   };
 
