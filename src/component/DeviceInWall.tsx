@@ -38,13 +38,13 @@ const DeviceInWall = (props: DeviceInWallProps) => {
   const getIsMasterJsx = () => {
     if (!props.isMaster) {
       return (
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           Slave
         </div>
       );
     }
     return (
-      <div className='deviceNumber'>
+      <div className='deviceText'>
         Master
       </div>
     );
@@ -58,29 +58,29 @@ const DeviceInWall = (props: DeviceInWallProps) => {
       <div style={{ display: 'inline-block' }}>
         <Icon iconType='device' />
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {props.serialNumber}
         </div>
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {props.unitName}
         </div>
 
         {masterJsx}
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {'Bezel width: ' + props.bezelWidth}
         </div>
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {'Bezel height: ' + props.bezelHeight}
         </div>
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {'Screen width: ' + props.screenWidth}
         </div>
 
-        <div className='deviceNumber'>
+        <div className='deviceText'>
           {'Screen height: ' + props.screenHeight}
         </div>
 

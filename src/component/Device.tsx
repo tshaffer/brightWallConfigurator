@@ -72,9 +72,9 @@ const Device = (props: DeviceProps) => {
   let deviceIdsClassName = '';
 
   if (props.deviceIsAssigned) {
-    deviceIdsClassName = 'deviceName disabled';
+    deviceIdsClassName = 'deviceIds disabled';
   } else {
-    deviceIdsClassName = 'deviceName';
+    deviceIdsClassName = 'deviceIds';
   }
 
   return (

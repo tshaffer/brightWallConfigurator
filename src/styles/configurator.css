@@ -92,11 +92,7 @@ body {
   font-family: 'PTSans';
 }
 
-.wallConfigurationContainer .deviceListContainer .deviceImage {
-  box-sizing: border-box;
-}
-
-.wallConfigurationContainer .deviceListContainer .deviceName {
+.wallConfigurationContainer .deviceListContainer .deviceIds {
   box-sizing: border-box;
   margin-left: 23px;
 
@@ -107,45 +103,6 @@ body {
 
 .wallConfigurationContainer .deviceListContainer .disabled {
   color: #989898;
-}
-
-.wallConfigurationContainer .deviceListContainer input[type="checkbox"] {
-  appearance: none;
-  position: relative;
-
-  width: 12px;
-  height: 12px;
-
-  margin: 0;
-  border: 1px solid black;
-  border-radius: 2px;
-
-  background-color: #ffffff;
-
-  font: inherit;
-}
-
-.wallConfigurationContainer .deviceListContainer input[type="checkbox"]::before {
-  position: absolute;
-  display: none;
-
-  content: "";
-
-  width: 12px;
-  height: 12px;
-
-  top: -2px;
-
-  background: black;
-  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-}
-
-.wallConfigurationContainer .deviceListContainer input[type="checkbox"]:checked::before {
-  display: inline-block;
-}
-
-.wallConfigurationContainer .deviceListContainer .disabled input[type="checkbox"] {
-  border-color: #989898;
 }
 
 .wallConfigurationContainer .deviceListContainer .deviceMasterSelector {
@@ -226,14 +183,7 @@ body {
   align-self: center;
 }
 
-.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceImage {
-  box-sizing: border-box;
-
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceNumber {
+.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deviceText {
   box-sizing: border-box;
 
   /* display: inline-block; */
@@ -241,17 +191,6 @@ body {
 
   font-family: 'PTSans';
   font-size: 15px;
-}
-
-.wallConfigurationContainer .screensInWallContainer .screenInWallContainer .deviceInWallContainer .deleteDeviceButton {
-  box-sizing: border-box;
-
-  width: 11px;
-
-  display: inline-block;
-  vertical-align: top;
-
-  cursor: pointer;
 }
 
 .wallConfigurationContainer .screensInWallContainer .screenInWallContainer .buttonContainer {
