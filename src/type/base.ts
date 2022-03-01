@@ -32,13 +32,15 @@ export interface BrightSignAttributes {
   isMaster: boolean;
   rowIndex: number;
   columnIndex: number;
-  bezelWidth: number;
-  bezelHeight: number;
+  bezelLeft: number;
+  bezelRight: number;
+  bezelTop: number;
+  bezelBottom: number;
   bezelScreenWidth: number;
   bezelScreenHeight: number;
 }
 
-// TEDTODOBW - these are reports for all devices, but the code currently only looks at the hosts's settings.
+// TEDTODOBW - these are reports for all devices, but the code currently only looks at the host's settings.
 export interface BrightWallAttributes {
   numRows: number;
   numColumns: number;

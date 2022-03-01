@@ -13,8 +13,10 @@ import {
   setBezelDimensionsOnAllDevices,
 } from '../../controller';
 import {
-  getBezelWidth,
-  getBezelHeight,
+  getBezelLeft,
+  getBezelRight,
+  getBezelTop,
+  getBezelBottom,
   getBezelScreenWidth,
   getBezelScreenHeight,
 } from '../../selector';
@@ -25,22 +27,28 @@ export interface BezelConfiguratorPropsFromParent {
 }
 
 export interface BezelConfiguratorProps extends BezelConfiguratorPropsFromParent {
-  bezelWidth: number;
-  bezelHeight: number;
+  bezelLeft: number;
+  bezelRight: number;
+  bezelTop: number;
+  bezelBottom: number;
   screenWidth: number;
   screenHeight: number;
 
   onSetBezelDimensions: (
     serialNumber: string,
-    bezelWidth: number,
-    bezelHeight: number,
+    bezelLeft: number,
+    bezelRight: number,
+    bezelTop: number,
+    bezelBottom: number,
     screenWidth: number,
     screenHeight: number,
   ) => any;
 
   onSetBezelDimensionsOnAllDevices: (
-    bezelWidth: number,
-    bezelHeight: number,
+    bezelLeft: number,
+    bezelRight: number,
+    bezelTop: number,
+    bezelBottom: number,
     screenWidth: number,
     screenHeight: number,
   ) => any;
@@ -52,17 +60,27 @@ export interface BezelConfiguratorProps extends BezelConfiguratorPropsFromParent
 
 const BezelConfigurator = (props: BezelConfiguratorProps) => {
 
-  const [displayedBezelWidth, setDisplayedBezelWidth] = React.useState(props.bezelWidth);
-  const [displayedBezelHeight, setDisplayedBezelHeight] = React.useState(props.bezelHeight);
+  const [displayedBezelLeft, setDisplayedBezelLeft] = React.useState(props.bezelLeft);
+  const [displayedBezelRight, setDisplayedBezelRight] = React.useState(props.bezelRight);
+  const [displayedBezelTop, setDisplayedBezelTop] = React.useState(props.bezelTop);
+  const [displayedBezelBottom, setDisplayedBezelBottom] = React.useState(props.bezelBottom);
   const [displayedScreenWidth, setDisplayedScreenWidth] = React.useState(props.screenWidth);
   const [displayedScreenHeight, setDisplayedScreenHeight] = React.useState(props.screenHeight);
 
-  const handleSetDisplayedBezelWidth = (bezelWidth: number) => {
-    setDisplayedBezelWidth(bezelWidth);
+  const handleSetDisplayedBezelLeft = (bezelLeft: number) => {
+    setDisplayedBezelLeft(bezelLeft);
   };
 
-  const handleSetDisplayedBezelHeight = (bezelHeight: number) => {
-    setDisplayedBezelHeight(bezelHeight);
+  const handleSetDisplayedBezelRight = (bezelRight: number) => {
+    setDisplayedBezelRight(bezelRight);
+  };
+
+  const handleSetDisplayedBezelTop = (bezelTop: number) => {
+    setDisplayedBezelTop(bezelTop);
+  };
+
+  const handleSetDisplayedBezelBottom = (bezelBottom: number) => {
+    setDisplayedBezelBottom(bezelBottom);
   };
 
   const handleSetDisplayedScreenWidth = (screenWidth: number) => {
@@ -76,8 +94,10 @@ const BezelConfigurator = (props: BezelConfiguratorProps) => {
   const handleApply = () => {
     props.onSetBezelDimensions(
       props.serialNumber,
-      displayedBezelWidth,
-      displayedBezelHeight,
+      displayedBezelLeft,
+      displayedBezelRight,
+      displayedBezelTop,
+      displayedBezelBottom,
       displayedScreenWidth,
       displayedScreenHeight
     );
@@ -85,9 +105,11 @@ const BezelConfigurator = (props: BezelConfiguratorProps) => {
   };
 
   const handleApplyToAll = () => {
-    props.onSetBezelDimensionsOnAllDevices (
-      displayedBezelWidth,
-      displayedBezelHeight,
+    props.onSetBezelDimensionsOnAllDevices(
+      displayedBezelLeft,
+      displayedBezelRight,
+      displayedBezelTop,
+      displayedBezelBottom,
       displayedScreenWidth,
       displayedScreenHeight
     );
@@ -97,18 +119,24 @@ const BezelConfigurator = (props: BezelConfiguratorProps) => {
   return (
     <div className='bezelConfigurationContainer'>
       <BezelSettings
-        initialBezelWidth={props.bezelWidth}
-        initialBezelHeight={props.bezelHeight}
+        initialBezelLeft={props.bezelLeft}
+        initialBezelRight={props.bezelRight}
+        initialBezelTop={props.bezelTop}
+        initialBezelBottom={props.bezelBottom}
         initialScreenWidth={props.screenWidth}
         initialScreenHeight={props.screenHeight}
-        onSetBezelWidth={handleSetDisplayedBezelWidth}
-        onSetBezelHeight={handleSetDisplayedBezelHeight}
+        onSetBezelLeft={handleSetDisplayedBezelLeft}
+        onSetBezelRight={handleSetDisplayedBezelRight}
+        onSetBezelTop={handleSetDisplayedBezelTop}
+        onSetBezelBottom={handleSetDisplayedBezelBottom}
         onSetScreenWidth={handleSetDisplayedScreenWidth}
         onSetScreenHeight={handleSetDisplayedScreenHeight}
       />
       <BezelPreview
-        bezelWidth={displayedBezelWidth}
-        bezelHeight={displayedBezelHeight}
+        bezelLeft={displayedBezelLeft}
+        bezelRight={displayedBezelRight}
+        bezelTop={displayedBezelTop}
+        bezelBottom={displayedBezelBottom}
         screenWidth={displayedScreenWidth}
         screenHeight={displayedScreenHeight}
       />
@@ -129,8 +157,10 @@ function mapStateToProps(state: any, ownProps: BezelConfiguratorPropsFromParent)
   const serialNumber = ownProps.serialNumber;
   return {
     serialNumber,
-    bezelWidth: getBezelWidth(state, serialNumber),
-    bezelHeight: getBezelHeight(state, serialNumber),
+    bezelLeft: getBezelLeft(state, serialNumber),
+    bezelRight: getBezelRight(state, serialNumber),
+    bezelTop: getBezelTop(state, serialNumber),
+    bezelBottom: getBezelBottom(state, serialNumber),
     screenWidth: getBezelScreenWidth(state, serialNumber),
     screenHeight: getBezelScreenHeight(state, serialNumber),
   };

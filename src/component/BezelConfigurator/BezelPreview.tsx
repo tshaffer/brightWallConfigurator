@@ -5,8 +5,10 @@ import { isNil } from 'lodash';
 import '../../styles/configurator.css';
 
 export interface BezelPreviewProps {
-  bezelWidth: number;
-  bezelHeight: number;
+  bezelLeft: number;
+  bezelRight: number;
+  bezelTop: number;
+  bezelBottom: number;
   screenWidth: number;
   screenHeight: number;
 }
@@ -20,7 +22,7 @@ const BezelPreview = (props: BezelPreviewProps) => {
   let width: number = 0;
   let height: number = 0;
 
-  const { bezelWidth, bezelHeight, screenWidth, screenHeight } = props;
+  const { bezelLeft, bezelRight, bezelTop, bezelBottom, screenWidth, screenHeight } = props;
 
   const $outerContainer = useRef(null);
 
@@ -34,14 +36,18 @@ const BezelPreview = (props: BezelPreviewProps) => {
     }
   }, [$outerContainer.current]);
 
-  let topOffset = 0;
   let leftOffset = 0;
+  let rightOffset = 0;
+  let topOffset = 0;
+  let bottomOffset = 0;
 
   if (!isNil($outerContainer) && !isNil($outerContainer.current)) {
-    leftOffset = bezelWidth / screenWidth * outerContainerWidth;
-    width = outerContainerWidth - (leftOffset * 2);
-    topOffset = bezelHeight / screenHeight * outerContainerHeight;
-    height = outerContainerHeight - (topOffset * 2);
+    leftOffset = bezelLeft / screenWidth * outerContainerWidth;
+    rightOffset = bezelRight / screenWidth * outerContainerWidth;
+    width = outerContainerWidth - (leftOffset + rightOffset);
+    topOffset = bezelTop / screenHeight * outerContainerHeight;
+    bottomOffset = bezelBottom / screenHeight * outerContainerHeight;
+    height = outerContainerHeight - (topOffset + bottomOffset);
   }
 
   const style = {

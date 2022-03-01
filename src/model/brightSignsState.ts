@@ -113,8 +113,10 @@ export const setIsMasterPlayer = (
 
 export interface SetBezelDimensionsPayload {
   serialNumber: string;
-  bezelWidth: number;
-  bezelHeight: number;
+  bezelLeft: number;
+  bezelRight: number;
+  bezelTop: number;
+  bezelBottom: number;
   screenWidth: number;
   screenHeight: number;
 }
@@ -122,8 +124,10 @@ type SetBezelDimensionsAction = BrightWallModelAction<SetBezelDimensionsPayload>
 
 export const updateBezelDimensions = (
   serialNumber: string,
-  bezelWidth: number,
-  bezelHeight: number,
+  bezelLeft: number,
+  bezelRight: number,
+  bezelTop: number,
+  bezelBottom: number,
   screenWidth: number,
   screenHeight: number,
 ): SetBezelDimensionsAction => {
@@ -131,8 +135,10 @@ export const updateBezelDimensions = (
     type: SET_BEZEL_DIMENSIONS,
     payload: {
       serialNumber,
-      bezelWidth,
-      bezelHeight,
+      bezelLeft,
+      bezelRight,
+      bezelTop,
+      bezelBottom,
       screenWidth,
       screenHeight,
     },
@@ -214,8 +220,10 @@ export const brightSignsStateReducer = (
           ...state.brightSignBySerialNumber,
           [action.payload.serialNumber]: {
             ...state.brightSignBySerialNumber[action.payload.serialNumber],
-            bezelWidth: action.payload.bezelWidth,
-            bezelHeight: action.payload.bezelHeight,
+            bezelLeft: action.payload.bezelLeft,
+            bezelRight: action.payload.bezelRight,
+            bezelTop: action.payload.bezelTop,
+            bezelBottom: action.payload.bezelBottom,
             bezelScreenWidth: action.payload.screenWidth,
             bezelScreenHeight: action.payload.screenHeight,
           }

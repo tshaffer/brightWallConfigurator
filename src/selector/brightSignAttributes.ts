@@ -2,18 +2,34 @@ import { isNil } from 'lodash';
 import { AppState, BrightSignAttributes, BrightSignsState } from '../type';
 import { getBrightSignInWall } from './brightSignState';
 
-export const getBezelWidth = (state: AppState, serialNumber: string): number => {
+export const getBezelLeft = (state: AppState, serialNumber: string): number => {
   const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
   if (!isNil(brightSignAttributes)) {
-    return brightSignAttributes.bezelWidth;
+    return brightSignAttributes.bezelLeft;
   }
   return 0;
 };
 
-export const getBezelHeight = (state: AppState, serialNumber: string): number => {
+export const getBezelRight = (state: AppState, serialNumber: string): number => {
   const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
   if (!isNil(brightSignAttributes)) {
-    return brightSignAttributes.bezelHeight;
+    return brightSignAttributes.bezelRight;
+  }
+  return 0;
+};
+
+export const getBezelTop = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelTop;
+  }
+  return 0;
+};
+
+export const getBezelBottom = (state: AppState, serialNumber: string): number => {
+  const brightSignAttributes: BrightSignAttributes | null = getBrightSignInWall(state, serialNumber);
+  if (!isNil(brightSignAttributes)) {
+    return brightSignAttributes.bezelBottom;
   }
   return 0;
 };

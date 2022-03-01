@@ -225,8 +225,10 @@ export const exitAlignmentTool = () => {
 };
 
 export const setBezelDimensionsOnAllDevices = (
-  bezelWidth: number,
-  bezelHeight: number,
+  bezelLeft: number,
+  bezelRight: number,
+  bezelTop: number,
+  bezelBottom: number,
   screenWidth: number,
   screenHeight: number,
 ) => {
@@ -238,8 +240,10 @@ export const setBezelDimensionsOnAllDevices = (
       const ipAddress = getDeviceIpAddress(getState(), serialNumber);
       if (ipAddress.length > 0) {
         fetch('/SetBezelDimensions?ipAddress=' + ipAddress
-          + '&bezelWidth=' + bezelWidth.toString()
-          + '&bezelHeight=' + bezelHeight.toString()
+          + '&bezelLeft=' + bezelLeft.toString()
+          + '&bezelRight=' + bezelRight.toString()
+          + '&bezelTop=' + bezelTop.toString()
+          + '&bezelBottom=' + bezelBottom.toString()
           + '&screenWidth=' + screenWidth.toString()
           + '&screenHeight=' + screenHeight.toString())
           .then(response => response.json())
@@ -249,8 +253,10 @@ export const setBezelDimensionsOnAllDevices = (
               if (!isNil(serialNumber)) {
                 dispatch(updateBezelDimensions(
                   serialNumber,
-                  bezelWidth,
-                  bezelHeight,
+                  bezelLeft,
+                  bezelRight,
+                  bezelTop,
+                  bezelBottom,
                   screenWidth,
                   screenHeight,
                 ));
@@ -264,8 +270,10 @@ export const setBezelDimensionsOnAllDevices = (
 
 export const setBezelDimensions = (
   serialNumber: string,
-  bezelWidth: number,
-  bezelHeight: number,
+  bezelLeft: number,
+  bezelRight: number,
+  bezelTop: number,
+  bezelBottom: number,
   screenWidth: number,
   screenHeight: number,
 ) => {
@@ -273,8 +281,10 @@ export const setBezelDimensions = (
     const ipAddress = getDeviceIpAddress(getState(), serialNumber);
     if (ipAddress.length > 0) {
       fetch('/SetBezelDimensions?ipAddress=' + ipAddress
-        + '&bezelWidth=' + bezelWidth.toString()
-        + '&bezelHeight=' + bezelHeight.toString()
+        + '&bezelLeft=' + bezelLeft.toString()
+        + '&bezelRight=' + bezelRight.toString()
+        + '&bezelTop=' + bezelTop.toString()
+        + '&bezelBottom=' + bezelBottom.toString()
         + '&screenWidth=' + screenWidth.toString()
         + '&screenHeight=' + screenHeight.toString())
         .then(response => response.json())
@@ -284,8 +294,10 @@ export const setBezelDimensions = (
             if (!isNil(serialNumber)) {
               dispatch(updateBezelDimensions(
                 serialNumber,
-                bezelWidth,
-                bezelHeight,
+                bezelLeft,
+                bezelRight,
+                bezelTop,
+                bezelBottom,
                 screenWidth,
                 screenHeight,
               ));

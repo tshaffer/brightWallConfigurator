@@ -5,12 +5,16 @@ import '../../styles/configurator.css';
 import BezelSizeSetting from './BezelSizeSetting';
 
 export interface BezelSettingsProps {
-  onSetBezelWidth: (bezelWidth: number) => any;
-  onSetBezelHeight: (bezelHeight: number) => any;
+  onSetBezelLeft: (bezelLeft: number) => any;
+  onSetBezelRight: (bezelRight: number) => any;
+  onSetBezelTop: (bezelTop: number) => any;
+  onSetBezelBottom: (bezelBottom: number) => any;
   onSetScreenWidth: (width: number) => any;
   onSetScreenHeight: (height: number) => any;
-  initialBezelWidth: number;
-  initialBezelHeight: number;
+  initialBezelLeft: number;
+  initialBezelRight: number;
+  initialBezelTop: number;
+  initialBezelBottom: number;
   initialScreenWidth: number;
   initialScreenHeight: number;
 }
@@ -21,21 +25,33 @@ export interface BezelSettingsProps {
 
 const BezelSettings = (props: BezelSettingsProps) => {
 
-  const [bezelWidth, setBezelWidth] = React.useState(props.initialBezelWidth);
-  const [bezelHeight, setBezelHeight] = React.useState(props.initialBezelHeight);
+  const [bezelLeft, setBezelLeft] = React.useState(props.initialBezelLeft);
+  const [bezelRight, setBezelRight] = React.useState(props.initialBezelRight);
+  const [bezelTop, setBezelTop] = React.useState(props.initialBezelTop);
+  const [bezelBottom, setBezelBottom] = React.useState(props.initialBezelBottom);
   const [screenWidth, setScreenWidth] = React.useState(props.initialScreenWidth);
   const [screenHeight, setScreenHeight] = React.useState(props.initialScreenHeight);
 
-  const handleUpdateBezelWidth = (width: number) => {
-    props.onSetBezelWidth(width);
-    setBezelWidth(width);
+  const handleUpdateBezelLeft = (width: number) => {
+    props.onSetBezelLeft(width);
+    setBezelLeft(width);
   };
 
-  const handleUpdateBezelHeight = (height: number) => {
-    props.onSetBezelHeight(height);
-    setBezelHeight(height);
+  const handleUpdateBezelRight = (width: number) => {
+    props.onSetBezelRight(width);
+    setBezelRight(width);
   };
-  
+
+  const handleUpdateBezelTop = (height: number) => {
+    props.onSetBezelTop(height);
+    setBezelTop(height);
+  };
+
+  const handleUpdateBezelBottom = (height: number) => {
+    props.onSetBezelBottom(height);
+    setBezelBottom(height);
+  };
+
   const handleUpdateScreenWidth = (width: number) => {
     props.onSetScreenWidth(width);
     setScreenWidth(width);
@@ -45,29 +61,41 @@ const BezelSettings = (props: BezelSettingsProps) => {
     props.onSetScreenHeight(height);
     setScreenHeight(height);
   };
-  
+
   return (
     <form className='leftToolbarContainer'>
       <BezelSizeSetting
-        id='bezelWidth'
-        label='Bezel Width (mm)'
-        value={bezelWidth}
-        onUpdateBezelSetting={handleUpdateBezelWidth}
+        id='bezelLeft'
+        label='Left bezel (mm)'
+        value={bezelLeft}
+        onUpdateBezelSetting={handleUpdateBezelLeft}
       />
       <BezelSizeSetting
-        id='bezelHeight'
-        label='Bezel Height (mm)'
-        value={bezelHeight}
-        onUpdateBezelSetting={handleUpdateBezelHeight}
+        id='bezelRight'
+        label='Right bezel (mm)'
+        value={bezelRight}
+        onUpdateBezelSetting={handleUpdateBezelRight}
       />
       <BezelSizeSetting
-        id='bezelWidth'
+        id='bezelTop'
+        label='Top bezel (mm)'
+        value={bezelTop}
+        onUpdateBezelSetting={handleUpdateBezelTop}
+      />
+      <BezelSizeSetting
+        id='bezelBottom'
+        label='Bottom bezel (mm)'
+        value={bezelBottom}
+        onUpdateBezelSetting={handleUpdateBezelBottom}
+      />
+      <BezelSizeSetting
+        id='screenWidth'
         label='Screen Width (mm)'
         value={screenWidth}
         onUpdateBezelSetting={handleUpdateScreenWidth}
       />
       <BezelSizeSetting
-        id='bezelHeight'
+        id='screenHeight'
         label='Screen Height (mm)'
         value={screenHeight}
         onUpdateBezelSetting={handleUpdateScreenHeight}
