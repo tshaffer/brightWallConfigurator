@@ -4,10 +4,6 @@ import { bindActionCreators } from 'redux';
 
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 
-import ReactModal from 'react-modal';
-
-import BezelConfigurator from './BezelConfigurator/BezelConfigurator';
-
 import '../styles/configurator.css';
 
 import {
@@ -60,25 +56,6 @@ const ScreenInWall = (props: ScreenInWallProps) => {
     [props.serialNumber, props.rowIndex, props.columnIndex]
   );
 
-  const [showBezelConfigurator, setShowBezelConfigurator] = React.useState(false);
-
-  const modalStyle = {
-    content: {
-      top: '10%',
-      left: '10%',
-      right: '10%',
-      bottom: '10%',
-    },
-  };
-
-  const handleEditBezel = () => {
-    setShowBezelConfigurator(true);
-  };
-
-  const handleCloseBezelConfigurator = () => {
-    setShowBezelConfigurator(false);
-  };
-
   const handleRemoveBrightSignFromWall = () => {
     console.log('handleRemoveBrightSignFromWall', props);
     props.onSetBrightSignWallPosition(props.serialNumber, -1, -1);
@@ -102,31 +79,10 @@ const ScreenInWall = (props: ScreenInWallProps) => {
 
   return (
     <div className='screenInWallContainer' ref={drop}>
-      <div>
-        <ReactModal
-          isOpen={showBezelConfigurator}
-          style={modalStyle}
-          ariaHideApp={false}
-        >
-          <BezelConfigurator
-            serialNumber={props.serialNumber}
-            onCloseBezelConfigurator={handleCloseBezelConfigurator}
-          />
-        </ReactModal>
-      </div>
-
       <div className='indexContainer'>
         {positionLabel}
       </div>
       {renderedDeviceInWall}
-      <div className='buttonContainer'>
-        <button
-          onClick={handleEditBezel}
-          className='configuratorButtonStyle'
-        >
-          Edit Bezel
-        </button>
-      </div>
     </div>
   );
 };
