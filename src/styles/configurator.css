@@ -127,14 +127,15 @@ body {
   margin-left: 4px;
 }
 
+/*   padding-right: 24px; */
 .screenDetailsDiv {
   border: 2px solid black;
   padding-left: 18px;
-  padding-right: 24px;
   padding-bottom: 8px;
   padding-top: 0px;
   position: absolute;
   bottom: 72px;
+  width: 297px;
 }
 
 .screenDetailsLabel {
