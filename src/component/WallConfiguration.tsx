@@ -11,9 +11,8 @@ import '../styles/configurator.css';
 
 import DeviceList from './DeviceList';
 import ScreensInWall from './ScreensInWall';
-import BezelConfigurator from './BezelConfigurator/BezelConfigurator';
 
-import { broadcastReenterDeviceSetup, exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
+import { exitConfigurator, launchAlignmentTool, launchApp } from '../controller';
 import {
   getActivePresentationName,
   getBrightWallSetupScreenEnabled,
@@ -29,7 +28,6 @@ export interface WallConfigurationProps {
   onLaunchApp: () => any;
   onExitConfigurator: () => any;
   onLaunchAlignmentTool: () => any;
-  onBroadcastReenterDeviceSetup: () => any;
   onExitAlignmentTool: () => any;
 }
 
@@ -39,8 +37,6 @@ export interface WallConfigurationProps {
 // -----------------------------------------------------------------------
 
 const WallConfiguration = (props: WallConfigurationProps) => {
-
-  const [showBezelConfigurator, setShowBezelConfigurator] = React.useState(false);
 
   const [showPlayerIsRebooting, setShowPlayerIsRebooting] = React.useState(false);
 
@@ -55,16 +51,6 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     },
   };
 
-  const bezelModalStyle = {
-    content: {
-      top: '10%',
-      left: '10%',
-      right: '10%',
-      bottom: '10%',
-    },
-  };
-
-
   const handleExitConfigurator = (event: any) => {
     console.log('handleExitConfigurator invoked');
     props.onExitConfigurator();
@@ -75,20 +61,6 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     console.log('handleLaunchAlignment invoked');
     props.onLaunchAlignmentTool();
     setShowPlayerIsRebooting(true);
-  };
-
-  // const handleBroadcastReenterDeviceSetup = (event: any) => {
-  //   console.log('handleBroadcastReenterDeviceSetup invoked');
-  //   props.onBroadcastReenterDeviceSetup();
-  //   // setShowPlayerIsRebooting(true);
-  // };
-
-  const handleEditBezel = () => {
-    setShowBezelConfigurator(true);
-  };
-
-  const handleCloseBezelConfigurator = () => {
-    setShowBezelConfigurator(false);
   };
 
   const renderStartWall = () => {
@@ -117,55 +89,14 @@ const WallConfiguration = (props: WallConfigurationProps) => {
     );
   };
 
-  // const renderBroadcastReenter = () => {
-  //   return (
-  //     <div className='leftButtonContainer'>
-  //       <button
-  //         className='configuratorButtonStyle'
-  //         onClick={handleBroadcastReenterDeviceSetup}>
-  //         Broadcast Reenter Device Setup
-  //       </button>
-  //     </div>
-  //   );
-  // };
-
-  const renderEditBezel = () => {
-    return (
-      <div className='leftButtonContainer'>
-        <button
-          className='configuratorButtonStyle'
-          onClick={handleEditBezel}>
-          Edit Screen
-        </button>
-      </div>
-    );
-  };
-
-  const editBezelJsx = renderEditBezel();
   const startWallJsx = renderStartWall();
   const testAlignmentJsx = renderTestAlignment();
-  // const broadcastReenterDeviceSetupJsx = renderBroadcastReenter();
 
   // TEDTODOBW - what to display if there is no presentation???
   //         
 
-  //         {broadcastReenterDeviceSetupJsx}
-
   return (
     <DndProvider backend={HTML5Backend}>
-
-      <div>
-        <ReactModal
-          isOpen={showBezelConfigurator}
-          style={bezelModalStyle}
-          ariaHideApp={false}
-        >
-          <BezelConfigurator
-            serialNumber={props.serialNumber}
-            onCloseBezelConfigurator={handleCloseBezelConfigurator}
-          />
-        </ReactModal>
-      </div>
 
       <div>
         <ReactModal
@@ -185,7 +116,6 @@ const WallConfiguration = (props: WallConfigurationProps) => {
         <DeviceList />
         <ScreensInWall />
 
-        {editBezelJsx}
         {startWallJsx}
         {testAlignmentJsx}
 
@@ -208,7 +138,6 @@ const mapDispatchToProps = (dispatch: any) => {
     onLaunchApp: launchApp,
     onExitConfigurator: exitConfigurator,
     onLaunchAlignmentTool: launchAlignmentTool,
-    onBroadcastReenterDeviceSetup: broadcastReenterDeviceSetup,
   }, dispatch);
 };
 
