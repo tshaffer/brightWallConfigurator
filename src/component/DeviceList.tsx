@@ -33,7 +33,6 @@ import {
   getBezelBottom,
   getBezelScreenWidth,
   getBezelScreenHeight,
-  getHostSerialNumber,
   getSerialNumber,
 } from '../selector';
 
@@ -141,15 +140,15 @@ const DeviceList = (props: DeviceListProps) => {
 };
 
 function mapStateToProps(state: any, ownProps: any): Partial<any> {
-  const serialNumber = getHostSerialNumber(state);
+  const serialNumber = getSerialNumber(state);
   return {
+    serialNumber,
     isBrightWall: getIsBrightWall(state),
     brightWallDeviceSetupActiveScreen: getBrightWallDeviceSetupActiveScreen(state),
     numRows: getNumRows(state),
     numColumns: getNumColumns(state),
     brightSignsInWall: getBrightSignsInWall(state),
     brightWallUnitAssignments: getBrightWallUnitAssignments(state),
-    serialNumber: getSerialNumber(state),
     bezelLeft: getBezelLeft(state, serialNumber),
     bezelRight: getBezelRight(state, serialNumber),
     bezelTop: getBezelTop(state, serialNumber),

@@ -58,12 +58,6 @@ export const getUnitName = (state: AppState, serialNumber: string): string => {
   return '';
 };
 
-export const getHostSerialNumber = (state: AppState): string => {
-  const brightSigns: BrightSignsState = state.brightSigns;
-  const hostSerialNumber: string = brightSigns.hostSerialNumber;
-  return hostSerialNumber;
-};
-
 export const getActivePresentationName = (state: AppState): string => {
   const brightSigns: BrightSignsState = state.brightSigns;
   const hostSerialNumber: string = brightSigns.hostSerialNumber;
