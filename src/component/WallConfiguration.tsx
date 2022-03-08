@@ -93,7 +93,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 
   const renderStartWall = () => {
     return (
-      <div className='rightButtonContainer'>
+      <div className='middleButtonContainer'>
         <button
           className='configuratorButtonStyle'
           onClick={handleExitConfigurator}
@@ -107,7 +107,7 @@ const WallConfiguration = (props: WallConfigurationProps) => {
 
   const renderTestAlignment = () => {
     return (
-      <div className='middleButtonContainer'>
+      <div className='rightButtonContainer'>
         <button
           className='configuratorButtonStyle'
           onClick={handleLaunchAlignment}>
@@ -135,15 +135,15 @@ const WallConfiguration = (props: WallConfigurationProps) => {
         <button
           className='configuratorButtonStyle'
           onClick={handleEditBezel}>
-          Edit Bezel
+          Edit Screen
         </button>
       </div>
     );
   };
 
-  const testAlignmentJsx = renderTestAlignment();
-  const startWallJsx = renderStartWall();
   const editBezelJsx = renderEditBezel();
+  const startWallJsx = renderStartWall();
+  const testAlignmentJsx = renderTestAlignment();
   // const broadcastReenterDeviceSetupJsx = renderBroadcastReenter();
 
   // TEDTODOBW - what to display if there is no presentation???
@@ -185,9 +185,9 @@ const WallConfiguration = (props: WallConfigurationProps) => {
         <DeviceList />
         <ScreensInWall />
 
-        {testAlignmentJsx}
         {editBezelJsx}
         {startWallJsx}
+        {testAlignmentJsx}
 
       </div>
     </DndProvider>

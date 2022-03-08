@@ -127,6 +127,19 @@ body {
   margin-left: 4px;
 }
 
+.screenDetailsDiv {
+  border: 2px solid black;
+  padding-left: 8px;
+  padding-bottom: 8px;
+  padding-top: 0px;
+}
+
+.screenDetailsLabel {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .wallConfigurationContainer .screensInWallContainer {
   box-sizing: border-box;
   display: grid;

@@ -9,12 +9,6 @@ import Icon from './Icon';
 import {
   getIsMaster,
   getUnitName,
-  getBezelLeft,
-  getBezelRight,
-  getBezelTop,
-  getBezelBottom,
-  getBezelScreenWidth,
-  getBezelScreenHeight,
 } from '../selector';
 
 export interface DeviceInWallPropsFromParent {
@@ -25,12 +19,6 @@ export interface DeviceInWallPropsFromParent {
 export interface DeviceInWallProps extends DeviceInWallPropsFromParent {
   isMaster: boolean;
   unitName: string;
-  bezelLeft: number;
-  bezelRight: number;
-  bezelTop: number;
-  bezelBottom: number;
-  screenWidth: number;
-  screenHeight: number;
 }
 
 // -----------------------------------------------------------------------
@@ -72,30 +60,6 @@ const DeviceInWall = (props: DeviceInWallProps) => {
 
         {masterJsx}
 
-        <div className='deviceText'>
-          {'Bezel left: ' + props.bezelLeft}
-        </div>
-
-        <div className='deviceText'>
-          {'Bezel right: ' + props.bezelRight}
-        </div>
-
-        <div className='deviceText'>
-          {'Bezel top: ' + props.bezelTop}
-        </div>
-
-        <div className='deviceText'>
-          {'Bezel right: ' + props.bezelBottom}
-        </div>
-
-        <div className='deviceText'>
-          {'Screen width: ' + props.screenWidth}
-        </div>
-
-        <div className='deviceText'>
-          {'Screen height: ' + props.screenHeight}
-        </div>
-
       </div>
 
       <div
@@ -115,12 +79,6 @@ function mapStateToProps(state: any, ownProps: DeviceInWallPropsFromParent): Par
     serialNumber,
     isMaster: getIsMaster(state, serialNumber),
     unitName: getUnitName(state, serialNumber),
-    bezelLeft: getBezelLeft(state, serialNumber),
-    bezelRight: getBezelRight(state, serialNumber),
-    bezelTop: getBezelTop(state, serialNumber),
-    bezelBottom: getBezelBottom(state, serialNumber),
-    screenWidth: getBezelScreenWidth(state, serialNumber),
-    screenHeight: getBezelScreenHeight(state, serialNumber),
   };
 }
 
