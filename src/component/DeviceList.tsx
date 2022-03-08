@@ -81,7 +81,9 @@ const DeviceList = (props: DeviceListProps) => {
     }
   }
 
-  /*
+  return (
+    <React.Fragment>
+
       <div>
         <ReactModal
           isOpen={showBezelConfigurator}
@@ -95,48 +97,46 @@ const DeviceList = (props: DeviceListProps) => {
         </ReactModal>
       </div>
 
-  */
-
-  return (
-    <div className='deviceListContainer'>
-      {
-        map(serialNumbers, serialNumber =>
-          <Device
-            serialNumber={serialNumber}
-            key={`device_${serialNumber}`}
-          />
-        )
-      }
-      <div className='screenDetailsDiv'>
-        <p className='screenDetailsLabel'>Screen Details</p>
-        <div className='deviceText'>
-          {'Screen width: ' + props.screenWidth}
-        </div>
-        <div className='deviceText'>
-          {'Screen height: ' + props.screenHeight}
-        </div>
-        <div className='deviceText'>
-          {'Bezel right: ' + props.bezelRight}
-        </div>
-        <div className='deviceText'>
-          {'Bezel left: ' + props.bezelLeft}
-        </div>
-        <div className='deviceText'>
-          {'Bezel top: ' + props.bezelTop}
-        </div>
-        <div className='deviceText'>
-          {'Bezel right: ' + props.bezelBottom}
-        </div>
-        <div className='editScreenButtonContainer'>
-          <button
-            className='configuratorButtonStyle'
-            onClick={handleEditBezel}
-          >
-            Edit Screen
-          </button>
+      <div className='deviceListContainer'>
+        {
+          map(serialNumbers, serialNumber =>
+            <Device
+              serialNumber={serialNumber}
+              key={`device_${serialNumber}`}
+            />
+          )
+        }
+        <div className='screenDetailsDiv'>
+          <p className='screenDetailsLabel'>Screen Details</p>
+          <div className='deviceText'>
+            {'Screen width: ' + props.screenWidth}
+          </div>
+          <div className='deviceText'>
+            {'Screen height: ' + props.screenHeight}
+          </div>
+          <div className='deviceText'>
+            {'Bezel right: ' + props.bezelRight}
+          </div>
+          <div className='deviceText'>
+            {'Bezel left: ' + props.bezelLeft}
+          </div>
+          <div className='deviceText'>
+            {'Bezel top: ' + props.bezelTop}
+          </div>
+          <div className='deviceText'>
+            {'Bezel right: ' + props.bezelBottom}
+          </div>
+          <div className='editScreenButtonContainer'>
+            <button
+              className='configuratorButtonStyle'
+              onClick={handleEditBezel}
+            >
+              Edit Screen
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
