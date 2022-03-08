@@ -2,9 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import ReactModal from 'react-modal';
+
 import { map } from 'lodash';
 
 import '../styles/configurator.css';
+
+import BezelConfigurator from './BezelConfigurator/BezelConfigurator';
 
 import { BrightSignAttributes, BrightSignMap } from '../type';
 
@@ -30,12 +34,14 @@ import {
   getBezelScreenWidth,
   getBezelScreenHeight,
   getHostSerialNumber,
+  getSerialNumber,
 } from '../selector';
 
 import Device from './Device';
 
 export interface DeviceListProps {
   brightSignsInWall: BrightSignMap;
+  serialNumber: string;
   bezelLeft: number;
   bezelRight: number;
   bezelTop: number;
@@ -46,6 +52,25 @@ export interface DeviceListProps {
 
 const DeviceList = (props: DeviceListProps) => {
 
+  const [showBezelConfigurator, setShowBezelConfigurator] = React.useState(false);
+
+  const bezelModalStyle = {
+    content: {
+      top: '10%',
+      left: '10%',
+      right: '10%',
+      bottom: '10%',
+    },
+  };
+
+  const handleEditBezel = () => {
+    setShowBezelConfigurator(true);
+  };
+
+  const handleCloseBezelConfigurator = () => {
+    setShowBezelConfigurator(false);
+  };
+
   console.log(props.brightSignsInWall);
 
   const serialNumbers: string[] = [];
@@ -55,6 +80,22 @@ const DeviceList = (props: DeviceListProps) => {
       serialNumbers.push(brightSignInWall.serialNumber);
     }
   }
+
+  /*
+      <div>
+        <ReactModal
+          isOpen={showBezelConfigurator}
+          style={bezelModalStyle}
+          ariaHideApp={false}
+        >
+          <BezelConfigurator
+            serialNumber={props.serialNumber}
+            onCloseBezelConfigurator={handleCloseBezelConfigurator}
+          />
+        </ReactModal>
+      </div>
+
+  */
 
   return (
     <div className='deviceListContainer'>
@@ -86,6 +127,14 @@ const DeviceList = (props: DeviceListProps) => {
         <div className='deviceText'>
           {'Bezel right: ' + props.bezelBottom}
         </div>
+        <div className='editScreenButtonContainer'>
+          <button
+            className='configuratorButtonStyle'
+            onClick={handleEditBezel}
+          >
+            Edit Screen
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -100,6 +149,7 @@ function mapStateToProps(state: any, ownProps: any): Partial<any> {
     numColumns: getNumColumns(state),
     brightSignsInWall: getBrightSignsInWall(state),
     brightWallUnitAssignments: getBrightWallUnitAssignments(state),
+    serialNumber: getSerialNumber(state),
     bezelLeft: getBezelLeft(state, serialNumber),
     bezelRight: getBezelRight(state, serialNumber),
     bezelTop: getBezelTop(state, serialNumber),

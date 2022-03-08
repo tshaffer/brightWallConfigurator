@@ -143,6 +143,10 @@ body {
   font-weight: bold;
 }
 
+.editScreenButtonContainer {
+  text-align: center;
+}
+
 .wallConfigurationContainer .screensInWallContainer {
   box-sizing: border-box;
   display: grid;
